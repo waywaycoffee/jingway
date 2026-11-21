@@ -21,3 +21,9 @@ int? gradeFromReviewKey(String key) {
 
 String jingwayCharReviewKey({required int grade, required String char}) =>
     'g$grade:char:$char';
+
+String jingwayIdiomReviewKey({required int grade, required String idiom}) =>
+    'g$grade:idiom:$idiom';
+
+String jingwayWordReviewKey({required int grade, required String word}) =>
+    'g$grade:word:$word';

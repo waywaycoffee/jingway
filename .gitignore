@@ -86,3 +86,7 @@ services/api/data/exam_bank_vendor/**
 !services/api/data/exam_bank_vendor/.gitkeep
 
 vendor/
+
+# Research-only corpora (NCR / CKnowEdit) — never ship in prod assets
+data/research/**
+!data/research/.gitkeep

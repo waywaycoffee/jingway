@@ -7,5 +7,7 @@ void main() {
     expect(gradeFromTags(<String>['exam:zhongkao', 'grade:7']), 7);
     expect(gradeFromReviewKey('g7:char:霜'), 7);
     expect(gradeFromReviewKey('entry:foo'), isNull);
+    expect(jingwayIdiomReviewKey(grade: 8, idiom: '守株待兔'), 'g8:idiom:守株待兔');
+    expect(jingwayWordReviewKey(grade: 7, word: '故乡'), 'g7:word:故乡');
   });
 }

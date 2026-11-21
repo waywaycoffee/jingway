@@ -187,9 +187,21 @@ class _DailyReviewScreenState extends ConsumerState<DailyReviewScreen>
     // 景行：有年级时默认只复习当前年级卡（含 key 前缀 g{n}:）
     final int? jingwayGrade = ref.watch(jingwayProfileProvider).grade;
     if (jingwayGrade != null) {
+      final SyllabusBooksState books = ref.read(syllabusBooksProvider);
       sources = sources.where((ReviewSource source) {
         final int? g = source.grade ?? gradeFromReviewKey(source.key);
-        return g == jingwayGrade;
+        if (g != null) return g == jingwayGrade;
+        // Multi-grade CN syllabus cards: allow when the book lists this grade.
+        if (source.origin == 'syllabus' &&
+            source.key.startsWith('syllabus:')) {
+          final List<String> parts = source.key.split(':');
+          final String bookId = parts.length > 1 ? parts[1] : '';
+          final SyllabusBook? book = books.bookById(bookId);
+          if (book != null && book.grades.isNotEmpty) {
+            return book.matchesGrade(jingwayGrade);
+          }
+        }
+        return false;
       });
     }
     if (widget.syllabusOnly) {

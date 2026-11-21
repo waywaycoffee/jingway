@@ -33,6 +33,17 @@ Future<void> showXinhuaLookupSheet(
                     fontWeight: FontWeight.w800,
                   ),
             ),
+            const SizedBox(height: 4),
+            Text(
+              switch (entry.kind) {
+                'idiom' => '成语',
+                'word' => '词语',
+                _ => '汉字',
+              },
+              style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                    color: const Color(0xFF78716C),
+                  ),
+            ),
             if (entry.pinyin.isNotEmpty) ...<Widget>[
               const SizedBox(height: 6),
               Text(

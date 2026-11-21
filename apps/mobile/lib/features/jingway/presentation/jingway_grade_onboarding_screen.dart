@@ -57,6 +57,14 @@ class _JingwayGradeOnboardingScreenState
                       color: const Color(0xFF1C1917),
                     ),
               ),
+              const SizedBox(height: 6),
+              Text(
+                '高山仰止，景行行止',
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      color: const Color(0xFF9A3412),
+                      fontWeight: FontWeight.w600,
+                    ),
+              ),
               const SizedBox(height: 8),
               Text(
                 '先选年级，我们会匹配对应的字词、古诗文与练习。',

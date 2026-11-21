@@ -1,0 +1,488 @@
+{
+  "version": "2.13",
+  "variables": {
+    "ink": { "type": "color", "value": "#1C1917" },
+    "paper": { "type": "color", "value": "#FFFBFA" },
+    "accent": { "type": "color", "value": "#9A3412" },
+    "accentSoft": { "type": "color", "value": "#FDBA74" },
+    "stone": { "type": "color", "value": "#78716C" }
+  },
+  "children": [
+    {
+      "type": "frame",
+      "id": "board",
+      "x": 0,
+      "y": 0,
+      "name": "景行语文 Logo Board",
+      "clip": true,
+      "width": 1440,
+      "height": 1100,
+      "fill": "#F5F5F4",
+      "layout": "vertical",
+      "gap": 40,
+      "padding": 48,
+      "children": [
+        {
+          "type": "text",
+          "id": "title",
+          "name": "Board Title",
+          "fill": "$ink",
+          "content": "景行语文 · Logo Concepts",
+          "fontFamily": "Noto Serif SC",
+          "fontSize": 36,
+          "fontWeight": "700",
+          "letterSpacing": -1
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "name": "Board Subtitle",
+          "fill": "$stone",
+          "content": "高山仰止，景行行止 · App icon + wordmark",
+          "fontFamily": "Noto Sans SC",
+          "fontSize": 16,
+          "fontWeight": "400"
+        },
+        {
+          "type": "frame",
+          "id": "rowIcons",
+          "name": "Icon Row",
+          "width": "fill_container",
+          "height": "fit_content",
+          "layout": "horizontal",
+          "gap": 32,
+          "alignItems": "start",
+          "children": [
+            {
+              "type": "frame",
+              "id": "conceptA",
+              "name": "A Seal 景",
+              "width": 280,
+              "height": "fit_content",
+              "layout": "vertical",
+              "gap": 16,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "iconA",
+                  "name": "Icon A 1024",
+                  "width": 220,
+                  "height": 220,
+                  "cornerRadius": 48,
+                  "fill": "$accent",
+                  "layout": "vertical",
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "charA",
+                      "name": "景",
+                      "fill": "#FFF7ED",
+                      "content": "景",
+                      "fontFamily": "Noto Serif SC",
+                      "fontSize": 120,
+                      "fontWeight": "700",
+                      "letterSpacing": -4
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "labelA",
+                  "name": "Label A",
+                  "fill": "$ink",
+                  "content": "A · 朱印「景」",
+                  "fontFamily": "Noto Sans SC",
+                  "fontSize": 15,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "descA",
+                  "name": "Desc A",
+                  "fill": "$stone",
+                  "textGrowth": "fixed-width",
+                  "width": 240,
+                  "content": "主推：印章感单字，小尺寸仍可辨认。",
+                  "fontFamily": "Noto Sans SC",
+                  "fontSize": 13,
+                  "fontWeight": "400",
+                  "textAlign": "center"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "conceptB",
+              "name": "B Path Mark",
+              "width": 280,
+              "height": "fit_content",
+              "layout": "vertical",
+              "gap": 16,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "iconB",
+                  "name": "Icon B 1024",
+                  "width": 220,
+                  "height": 220,
+                  "cornerRadius": 48,
+                  "fill": "$ink",
+                  "layout": "none",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "pathPeak",
+                      "name": "Mountain",
+                      "x": 40,
+                      "y": 58,
+                      "width": 140,
+                      "height": 90,
+                      "cornerRadius": 8,
+                      "fill": {
+                        "type": "gradient",
+                        "gradientType": "linear",
+                        "rotation": 200,
+                        "colors": [
+                          { "color": "#FDBA74", "position": 0 },
+                          { "color": "#9A3412", "position": 1 }
+                        ]
+                      },
+                      "rotation": 45
+                    },
+                    {
+                      "type": "frame",
+                      "id": "pathRoad",
+                      "name": "Road",
+                      "x": 98,
+                      "y": 120,
+                      "width": 24,
+                      "height": 70,
+                      "cornerRadius": 12,
+                      "fill": "#FFF7ED"
+                    },
+                    {
+                      "type": "text",
+                      "id": "charB",
+                      "name": "行 hint",
+                      "x": 150,
+                      "y": 150,
+                      "fill": "#FED7AA",
+                      "content": "行",
+                      "fontFamily": "Noto Serif SC",
+                      "fontSize": 36,
+                      "fontWeight": "600"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "labelB",
+                  "name": "Label B",
+                  "fill": "$ink",
+                  "content": "B · 高山景行",
+                  "fontFamily": "Noto Sans SC",
+                  "fontSize": 15,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "descB",
+                  "name": "Desc B",
+                  "fill": "$stone",
+                  "textGrowth": "fixed-width",
+                  "width": 240,
+                  "content": "山径意象：仰止而行，偏考试路径感。",
+                  "fontFamily": "Noto Sans SC",
+                  "fontSize": 13,
+                  "fontWeight": "400",
+                  "textAlign": "center"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "conceptC",
+              "name": "C Book Mark",
+              "width": 280,
+              "height": "fit_content",
+              "layout": "vertical",
+              "gap": 16,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "iconC",
+                  "name": "Icon C 1024",
+                  "width": 220,
+                  "height": 220,
+                  "cornerRadius": 48,
+                  "fill": "$paper",
+                  "stroke": { "type": "color", "color": "$accent" },
+                  "strokeWidth": 6,
+                  "layout": "vertical",
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "gap": 4,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "charC1",
+                      "name": "景",
+                      "fill": "$accent",
+                      "content": "景",
+                      "fontFamily": "Noto Serif SC",
+                      "fontSize": 72,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "charC2",
+                      "name": "行",
+                      "fill": "$ink",
+                      "content": "行",
+                      "fontFamily": "Noto Serif SC",
+                      "fontSize": 40,
+                      "fontWeight": "500"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "labelC",
+                  "name": "Label C",
+                  "fill": "$ink",
+                  "content": "C · 双字叠印",
+                  "fontFamily": "Noto Sans SC",
+                  "fontSize": 15,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "descC",
+                  "name": "Desc C",
+                  "fill": "$stone",
+                  "textGrowth": "fixed-width",
+                  "width": 240,
+                  "content": "轻描边书卷感，适合启动页与关于页。",
+                  "fontFamily": "Noto Sans SC",
+                  "fontSize": 13,
+                  "fontWeight": "400",
+                  "textAlign": "center"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "conceptD",
+              "name": "D Dark Tile",
+              "width": 280,
+              "height": "fit_content",
+              "layout": "vertical",
+              "gap": 16,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "iconD",
+                  "name": "Icon D 1024",
+                  "width": 220,
+                  "height": 220,
+                  "cornerRadius": 48,
+                  "fill": {
+                    "type": "gradient",
+                    "gradientType": "linear",
+                    "rotation": 135,
+                    "colors": [
+                      { "color": "#292524", "position": 0 },
+                      { "color": "#9A3412", "position": 1 }
+                    ]
+                  },
+                  "layout": "vertical",
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "charD",
+                      "name": "景行",
+                      "fill": "#FFEDD5",
+                      "content": "景行",
+                      "fontFamily": "Noto Serif SC",
+                      "fontSize": 56,
+                      "fontWeight": "700",
+                      "letterSpacing": 4
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "labelD",
+                  "name": "Label D",
+                  "fill": "$ink",
+                  "content": "D · 深色双字",
+                  "fontFamily": "Noto Sans SC",
+                  "fontSize": 15,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "descD",
+                  "name": "Desc D",
+                  "fill": "$stone",
+                  "textGrowth": "fixed-width",
+                  "width": 240,
+                  "content": "深色磁贴，适配系统深色图标槽。",
+                  "fontFamily": "Noto Sans SC",
+                  "fontSize": 13,
+                  "fontWeight": "400",
+                  "textAlign": "center"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "wordmarks",
+          "name": "Wordmarks",
+          "width": "fill_container",
+          "height": "fit_content",
+          "layout": "vertical",
+          "gap": 20,
+          "padding": 28,
+          "cornerRadius": 24,
+          "fill": "#FFFFFF",
+          "children": [
+            {
+              "type": "text",
+              "id": "wmTitle",
+              "name": "Wordmark Title",
+              "fill": "$ink",
+              "content": "Wordmark",
+              "fontFamily": "Noto Sans SC",
+              "fontSize": 18,
+              "fontWeight": "700"
+            },
+            {
+              "type": "frame",
+              "id": "wmRow",
+              "name": "Wordmark Row",
+              "width": "fill_container",
+              "height": "fit_content",
+              "layout": "horizontal",
+              "gap": 48,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "wm1",
+                  "name": "Horizontal Wordmark",
+                  "width": "fit_content",
+                  "height": "fit_content",
+                  "layout": "horizontal",
+                  "gap": 14,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "wm1icon",
+                      "name": "Mini Seal",
+                      "width": 48,
+                      "height": 48,
+                      "cornerRadius": 12,
+                      "fill": "$accent",
+                      "layout": "vertical",
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "wm1char",
+                          "name": "景",
+                          "fill": "#FFF7ED",
+                          "content": "景",
+                          "fontFamily": "Noto Serif SC",
+                          "fontSize": 26,
+                          "fontWeight": "700"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "wm1text",
+                      "name": "Name Stack",
+                      "width": "fit_content",
+                      "height": "fit_content",
+                      "layout": "vertical",
+                      "gap": 2,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "wm1name",
+                          "name": "景行语文",
+                          "fill": "$ink",
+                          "content": "景行语文",
+                          "fontFamily": "Noto Serif SC",
+                          "fontSize": 28,
+                          "fontWeight": "700"
+                        },
+                        {
+                          "type": "text",
+                          "id": "wm1tag",
+                          "name": "Tagline",
+                          "fill": "$stone",
+                          "content": "高山仰止，景行行止",
+                          "fontFamily": "Noto Sans SC",
+                          "fontSize": 12,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "wm2",
+                  "name": "Plain Wordmark",
+                  "fill": "$accent",
+                  "content": "景行",
+                  "fontFamily": "Noto Serif SC",
+                  "fontSize": 56,
+                  "fontWeight": "700",
+                  "letterSpacing": 8
+                },
+                {
+                  "type": "text",
+                  "id": "wm3",
+                  "name": "English Lockup",
+                  "fill": "$stone",
+                  "content": "JINGWAY",
+                  "fontFamily": "Cormorant Garamond",
+                  "fontSize": 32,
+                  "fontWeight": "600",
+                  "letterSpacing": 6
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "note",
+          "name": "Usage Note",
+          "fill": "$stone",
+          "textGrowth": "fixed-width",
+          "width": 1200,
+          "content": "建议主图标采用 A；启动页可用 A +「景行语文」横排。色值：墨 #1C1917 · 朱 #9A3412 · 纸 #FFFBFA。若 Pencil MCP 已连接，可对 Icon 帧运行 Generate(svg) 细化山径矢量。",
+          "fontFamily": "Noto Sans SC",
+          "fontSize": 13,
+          "fontWeight": "400"
+        }
+      ]
+    }
+  ]
+}

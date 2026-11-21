@@ -154,9 +154,11 @@ reviewSourcesProvider = Provider<List<ReviewSource>>((Ref ref) {
                 : '',
             chinese: book.isPatternBook || book.isFoundationBook
                 ? entry.gloss
-                : '',
+                : entry.word,
             sourceLabel: '词书 · ${book.title} · ${book.examTag}',
             origin: 'syllabus',
+            // Single-grade books pin FSRS scope; multi-grade CN packs use first.
+            grade: book.grades.length == 1 ? book.grades.first : null,
           ),
   ];
 

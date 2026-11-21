@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../daily_review/data/memory_item_store.dart';
 import '../../daily_review/domain/daily_review.dart';
 import '../../daily_review/domain/memory_item.dart';
+import '../../jingway/data/xinhua_dictionary.dart';
 import '../../jingway/domain/grade_tags.dart';
 import '../../jingway/presentation/jingway_profile_provider.dart';
 import '../../jingway/presentation/xinhua_lookup_sheet.dart';
@@ -276,15 +277,20 @@ class _PoetryReciteScreenState extends ConsumerState<PoetryReciteScreen> {
     if (diff.exact || diff.reviewChars.isEmpty) return;
     final int grade = ref.read(jingwayProfileProvider).grade ?? 7;
     final MemoryItemStore store = ref.read(memoryItemStoreProvider.notifier);
+    final dict = ref.read(xinhuaDictionaryProvider);
     final int now = DateTime.now().millisecondsSinceEpoch;
     for (final String ch in diff.reviewChars) {
+      final entry = await dict.lookup(ch);
+      final String gloss = entry?.gloss.trim().isNotEmpty == true
+          ? entry!.gloss
+          : '默写错字 · ${unit.title}';
       await store.upsert(
         MemoryItem(
           key: jingwayCharReviewKey(grade: grade, char: ch),
           kind: ReviewKind.word,
           question: ch,
-          answer: '默写错字 · ${unit.title}',
-          english: '',
+          answer: gloss,
+          english: entry?.pinyin ?? '',
           chinese: ch,
           sourceLabel: '古诗文默写 · ${unit.title}',
           origin: 'poetry',

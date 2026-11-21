@@ -61,6 +61,7 @@ class SyllabusBook {
     this.disclaimer = '',
     this.builtin = true,
     this.kind = SyllabusBookKind.word,
+    this.grades = const <int>[],
   });
 
   factory SyllabusBook.fromJson(
@@ -81,6 +82,10 @@ class SyllabusBook {
         }
       }
     }
+    final List<int> grades =
+        (json['grades'] as List<dynamic>? ?? const <dynamic>[])
+            .map((dynamic e) => (e as num).toInt())
+            .toList(growable: false);
     return SyllabusBook(
       id: '${json['id'] ?? ''}'.trim(),
       title: '${json['title'] ?? ''}'.trim(),
@@ -89,6 +94,7 @@ class SyllabusBook {
       words: List<SyllabusWord>.unmodifiable(words),
       builtin: json['builtin'] as bool? ?? builtin,
       kind: SyllabusBookKind.fromName('${json['kind'] ?? ''}'),
+      grades: grades,
     );
   }
 
@@ -100,11 +106,19 @@ class SyllabusBook {
   final bool builtin;
   final SyllabusBookKind kind;
 
+  /// K12 grades this book targets (景行语文). Empty = unscoped / legacy EN.
+  final List<int> grades;
+
   int get wordCount => words.length;
 
   bool get isPatternBook => kind == SyllabusBookKind.pattern;
 
   bool get isFoundationBook => kind == SyllabusBookKind.foundation;
+
+  bool matchesGrade(int? grade) {
+    if (grade == null || grades.isEmpty) return true;
+    return grades.contains(grade);
+  }
 
   SyllabusBook copyWith({
     String? id,
@@ -114,6 +128,7 @@ class SyllabusBook {
     List<SyllabusWord>? words,
     bool? builtin,
     SyllabusBookKind? kind,
+    List<int>? grades,
   }) {
     return SyllabusBook(
       id: id ?? this.id,
@@ -123,6 +138,7 @@ class SyllabusBook {
       words: words ?? this.words,
       builtin: builtin ?? this.builtin,
       kind: kind ?? this.kind,
+      grades: grades ?? this.grades,
     );
   }
 
@@ -132,6 +148,7 @@ class SyllabusBook {
     'examTag': examTag,
     'disclaimer': disclaimer,
     'builtin': builtin,
+    if (grades.isNotEmpty) 'grades': grades,
     'kind': kind.storageName,
     'words': words.map((SyllabusWord w) => w.toJson()).toList(),
   };

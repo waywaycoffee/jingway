@@ -10,10 +10,13 @@ import '../domain/syllabus_book.dart';
 
 const String kSyllabusStateKey = 'syllabus_books_v1';
 
-/// First-party books live on the API (`/api/syllabus/*`) and are stored locally
-/// only after the user downloads them. Keep this empty to avoid shipping large
-/// JSON inside the APK; notice/source markdown may remain under assets/syllabus.
-const List<String> kBuiltinSyllabusAssetPaths = <String>[];
+/// Compact CN exam wordbooks ship in-APK for offline P0.
+/// Large English banks still come from `/api/syllabus/*` after download.
+const List<String> kBuiltinSyllabusAssetPaths = <String>[
+  'assets/syllabus/cn_g7_dictation.json',
+  'assets/syllabus/cn_g8_dictation.json',
+  'assets/syllabus/cn_idioms_core.json',
+];
 
 class SyllabusBooksState {
   const SyllabusBooksState({

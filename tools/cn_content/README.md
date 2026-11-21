@@ -29,7 +29,11 @@ python3 tools/cn_content/build_xinhua_syllabus.py
 
 当前仓库已内置：
 
-- `apps/mobile/assets/jingway/poetry/exam_core.json`（诗文精选）
-- `apps/mobile/assets/jingway/dict/xinhua_seed.json`（点词种子；vendor 拉取失败时可离线查义）
+- `apps/mobile/assets/jingway/poetry/exam_core.json`（诗文精选，可从唐诗三百首扩展）
+- `apps/mobile/assets/jingway/dict/xinhua_seed.json`（离线点词：字 / 词 / 成语）
+- `apps/mobile/assets/syllabus/cn_g7_dictation.json` 等内置听写词书
+
+研究数据（NCR / CKnowEdit）只放 `data/research/`（gitignored），由
+`ResearchContentGate` 控制；**禁止**写入 `pubspec.yaml` assets。
 
 `fetch_vendors.sh` 若遇 GitHub 网络中断，可稍后重试；种子数据足够跑通 P0 UI。
