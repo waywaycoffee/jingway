@@ -27,6 +27,11 @@ import '../features/daily_review/presentation/daily_review_screen.dart';
 import '../features/growth/presentation/growth_screen.dart';
 import '../features/guide/presentation/guide_screen.dart';
 import '../features/home/presentation/learning_home_screen.dart';
+import '../features/jingway/presentation/jingway_exam_home_screen.dart';
+import '../features/jingway/presentation/jingway_grade_onboarding_screen.dart';
+import '../features/jingway/presentation/jingway_grade_settings_screen.dart';
+import '../features/poetry/presentation/poetry_catalog_screen.dart';
+import '../features/poetry/presentation/poetry_recite_screen.dart';
 import '../features/import_course/presentation/import_course_screen.dart';
 import '../features/library/presentation/library_screen.dart';
 import '../features/phrases/presentation/phrases_screen.dart';
@@ -128,8 +133,28 @@ GoRouter goRouter(Ref ref) => GoRouter(
     GoRoute(
       path: '/onboarding',
       builder: (BuildContext context, GoRouterState state) =>
+          const JingwayGradeOnboardingScreen(),
+    ).fade(),
+    GoRoute(
+      path: '/onboarding/legacy',
+      builder: (BuildContext context, GoRouterState state) =>
           const FirstOpenOnboardingScreen(),
     ).fade(),
+    GoRoute(
+      path: '/settings/grade',
+      builder: (BuildContext context, GoRouterState state) =>
+          const JingwayGradeSettingsScreen(),
+    ),
+    GoRoute(
+      path: '/poetry',
+      builder: (BuildContext context, GoRouterState state) =>
+          const PoetryCatalogScreen(),
+    ),
+    GoRoute(
+      path: '/poetry/:unitId',
+      builder: (BuildContext context, GoRouterState state) =>
+          PoetryReciteScreen(unitId: state.pathParameters['unitId'] ?? ''),
+    ),
     GoRoute(
       path: '/learn/:kind',
       builder: (context, state) => ModuleScreen(
@@ -264,6 +289,11 @@ GoRouter goRouter(Ref ref) => GoRouter(
     ).fade(),
     GoRoute(
       path: SGRoute.home.route,
+      builder: (BuildContext context, GoRouterState state) =>
+          const JingwayExamHomeScreen(),
+    ).fade(),
+    GoRoute(
+      path: '/home/legacy',
       builder: (BuildContext context, GoRouterState state) =>
           const LearningHomeScreen(),
     ).fade(),

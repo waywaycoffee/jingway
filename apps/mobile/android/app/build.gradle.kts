@@ -6,6 +6,7 @@ plugins {
 }
 
 android {
+    // Kotlin sources remain under com.acquire.english.*; applicationId is Jingway.
     namespace = "com.acquire.english"
     // flutter_local_notifications requires API 37+
     compileSdk = 37
@@ -22,7 +23,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.acquire.english"
+        applicationId = "com.jingway.chinese"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = 26

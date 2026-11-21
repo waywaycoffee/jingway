@@ -33,6 +33,7 @@ from app.routers import (
     content_media,
     foundation_media,
     syllabus_books,
+    poetry_catalog,
     imports,
     learning,
     scene_recognize,
@@ -135,6 +136,7 @@ app.include_router(learning_module_progress.router, prefix="/api")
 app.include_router(foundation_media.router, prefix="/api")
 app.include_router(content_media.router, prefix="/api")
 app.include_router(syllabus_books.router, prefix="/api")
+app.include_router(poetry_catalog.router, prefix="/api")
 app.include_router(reading_speech.router, prefix="/api")
 app.include_router(reading_speech.voices_router, prefix="/api")
 app.include_router(pregen_cache.router, prefix="/api")

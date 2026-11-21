@@ -85,3 +85,4 @@ tools/reading_samples/*.zip
 services/api/data/exam_bank_vendor/**
 !services/api/data/exam_bank_vendor/.gitkeep
 
+vendor/

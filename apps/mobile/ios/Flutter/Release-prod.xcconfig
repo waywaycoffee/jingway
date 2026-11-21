@@ -1,5 +1,5 @@
 ﻿#include "Release.xcconfig"
-BUNDLE_ID = com.acquire.english
-APP_DISPLAY_NAME = AcquireEnglish
-APP_NAME = AcquireEnglish
+BUNDLE_ID = com.jingway.chinese
+APP_DISPLAY_NAME = 景行语文
+APP_NAME = 景行语文
 FLAVOR = prod

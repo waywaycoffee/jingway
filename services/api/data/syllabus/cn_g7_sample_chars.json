@@ -1,0 +1,33 @@
+{
+  "id": "cn_g7_sample_chars",
+  "title": "七年级字词听写（样例）",
+  "kind": "dictation",
+  "grades": [
+    7
+  ],
+  "source": "chinese-xinhua or seed",
+  "words": [
+    {
+      "word": "疑",
+      "gloss": "怀疑；似乎",
+      "grades": [
+        7
+      ]
+    },
+    {
+      "word": "霜",
+      "gloss": "近地面水汽凝成的白色冰晶",
+      "grades": [
+        7
+      ]
+    },
+    {
+      "word": "岱宗",
+      "gloss": "泰山的尊称",
+      "grades": [
+        7,
+        8
+      ]
+    }
+  ]
+}

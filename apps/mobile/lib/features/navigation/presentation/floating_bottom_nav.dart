@@ -11,14 +11,14 @@ class FloatingBottomNav extends StatelessWidget {
 
   final AppNavDestination current;
 
+  /// 景行语文考试向底栏：备考首页 / 诗文 / 复习 / 专项 / 我的
   static const List<AppNavDestination> _primaryDestinations =
       <AppNavDestination>[
         AppNavDestination.home,
-        AppNavDestination.library,
         AppNavDestination.reading,
         AppNavDestination.review,
-        // Community hosts exam assets, practice feed, and desk — keep it one tap away.
-        AppNavDestination.discover,
+        AppNavDestination.exam,
+        AppNavDestination.settings,
       ];
 
   @override

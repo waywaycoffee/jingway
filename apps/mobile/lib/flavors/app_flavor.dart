@@ -22,27 +22,26 @@ class FlavorConfig {
     return locale.languageCode.toLowerCase() == 'zh';
   }
 
-  /// Launcher / UI display name. Chinese systems use 爱快英语.
+  /// Launcher / UI display name.
   static String get appName {
-    final bool zh = isChineseLocale;
     switch (_flavor) {
       case AppFlavor.dev:
-        return zh ? '爱快英语 Dev' : 'AcquireEnglish Dev';
+        return '景行语文 Dev';
       case AppFlavor.staging:
-        return zh ? '爱快英语 Staging' : 'AcquireEnglish Staging';
+        return '景行语文 Staging';
       case AppFlavor.prod:
-        return zh ? '爱快英语' : 'AcquireEnglish';
+        return '景行语文';
     }
   }
 
   static String get bundleId {
     switch (_flavor) {
       case AppFlavor.dev:
-        return 'com.acquire.english.dev';
+        return 'com.jingway.chinese.dev';
       case AppFlavor.staging:
-        return 'com.acquire.english.staging';
+        return 'com.jingway.chinese.staging';
       case AppFlavor.prod:
-        return 'com.acquire.english';
+        return 'com.jingway.chinese';
     }
   }
 }
