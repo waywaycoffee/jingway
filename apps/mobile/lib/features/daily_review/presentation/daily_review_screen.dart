@@ -14,6 +14,8 @@ import '../../authentication/presentation/auth_session.dart';
 import '../../community/domain/cafe_adventure.dart';
 import '../../community/presentation/publish_learning_result_screen.dart';
 import '../../community/presentation/study_play_screen.dart';
+import '../../jingway/domain/grade_tags.dart';
+import '../../jingway/presentation/jingway_profile_provider.dart';
 import '../../navigation/presentation/navigation_destination.dart';
 import '../../player/domain/pronunciation_assessment.dart';
 import '../../player/presentation/widgets/pronunciation_assessment_dialog.dart';
@@ -182,6 +184,14 @@ class _DailyReviewScreenState extends ConsumerState<DailyReviewScreen>
 
   List<ReviewSource> _filteredSources() {
     Iterable<ReviewSource> sources = ref.watch(reviewSourcesProvider);
+    // 景行：有年级时默认只复习当前年级卡（含 key 前缀 g{n}:）
+    final int? jingwayGrade = ref.watch(jingwayProfileProvider).grade;
+    if (jingwayGrade != null) {
+      sources = sources.where((ReviewSource source) {
+        final int? g = source.grade ?? gradeFromReviewKey(source.key);
+        return g == jingwayGrade;
+      });
+    }
     if (widget.syllabusOnly) {
       final String? bookId = widget.syllabusBookId?.trim();
       final Set<String> bookLemmas = <String>{};

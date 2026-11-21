@@ -27,4 +27,9 @@ python3 tools/cn_content/build_poetry_exam.py
 python3 tools/cn_content/build_xinhua_syllabus.py
 ```
 
-当前仓库已内置最小 `exam_core.json`（静夜思等），无需 vendor 即可跑通诗文 UI。
+当前仓库已内置：
+
+- `apps/mobile/assets/jingway/poetry/exam_core.json`（诗文精选）
+- `apps/mobile/assets/jingway/dict/xinhua_seed.json`（点词种子；vendor 拉取失败时可离线查义）
+
+`fetch_vendors.sh` 若遇 GitHub 网络中断，可稍后重试；种子数据足够跑通 P0 UI。

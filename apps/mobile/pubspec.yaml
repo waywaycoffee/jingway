@@ -160,6 +160,7 @@ flutter:
     - assets/img/
     - assets/img/digital_human/
     - assets/jingway/poetry/
+    - assets/jingway/dict/
 
   fonts:
     - family: Nunito

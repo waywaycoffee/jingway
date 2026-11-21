@@ -2,6 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../daily_review/data/memory_item_store.dart';
+import '../../daily_review/domain/daily_review.dart';
+import '../../daily_review/domain/memory_item.dart';
+import '../../jingway/domain/grade_tags.dart';
+import '../../jingway/presentation/jingway_profile_provider.dart';
+import '../../jingway/presentation/xinhua_lookup_sheet.dart';
 import '../../navigation/presentation/navigation_destination.dart';
 import '../../player/domain/cn_dictation_diff.dart';
 import '../../shared/presentation/pad/pad_scaffold.dart';
@@ -217,11 +223,11 @@ class _PoetryReciteScreenState extends ConsumerState<PoetryReciteScreen> {
       ),
       const SizedBox(height: 8),
       FilledButton(
-        onPressed: () {
-          setState(() {
-            _lastDiff =
-                diffCnDictation(expected: expected, actual: _input.text);
-          });
+        onPressed: () async {
+          final CnDictationDiffResult diff =
+              diffCnDictation(expected: expected, actual: _input.text);
+          setState(() => _lastDiff = diff);
+          await _enqueueWrongChars(unit, diff);
         },
         child: const Text('提交默写'),
       ),
@@ -230,7 +236,7 @@ class _PoetryReciteScreenState extends ConsumerState<PoetryReciteScreen> {
         Text(
           _lastDiff!.exact
               ? '全部正确'
-              : '错/缺字：${_lastDiff!.reviewChars.join('、')}',
+              : '错/缺字：${_lastDiff!.reviewChars.join('、')}（已入复习）',
         ),
         const SizedBox(height: 8),
         Wrap(
@@ -246,14 +252,46 @@ class _PoetryReciteScreenState extends ConsumerState<PoetryReciteScreen> {
             final String label = m.kind == CnDictationTokenKind.missing
                 ? (m.expected.isEmpty ? '?' : m.expected)
                 : (m.actual.isEmpty ? m.expected : m.actual);
-            return Container(
-              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-              color: bg,
-              child: Text(label),
+            return InkWell(
+              onTap: label.isEmpty || label == '?'
+                  ? null
+                  : () => showXinhuaLookupSheet(context, ref, term: label),
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                color: bg,
+                child: Text(label),
+              ),
             );
           }).toList(growable: false),
         ),
       ],
     ];
+  }
+
+  Future<void> _enqueueWrongChars(
+    PoetryUnit unit,
+    CnDictationDiffResult diff,
+  ) async {
+    if (diff.exact || diff.reviewChars.isEmpty) return;
+    final int grade = ref.read(jingwayProfileProvider).grade ?? 7;
+    final MemoryItemStore store = ref.read(memoryItemStoreProvider.notifier);
+    final int now = DateTime.now().millisecondsSinceEpoch;
+    for (final String ch in diff.reviewChars) {
+      await store.upsert(
+        MemoryItem(
+          key: jingwayCharReviewKey(grade: grade, char: ch),
+          kind: ReviewKind.word,
+          question: ch,
+          answer: '默写错字 · ${unit.title}',
+          english: '',
+          chinese: ch,
+          sourceLabel: '古诗文默写 · ${unit.title}',
+          origin: 'poetry',
+          grade: grade,
+          createdAtMs: now,
+        ),
+      );
+    }
   }
 }

@@ -13,6 +13,7 @@ import '../../avatar/presentation/avatar_provider.dart';
 import '../../exam/domain/exam_fsrs.dart';
 import '../../exam/domain/exam_profile.dart';
 import '../../exam/presentation/exam_profile_provider.dart';
+import '../../jingway/domain/grade_tags.dart';
 import '../../phrases/presentation/phrase_book_provider.dart';
 import '../../sync/data/acquire_api_client.dart';
 import '../../words/domain/syllabus_book.dart';
@@ -270,6 +271,7 @@ ReviewSource _wordReviewSource(
               : rawLabel)
         : '$mediaKind · $rawLabel',
     cardType: mode.name,
+    grade: gradeFromTags(word.tags),
     relatedSources: related,
     episodeId: occurrence?.episodeId,
     time: context?.time ?? occurrence?.time,

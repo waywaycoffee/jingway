@@ -61,6 +61,7 @@ class ReviewSource {
     this.skillLevel,
     this.origin,
     this.cardType,
+    this.grade,
     this.relatedSources = const <ReviewSourceLink>[],
     this.legacyLastReview,
     this.legacyDue,
@@ -83,6 +84,8 @@ class ReviewSource {
   final String? origin;
   /// Word practice mode name when this source is a per-mode FSRS card.
   final String? cardType;
+  /// K12 grade for 景行语文 session filtering; null = unscoped / legacy.
+  final int? grade;
   final List<ReviewSourceLink> relatedSources;
 
   ReviewSource forContext({String? label, String? episode}) {
@@ -114,6 +117,7 @@ class ReviewSource {
       skillLevel: skillLevel,
       origin: origin,
       cardType: cardType,
+      grade: grade,
       relatedSources: relatedSources,
       legacyLastReview: legacyLastReview,
       legacyDue: legacyDue,

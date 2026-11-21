@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "source": "seed (replace/merge with chinese-xinhua when vendor available)",
+  "entries": {
+    "床": { "pinyin": "chuáng", "gloss": "供人躺在上面睡觉的家具", "radical": "广", "strokes": 7 },
+    "前": { "pinyin": "qián", "gloss": "方位词，正面；过去的", "radical": "刀", "strokes": 9 },
+    "明": { "pinyin": "míng", "gloss": "明亮；清楚；次于今年、今天的", "radical": "日", "strokes": 8 },
+    "月": { "pinyin": "yuè", "gloss": "月亮；月份", "radical": "月", "strokes": 4 },
+    "光": { "pinyin": "guāng", "gloss": "光线；光荣；一点儿不剩", "radical": "儿", "strokes": 6 },
+    "疑": { "pinyin": "yí", "gloss": "怀疑；不能确定的；似乎", "radical": "疋", "strokes": 14 },
+    "是": { "pinyin": "shì", "gloss": "对；表示肯定判断", "radical": "日", "strokes": 9 },
+    "地": { "pinyin": "dì", "gloss": "大地；地区；地点（多音：de）", "radical": "土", "strokes": 6 },
+    "上": { "pinyin": "shàng", "gloss": "位置在高处；向上", "radical": "一", "strokes": 3 },
+    "霜": { "pinyin": "shuāng", "gloss": "近地面水汽凝成的白色冰晶", "radical": "雨", "strokes": 17 },
+    "举": { "pinyin": "jǔ", "gloss": "往上托；提出；全", "radical": "丶", "strokes": 9 },
+    "头": { "pinyin": "tóu", "gloss": "脑袋；端；第一", "radical": "大", "strokes": 5 },
+    "望": { "pinyin": "wàng", "gloss": "向远处看；盼望", "radical": "月", "strokes": 11 },
+    "低": { "pinyin": "dī", "gloss": "离地面近；等级在下", "radical": "人", "strokes": 7 },
+    "思": { "pinyin": "sī", "gloss": "思考；思念", "radical": "心", "strokes": 9 },
+    "故": { "pinyin": "gù", "gloss": "原来的；事故；所以", "radical": "攵", "strokes": 9 },
+    "乡": { "pinyin": "xiāng", "gloss": "乡村；家乡", "radical": "幺", "strokes": 3 },
+    "春": { "pinyin": "chūn", "gloss": "春季；比喻生机", "radical": "日", "strokes": 9 },
+    "晓": { "pinyin": "xiǎo", "gloss": "天刚亮；知道", "radical": "日", "strokes": 10 },
+    "学": { "pinyin": "xué", "gloss": "学习；学校；学问", "radical": "子", "strokes": 8 },
+    "习": { "pinyin": "xí", "gloss": "练习；习惯；温习", "radical": "乙", "strokes": 3 },
+    "时": { "pinyin": "shí", "gloss": "时间；时候；时常", "radical": "日", "strokes": 7 },
+    "岱": { "pinyin": "dài", "gloss": "泰山的别称", "radical": "山", "strokes": 8 },
+    "宗": { "pinyin": "zōng", "gloss": "祖宗；宗派；宗旨", "radical": "宀", "strokes": 8 },
+    "成语": { "pinyin": "chéng yǔ", "gloss": "有固定结构、特定含义的词组", "radical": "", "strokes": 0 }
+  },
+  "idioms": {
+    "一览众山小": { "pinyin": "yī lǎn zhòng shān xiǎo", "gloss": "登上高峰后群山显得矮小；比喻眼界开阔" },
+    "有朋自远方来": { "pinyin": "yǒu péng zì yuǎn fāng lái", "gloss": "有志同道合的人从远方来（论语）" }
+  }
+}

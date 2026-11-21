@@ -21,6 +21,7 @@ class MemoryItem {
     this.skillChapter,
     this.skillLevel,
     this.origin = 'manual',
+    this.grade,
     this.createdAtMs,
   });
 
@@ -42,6 +43,7 @@ class MemoryItem {
         skillChapter: json['skillChapter'] as String?,
         skillLevel: (json['skillLevel'] as num?)?.toInt(),
         origin: json['origin'] as String? ?? 'manual',
+        grade: (json['grade'] as num?)?.toInt(),
         createdAtMs: (json['createdAtMs'] as num?)?.toInt(),
       );
 
@@ -59,8 +61,9 @@ class MemoryItem {
   final String? skillChapter;
   final int? skillLevel;
 
-  /// dictation | shadowing | cafe | manual
+  /// dictation | shadowing | cafe | manual | poetry
   final String origin;
+  final int? grade;
   final int? createdAtMs;
 
   ReviewSource toSource() => ReviewSource(
@@ -78,6 +81,7 @@ class MemoryItem {
         skillChapter: skillChapter,
         skillLevel: skillLevel,
         origin: origin,
+        grade: grade,
       );
 
   Map<String, dynamic> toJson() => <String, dynamic>{
@@ -95,6 +99,7 @@ class MemoryItem {
         'skillChapter': skillChapter,
         'skillLevel': skillLevel,
         'origin': origin,
+        'grade': grade,
         'createdAtMs': createdAtMs,
       };
 
