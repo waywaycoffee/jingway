@@ -1,0 +1,3863 @@
+{
+  "version": "2.13",
+  "variables": {
+    "ink": {
+      "type": "color",
+      "value": "#1C1917"
+    },
+    "paper": {
+      "type": "color",
+      "value": "#FFFBFA"
+    },
+    "accent": {
+      "type": "color",
+      "value": "#9A3412"
+    },
+    "accentSoft": {
+      "type": "color",
+      "value": "#FDBA74"
+    },
+    "stone": {
+      "type": "color",
+      "value": "#78716C"
+    }
+  },
+  "children": [
+    {
+      "type": "frame",
+      "id": "board",
+      "name": "景行语文 App UI",
+      "layout": "vertical",
+      "gap": 32,
+      "padding": 48,
+      "justifyContent": "start",
+      "alignItems": "start",
+      "children": [
+        {
+          "type": "text",
+          "id": "board_title",
+          "name": "board_title",
+          "fill": "$ink",
+          "content": "景行语文 · App UI",
+          "fontFamily": "Noto Serif SC",
+          "fontSize": 36,
+          "fontWeight": "700",
+          "letterSpacing": -1
+        },
+        {
+          "type": "text",
+          "id": "board_sub",
+          "name": "board_sub",
+          "fill": "$stone",
+          "content": "高山仰止，景行行止 · 请确认主流程界面后进入 Flutter 落地",
+          "fontFamily": "Noto Sans SC",
+          "fontSize": 16,
+          "fontWeight": "400"
+        },
+        {
+          "type": "frame",
+          "id": "row1",
+          "name": "Row 1",
+          "layout": "horizontal",
+          "gap": 40,
+          "padding": 0,
+          "justifyContent": "start",
+          "alignItems": "start",
+          "children": [
+            {
+              "type": "frame",
+              "id": "splash",
+              "name": "01 Splash",
+              "layout": "vertical",
+              "gap": 0,
+              "padding": 0,
+              "justifyContent": "start",
+              "alignItems": "start",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "splash_status",
+                  "name": "Status Bar",
+                  "layout": "horizontal",
+                  "gap": 0,
+                  "padding": [
+                    12,
+                    20
+                  ],
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "splash_time",
+                      "name": "splash_time",
+                      "fill": "$ink",
+                      "content": "9:41",
+                      "fontFamily": "Noto Sans SC",
+                      "fontSize": 15,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "splash_sys",
+                      "name": "splash_sys",
+                      "fill": "#57534E",
+                      "content": "■■■  LTE  100%",
+                      "fontFamily": "Noto Sans SC",
+                      "fontSize": 12,
+                      "fontWeight": "500"
+                    }
+                  ],
+                  "width": "fill_container",
+                  "height": 54
+                },
+                {
+                  "type": "frame",
+                  "id": "splash_content",
+                  "name": "Content",
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": [
+                    0,
+                    20,
+                    16,
+                    20
+                  ],
+                  "justifyContent": "start",
+                  "alignItems": "start",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "splash_hero",
+                      "name": "splash_hero",
+                      "layout": "vertical",
+                      "gap": 20,
+                      "padding": 0,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "splash_seal",
+                          "name": "splash_seal",
+                          "layout": "vertical",
+                          "gap": 0,
+                          "padding": 0,
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "splash_seal_c",
+                              "name": "splash_seal_c",
+                              "fill": "#FFF7ED",
+                              "content": "景",
+                              "fontFamily": "Noto Serif SC",
+                              "fontSize": 52,
+                              "fontWeight": "700"
+                            }
+                          ],
+                          "width": 96,
+                          "height": 96,
+                          "fill": "$accent",
+                          "cornerRadius": 24
+                        },
+                        {
+                          "type": "text",
+                          "id": "splash_name",
+                          "name": "splash_name",
+                          "fill": "$ink",
+                          "content": "景行语文",
+                          "fontFamily": "Noto Serif SC",
+                          "fontSize": 36,
+                          "fontWeight": "800",
+                          "letterSpacing": -1
+                        },
+                        {
+                          "type": "text",
+                          "id": "splash_tag",
+                          "name": "splash_tag",
+                          "fill": "$accent",
+                          "content": "高山仰止，景行行止",
+                          "fontFamily": "Noto Sans SC",
+                          "fontSize": 16,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "text",
+                          "id": "splash_hint",
+                          "name": "splash_hint",
+                          "fill": "$stone",
+                          "content": "独立考试向 · K12 语文",
+                          "fontFamily": "Noto Sans SC",
+                          "fontSize": 13,
+                          "fontWeight": "400"
+                        }
+                      ],
+                      "width": "fill_container",
+                      "height": 520
+                    }
+                  ],
+                  "width": "fill_container",
+                  "height": "fit_content"
+                }
+              ],
+              "width": 390,
+              "height": "fit_content(844)",
+              "fill": "#F7F4EF",
+              "cornerRadius": 36,
+              "clip": true
+            },
+            {
+              "type": "frame",
+              "id": "onboard",
+              "name": "02 Grade Onboarding",
+              "layout": "vertical",
+              "gap": 0,
+              "padding": 0,
+              "justifyContent": "start",
+              "alignItems": "start",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "onboard_status",
+                  "name": "Status Bar",
+                  "layout": "horizontal",
+                  "gap": 0,
+                  "padding": [
+                    12,
+                    20
+                  ],
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "onboard_time",
+                      "name": "onboard_time",
+                      "fill": "$ink",
+                      "content": "9:41",
+                      "fontFamily": "Noto Sans SC",
+                      "fontSize": 15,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "onboard_sys",
+                      "name": "onboard_sys",
+                      "fill": "#57534E",
+                      "content": "■■■  LTE  100%",
+                      "fontFamily": "Noto Sans SC",
+                      "fontSize": 12,
+                      "fontWeight": "500"
+                    }
+                  ],
+                  "width": "fill_container",
+                  "height": 54
+                },
+                {
+                  "type": "frame",
+                  "id": "onboard_content",
+                  "name": "Content",
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": [
+                    0,
+                    20,
+                    16,
+                    20
+                  ],
+                  "justifyContent": "start",
+                  "alignItems": "start",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "ob_brand",
+                      "name": "ob_brand",
+                      "fill": "$ink",
+                      "content": "景行语文",
+                      "fontFamily": "Noto Serif SC",
+                      "fontSize": 28,
+                      "fontWeight": "800"
+                    },
+                    {
+                      "type": "text",
+                      "id": "ob_tag",
+                      "name": "ob_tag",
+                      "fill": "$accent",
+                      "content": "高山仰止，景行行止",
+                      "fontFamily": "Noto Sans SC",
+                      "fontSize": 15,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "ob_desc",
+                      "name": "ob_desc",
+                      "fill": "#57534E",
+                      "content": "先选年级，我们会匹配对应的字词、古诗文与练习。",
+                      "fontFamily": "Noto Sans SC",
+                      "fontSize": 15,
+                      "fontWeight": "400",
+                      "textGrowth": "fixed-width",
+                      "width": 350,
+                      "lineHeight": 1.45
+                    },
+                    {
+                      "type": "frame",
+                      "id": "ob_grades",
+                      "name": "ob_grades",
+                      "layout": "vertical",
+                      "gap": 12,
+                      "padding": 0,
+                      "justifyContent": "start",
+                      "alignItems": "start",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "band_小学",
+                          "name": "band_小学",
+                          "fill": "$stone",
+                          "content": "小学",
+                          "fontFamily": "Noto Sans SC",
+                          "fontSize": 13,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "frame",
+                          "id": "row_小学",
+                          "name": "row_小学",
+                          "layout": "horizontal",
+                          "gap": 8,
+                          "padding": 0,
+                          "justifyContent": "start",
+                          "alignItems": "start",
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "grade_小学_0",
+                              "name": "一年级",
+                              "layout": "horizontal",
+                              "gap": 0,
+                              "padding": [
+                                0,
+                                14
+                              ],
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "grade_小学_0_t",
+                                  "name": "grade_小学_0_t",
+                                  "fill": "$ink",
+                                  "content": "一年级",
+                                  "fontFamily": "Noto Sans SC",
+                                  "fontSize": 14,
+                                  "fontWeight": "600"
+                                }
+                              ],
+                              "width": "fit_content",
+                              "height": 40,
+                              "fill": "#FFFBFA",
+                              "cornerRadius": 20
+                            },
+                            {
+                              "type": "frame",
+                              "id": "grade_小学_1",
+                              "name": "二年级",
+                              "layout": "horizontal",
+                              "gap": 0,
+                              "padding": [
+                                0,
+                                14
+                              ],
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "grade_小学_1_t",
+                                  "name": "grade_小学_1_t",
+                                  "fill": "$ink",
+                                  "content": "二年级",
+                                  "fontFamily": "Noto Sans SC",
+                                  "fontSize": 14,
+                                  "fontWeight": "600"
+                                }
+                              ],
+                              "width": "fit_content",
+                              "height": 40,
+                              "fill": "#FFFBFA",
+                              "cornerRadius": 20
+                            },
+                            {
+                              "type": "frame",
+                              "id": "grade_小学_2",
+                              "name": "三年级",
+                              "layout": "horizontal",
+                              "gap": 0,
+                              "padding": [
+                                0,
+                                14
+                              ],
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "grade_小学_2_t",
+                                  "name": "grade_小学_2_t",
+                                  "fill": "$ink",
+                                  "content": "三年级",
+                                  "fontFamily": "Noto Sans SC",
+                                  "fontSize": 14,
+                                  "fontWeight": "600"
+                                }
+                              ],
+                              "width": "fit_content",
+                              "height": 40,
+                              "fill": "#FFFBFA",
+                              "cornerRadius": 20
+                            },
+                            {
+                              "type": "frame",
+                              "id": "grade_小学_3",
+                              "name": "四年级",
+                              "layout": "horizontal",
+                              "gap": 0,
+                              "padding": [
+                                0,
+                                14
+                              ],
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "grade_小学_3_t",
+                                  "name": "grade_小学_3_t",
+                                  "fill": "$ink",
+                                  "content": "四年级",
+                                  "fontFamily": "Noto Sans SC",
+                                  "fontSize": 14,
+                                  "fontWeight": "600"
+                                }
+                              ],
+                              "width": "fit_content",
+                              "height": 40,
+                              "fill": "#FFFBFA",
+                              "cornerRadius": 20
+                            },
+                            {
+                              "type": "frame",
+                              "id": "grade_小学_4",
+                              "name": "五年级",
+                              "layout": "horizontal",
+                              "gap": 0,
+                              "padding": [
+                                0,
+                                14
+                              ],
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "grade_小学_4_t",
+                                  "name": "grade_小学_4_t",
+                                  "fill": "$ink",
+                                  "content": "五年级",
+                                  "fontFamily": "Noto Sans SC",
+                                  "fontSize": 14,
+                                  "fontWeight": "600"
+                                }
+                              ],
+                              "width": "fit_content",
+                              "height": 40,
+                              "fill": "#FFFBFA",
+                              "cornerRadius": 20
+                            },
+                            {
+                              "type": "frame",
+                              "id": "grade_小学_5",
+                              "name": "六年级",
+                              "layout": "horizontal",
+                              "gap": 0,
+                              "padding": [
+                                0,
+                                14
+                              ],
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "grade_小学_5_t",
+                                  "name": "grade_小学_5_t",
+                                  "fill": "$ink",
+                                  "content": "六年级",
+                                  "fontFamily": "Noto Sans SC",
+                                  "fontSize": 14,
+                                  "fontWeight": "600"
+                                }
+                              ],
+                              "width": "fit_content",
+                              "height": 40,
+                              "fill": "#FFFBFA",
+                              "cornerRadius": 20
+                            }
+                          ],
+                          "width": "fill_container",
+                          "height": "fit_content"
+                        },
+                        {
+                          "type": "text",
+                          "id": "band_初中",
+                          "name": "band_初中",
+                          "fill": "$stone",
+                          "content": "初中",
+                          "fontFamily": "Noto Sans SC",
+                          "fontSize": 13,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "frame",
+                          "id": "row_初中",
+                          "name": "row_初中",
+                          "layout": "horizontal",
+                          "gap": 8,
+                          "padding": 0,
+                          "justifyContent": "start",
+                          "alignItems": "start",
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "grade_初中_0",
+                              "name": "七年级",
+                              "layout": "horizontal",
+                              "gap": 0,
+                              "padding": [
+                                0,
+                                14
+                              ],
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "grade_初中_0_t",
+                                  "name": "grade_初中_0_t",
+                                  "fill": "#FFF7ED",
+                                  "content": "七年级",
+                                  "fontFamily": "Noto Sans SC",
+                                  "fontSize": 14,
+                                  "fontWeight": "600"
+                                }
+                              ],
+                              "width": "fit_content",
+                              "height": 40,
+                              "fill": "$accent",
+                              "cornerRadius": 20
+                            },
+                            {
+                              "type": "frame",
+                              "id": "grade_初中_1",
+                              "name": "八年级",
+                              "layout": "horizontal",
+                              "gap": 0,
+                              "padding": [
+                                0,
+                                14
+                              ],
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "grade_初中_1_t",
+                                  "name": "grade_初中_1_t",
+                                  "fill": "$ink",
+                                  "content": "八年级",
+                                  "fontFamily": "Noto Sans SC",
+                                  "fontSize": 14,
+                                  "fontWeight": "600"
+                                }
+                              ],
+                              "width": "fit_content",
+                              "height": 40,
+                              "fill": "#FFFBFA",
+                              "cornerRadius": 20
+                            },
+                            {
+                              "type": "frame",
+                              "id": "grade_初中_2",
+                              "name": "九年级",
+                              "layout": "horizontal",
+                              "gap": 0,
+                              "padding": [
+                                0,
+                                14
+                              ],
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "grade_初中_2_t",
+                                  "name": "grade_初中_2_t",
+                                  "fill": "$ink",
+                                  "content": "九年级",
+                                  "fontFamily": "Noto Sans SC",
+                                  "fontSize": 14,
+                                  "fontWeight": "600"
+                                }
+                              ],
+                              "width": "fit_content",
+                              "height": 40,
+                              "fill": "#FFFBFA",
+                              "cornerRadius": 20
+                            }
+                          ],
+                          "width": "fill_container",
+                          "height": "fit_content"
+                        },
+                        {
+                          "type": "text",
+                          "id": "band_高中",
+                          "name": "band_高中",
+                          "fill": "$stone",
+                          "content": "高中",
+                          "fontFamily": "Noto Sans SC",
+                          "fontSize": 13,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "frame",
+                          "id": "row_高中",
+                          "name": "row_高中",
+                          "layout": "horizontal",
+                          "gap": 8,
+                          "padding": 0,
+                          "justifyContent": "start",
+                          "alignItems": "start",
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "grade_高中_0",
+                              "name": "高一",
+                              "layout": "horizontal",
+                              "gap": 0,
+                              "padding": [
+                                0,
+                                14
+                              ],
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "grade_高中_0_t",
+                                  "name": "grade_高中_0_t",
+                                  "fill": "$ink",
+                                  "content": "高一",
+                                  "fontFamily": "Noto Sans SC",
+                                  "fontSize": 14,
+                                  "fontWeight": "600"
+                                }
+                              ],
+                              "width": "fit_content",
+                              "height": 40,
+                              "fill": "#FFFBFA",
+                              "cornerRadius": 20
+                            },
+                            {
+                              "type": "frame",
+                              "id": "grade_高中_1",
+                              "name": "高二",
+                              "layout": "horizontal",
+                              "gap": 0,
+                              "padding": [
+                                0,
+                                14
+                              ],
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "grade_高中_1_t",
+                                  "name": "grade_高中_1_t",
+                                  "fill": "$ink",
+                                  "content": "高二",
+                                  "fontFamily": "Noto Sans SC",
+                                  "fontSize": 14,
+                                  "fontWeight": "600"
+                                }
+                              ],
+                              "width": "fit_content",
+                              "height": 40,
+                              "fill": "#FFFBFA",
+                              "cornerRadius": 20
+                            },
+                            {
+                              "type": "frame",
+                              "id": "grade_高中_2",
+                              "name": "高三",
+                              "layout": "horizontal",
+                              "gap": 0,
+                              "padding": [
+                                0,
+                                14
+                              ],
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "grade_高中_2_t",
+                                  "name": "grade_高中_2_t",
+                                  "fill": "$ink",
+                                  "content": "高三",
+                                  "fontFamily": "Noto Sans SC",
+                                  "fontSize": 14,
+                                  "fontWeight": "600"
+                                }
+                              ],
+                              "width": "fit_content",
+                              "height": 40,
+                              "fill": "#FFFBFA",
+                              "cornerRadius": 20
+                            }
+                          ],
+                          "width": "fill_container",
+                          "height": "fit_content"
+                        }
+                      ],
+                      "width": "fill_container",
+                      "height": "fit_content"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "ob_cta",
+                      "name": "ob_cta",
+                      "layout": "horizontal",
+                      "gap": 0,
+                      "padding": 0,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "ob_cta_t",
+                          "name": "ob_cta_t",
+                          "fill": "#FFF7ED",
+                          "content": "开始学习",
+                          "fontFamily": "Noto Sans SC",
+                          "fontSize": 16,
+                          "fontWeight": "700"
+                        }
+                      ],
+                      "width": "fill_container",
+                      "height": 52,
+                      "fill": "$accent",
+                      "cornerRadius": 14
+                    }
+                  ],
+                  "width": "fill_container",
+                  "height": "fit_content"
+                }
+              ],
+              "width": 390,
+              "height": "fit_content(844)",
+              "fill": "#F7F4EF",
+              "cornerRadius": 36,
+              "clip": true
+            },
+            {
+              "type": "frame",
+              "id": "home",
+              "name": "03 Home",
+              "layout": "vertical",
+              "gap": 0,
+              "padding": 0,
+              "justifyContent": "start",
+              "alignItems": "start",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "home_status",
+                  "name": "Status Bar",
+                  "layout": "horizontal",
+                  "gap": 0,
+                  "padding": [
+                    12,
+                    20
+                  ],
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "home_time",
+                      "name": "home_time",
+                      "fill": "$ink",
+                      "content": "9:41",
+                      "fontFamily": "Noto Sans SC",
+                      "fontSize": 15,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "home_sys",
+                      "name": "home_sys",
+                      "fill": "#57534E",
+                      "content": "■■■  LTE  100%",
+                      "fontFamily": "Noto Sans SC",
+                      "fontSize": 12,
+                      "fontWeight": "500"
+                    }
+                  ],
+                  "width": "fill_container",
+                  "height": 54
+                },
+                {
+                  "type": "frame",
+                  "id": "home_content",
+                  "name": "Content",
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": [
+                    0,
+                    20,
+                    16,
+                    20
+                  ],
+                  "justifyContent": "start",
+                  "alignItems": "start",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "home_brand",
+                      "name": "home_brand",
+                      "fill": "$ink",
+                      "content": "景行语文",
+                      "fontFamily": "Noto Serif SC",
+                      "fontSize": 24,
+                      "fontWeight": "800"
+                    },
+                    {
+                      "type": "text",
+                      "id": "home_tag",
+                      "name": "home_tag",
+                      "fill": "$accent",
+                      "content": "高山仰止，景行行止",
+                      "fontFamily": "Noto Sans SC",
+                      "fontSize": 14,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "home_grade",
+                      "name": "home_grade",
+                      "fill": "#57534E",
+                      "content": "当前：七年级 · 中考轨道",
+                      "fontFamily": "Noto Sans SC",
+                      "fontSize": 15,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "home_due",
+                      "name": "home_due",
+                      "layout": "vertical",
+                      "gap": 8,
+                      "padding": 16,
+                      "justifyContent": "start",
+                      "alignItems": "start",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "home_due_k",
+                          "name": "home_due_k",
+                          "fill": "#FED7AA",
+                          "content": "今日待复习",
+                          "fontFamily": "Noto Sans SC",
+                          "fontSize": 13,
+                          "fontWeight": "500"
+                        },
+                        {
+                          "type": "text",
+                          "id": "home_due_n",
+                          "name": "home_due_n",
+                          "fill": "#FFF7ED",
+                          "content": "12 张卡片",
+                          "fontFamily": "Noto Sans SC",
+                          "fontSize": 28,
+                          "fontWeight": "800"
+                        },
+                        {
+                          "type": "text",
+                          "id": "home_due_a",
+                          "name": "home_due_a",
+                          "fill": "#FFF7ED",
+                          "content": "进入复习 →",
+                          "fontFamily": "Noto Sans SC",
+                          "fontSize": 14,
+                          "fontWeight": "600"
+                        }
+                      ],
+                      "width": "fill_container",
+                      "height": "fit_content",
+                      "fill": "$accent",
+                      "cornerRadius": 16
+                    },
+                    {
+                      "type": "text",
+                      "id": "home_sec",
+                      "name": "home_sec",
+                      "fill": "$stone",
+                      "content": "年级练习",
+                      "fontFamily": "Noto Sans SC",
+                      "fontSize": 13,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "home_poetry",
+                      "name": "古诗文",
+                      "layout": "horizontal",
+                      "gap": 12,
+                      "padding": 16,
+                      "justifyContent": "start",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "home_poetry_left",
+                          "name": "home_poetry_left",
+                          "layout": "vertical",
+                          "gap": 4,
+                          "padding": 0,
+                          "justifyContent": "start",
+                          "alignItems": "start",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "home_poetry_t",
+                              "name": "home_poetry_t",
+                              "fill": "$ink",
+                              "content": "古诗文",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 16,
+                              "fontWeight": "700"
+                            },
+                            {
+                              "type": "text",
+                              "id": "home_poetry_s",
+                              "name": "home_poetry_s",
+                              "fill": "#57534E",
+                              "content": "课标篇目 · 默写与释义",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 13,
+                              "fontWeight": "400",
+                              "textGrowth": "fixed-width",
+                              "width": 240
+                            }
+                          ],
+                          "width": "fill_container",
+                          "height": "fit_content"
+                        },
+                        {
+                          "type": "text",
+                          "id": "home_poetry_r",
+                          "name": "home_poetry_r",
+                          "fill": "$accent",
+                          "content": "23 篇",
+                          "fontFamily": "Noto Sans SC",
+                          "fontSize": 13,
+                          "fontWeight": "600"
+                        }
+                      ],
+                      "width": "fill_container",
+                      "height": "fit_content",
+                      "fill": "#FFFBFA",
+                      "cornerRadius": 16
+                    },
+                    {
+                      "type": "frame",
+                      "id": "home_dictation",
+                      "name": "听写默写",
+                      "layout": "horizontal",
+                      "gap": 12,
+                      "padding": 16,
+                      "justifyContent": "start",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "home_dictation_left",
+                          "name": "home_dictation_left",
+                          "layout": "vertical",
+                          "gap": 4,
+                          "padding": 0,
+                          "justifyContent": "start",
+                          "alignItems": "start",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "home_dictation_t",
+                              "name": "home_dictation_t",
+                              "fill": "$ink",
+                              "content": "听写默写",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 16,
+                              "fontWeight": "700"
+                            },
+                            {
+                              "type": "text",
+                              "id": "home_dictation_s",
+                              "name": "home_dictation_s",
+                              "fill": "#57534E",
+                              "content": "字词对比 · 错字高亮",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 13,
+                              "fontWeight": "400",
+                              "textGrowth": "fixed-width",
+                              "width": 240
+                            }
+                          ],
+                          "width": "fill_container",
+                          "height": "fit_content"
+                        },
+                        {
+                          "type": "text",
+                          "id": "home_dictation_r",
+                          "name": "home_dictation_r",
+                          "fill": "$accent",
+                          "content": "今日 0",
+                          "fontFamily": "Noto Sans SC",
+                          "fontSize": 13,
+                          "fontWeight": "600"
+                        }
+                      ],
+                      "width": "fill_container",
+                      "height": "fit_content",
+                      "fill": "#FFFBFA",
+                      "cornerRadius": 16
+                    },
+                    {
+                      "type": "frame",
+                      "id": "home_xinhua",
+                      "name": "新华词典",
+                      "layout": "horizontal",
+                      "gap": 12,
+                      "padding": 16,
+                      "justifyContent": "start",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "home_xinhua_left",
+                          "name": "home_xinhua_left",
+                          "layout": "vertical",
+                          "gap": 4,
+                          "padding": 0,
+                          "justifyContent": "start",
+                          "alignItems": "start",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "home_xinhua_t",
+                              "name": "home_xinhua_t",
+                              "fill": "$ink",
+                              "content": "新华词典",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 16,
+                              "fontWeight": "700"
+                            },
+                            {
+                              "type": "text",
+                              "id": "home_xinhua_s",
+                              "name": "home_xinhua_s",
+                              "fill": "#57534E",
+                              "content": "离线查词 · 年级词书",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 13,
+                              "fontWeight": "400",
+                              "textGrowth": "fixed-width",
+                              "width": 240
+                            }
+                          ],
+                          "width": "fill_container",
+                          "height": "fit_content"
+                        },
+                        {
+                          "type": "text",
+                          "id": "home_xinhua_r",
+                          "name": "home_xinhua_r",
+                          "fill": "$accent",
+                          "content": "查",
+                          "fontFamily": "Noto Sans SC",
+                          "fontSize": 13,
+                          "fontWeight": "600"
+                        }
+                      ],
+                      "width": "fill_container",
+                      "height": "fit_content",
+                      "fill": "#FFFBFA",
+                      "cornerRadius": 16
+                    },
+                    {
+                      "type": "frame",
+                      "id": "home_idiom",
+                      "name": "成语与词书",
+                      "layout": "horizontal",
+                      "gap": 12,
+                      "padding": 16,
+                      "justifyContent": "start",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "home_idiom_left",
+                          "name": "home_idiom_left",
+                          "layout": "vertical",
+                          "gap": 4,
+                          "padding": 0,
+                          "justifyContent": "start",
+                          "alignItems": "start",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "home_idiom_t",
+                              "name": "home_idiom_t",
+                              "fill": "$ink",
+                              "content": "成语与词书",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 16,
+                              "fontWeight": "700"
+                            },
+                            {
+                              "type": "text",
+                              "id": "home_idiom_s",
+                              "name": "home_idiom_s",
+                              "fill": "#57534E",
+                              "content": "按年级标签筛选",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 13,
+                              "fontWeight": "400",
+                              "textGrowth": "fixed-width",
+                              "width": 240
+                            }
+                          ],
+                          "width": "fill_container",
+                          "height": "fit_content"
+                        },
+                        {
+                          "type": "text",
+                          "id": "home_idiom_r",
+                          "name": "home_idiom_r",
+                          "fill": "$accent",
+                          "content": "开",
+                          "fontFamily": "Noto Sans SC",
+                          "fontSize": 13,
+                          "fontWeight": "600"
+                        }
+                      ],
+                      "width": "fill_container",
+                      "height": "fit_content",
+                      "fill": "#FFFBFA",
+                      "cornerRadius": 16
+                    }
+                  ],
+                  "width": "fill_container",
+                  "height": "fit_content"
+                },
+                {
+                  "type": "frame",
+                  "id": "home_tabwrap",
+                  "name": "Tab Wrap",
+                  "layout": "vertical",
+                  "gap": 0,
+                  "padding": [
+                    0,
+                    16,
+                    12,
+                    16
+                  ],
+                  "justifyContent": "start",
+                  "alignItems": "start",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "home_tabs",
+                      "name": "Tab Bar",
+                      "layout": "horizontal",
+                      "gap": 4,
+                      "padding": 6,
+                      "justifyContent": "start",
+                      "alignItems": "start",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "home_tab_home",
+                          "name": "首页",
+                          "layout": "vertical",
+                          "gap": 4,
+                          "padding": [
+                            6,
+                            4
+                          ],
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "home_tabi_home",
+                              "name": "home_tabi_home",
+                              "fill": "$accent",
+                              "content": "●",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 14,
+                              "fontWeight": "700"
+                            },
+                            {
+                              "type": "text",
+                              "id": "home_tabl_home",
+                              "name": "home_tabl_home",
+                              "fill": "$accent",
+                              "content": "首页",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 10,
+                              "fontWeight": "600"
+                            }
+                          ],
+                          "width": "fill_container",
+                          "height": "fit_content",
+                          "fill": "$accentSoft",
+                          "cornerRadius": 20
+                        },
+                        {
+                          "type": "frame",
+                          "id": "home_tab_review",
+                          "name": "复习",
+                          "layout": "vertical",
+                          "gap": 4,
+                          "padding": [
+                            6,
+                            4
+                          ],
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "home_tabi_review",
+                              "name": "home_tabi_review",
+                              "fill": "$stone",
+                              "content": "○",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 14,
+                              "fontWeight": "700"
+                            },
+                            {
+                              "type": "text",
+                              "id": "home_tabl_review",
+                              "name": "home_tabl_review",
+                              "fill": "$stone",
+                              "content": "复习",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 10,
+                              "fontWeight": "400"
+                            }
+                          ],
+                          "width": "fill_container",
+                          "height": "fit_content",
+                          "cornerRadius": 20
+                        },
+                        {
+                          "type": "frame",
+                          "id": "home_tab_dict",
+                          "name": "词典",
+                          "layout": "vertical",
+                          "gap": 4,
+                          "padding": [
+                            6,
+                            4
+                          ],
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "home_tabi_dict",
+                              "name": "home_tabi_dict",
+                              "fill": "$stone",
+                              "content": "○",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 14,
+                              "fontWeight": "700"
+                            },
+                            {
+                              "type": "text",
+                              "id": "home_tabl_dict",
+                              "name": "home_tabl_dict",
+                              "fill": "$stone",
+                              "content": "词典",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 10,
+                              "fontWeight": "400"
+                            }
+                          ],
+                          "width": "fill_container",
+                          "height": "fit_content",
+                          "cornerRadius": 20
+                        },
+                        {
+                          "type": "frame",
+                          "id": "home_tab_me",
+                          "name": "我的",
+                          "layout": "vertical",
+                          "gap": 4,
+                          "padding": [
+                            6,
+                            4
+                          ],
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "home_tabi_me",
+                              "name": "home_tabi_me",
+                              "fill": "$stone",
+                              "content": "○",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 14,
+                              "fontWeight": "700"
+                            },
+                            {
+                              "type": "text",
+                              "id": "home_tabl_me",
+                              "name": "home_tabl_me",
+                              "fill": "$stone",
+                              "content": "我的",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 10,
+                              "fontWeight": "400"
+                            }
+                          ],
+                          "width": "fill_container",
+                          "height": "fit_content",
+                          "cornerRadius": 20
+                        }
+                      ],
+                      "width": "fill_container",
+                      "height": 56,
+                      "fill": "#FFFFFFF2",
+                      "cornerRadius": 28
+                    }
+                  ],
+                  "width": "fill_container",
+                  "height": "fit_content"
+                }
+              ],
+              "width": 390,
+              "height": "fit_content(844)",
+              "fill": "#F7F4EF",
+              "cornerRadius": 36,
+              "clip": true
+            },
+            {
+              "type": "frame",
+              "id": "poetry",
+              "name": "04 Poetry",
+              "layout": "vertical",
+              "gap": 0,
+              "padding": 0,
+              "justifyContent": "start",
+              "alignItems": "start",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "poetry_status",
+                  "name": "Status Bar",
+                  "layout": "horizontal",
+                  "gap": 0,
+                  "padding": [
+                    12,
+                    20
+                  ],
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "poetry_time",
+                      "name": "poetry_time",
+                      "fill": "$ink",
+                      "content": "9:41",
+                      "fontFamily": "Noto Sans SC",
+                      "fontSize": 15,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "poetry_sys",
+                      "name": "poetry_sys",
+                      "fill": "#57534E",
+                      "content": "■■■  LTE  100%",
+                      "fontFamily": "Noto Sans SC",
+                      "fontSize": 12,
+                      "fontWeight": "500"
+                    }
+                  ],
+                  "width": "fill_container",
+                  "height": 54
+                },
+                {
+                  "type": "frame",
+                  "id": "poetry_content",
+                  "name": "Content",
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": [
+                    0,
+                    20,
+                    16,
+                    20
+                  ],
+                  "justifyContent": "start",
+                  "alignItems": "start",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "po_title",
+                      "name": "po_title",
+                      "fill": "$ink",
+                      "content": "古诗文",
+                      "fontFamily": "Noto Serif SC",
+                      "fontSize": 24,
+                      "fontWeight": "800"
+                    },
+                    {
+                      "type": "text",
+                      "id": "po_sub",
+                      "name": "po_sub",
+                      "fill": "#57534E",
+                      "content": "七年级 · 课标匹配",
+                      "fontFamily": "Noto Sans SC",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "po_feat",
+                      "name": "po_feat",
+                      "layout": "vertical",
+                      "gap": 10,
+                      "padding": 18,
+                      "justifyContent": "start",
+                      "alignItems": "start",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "po_feat_meta",
+                          "name": "po_feat_meta",
+                          "fill": "$stone",
+                          "content": "李白 · 唐",
+                          "fontFamily": "Noto Sans SC",
+                          "fontSize": 12,
+                          "fontWeight": "500"
+                        },
+                        {
+                          "type": "text",
+                          "id": "po_feat_t",
+                          "name": "po_feat_t",
+                          "fill": "$ink",
+                          "content": "静夜思",
+                          "fontFamily": "Noto Serif SC",
+                          "fontSize": 22,
+                          "fontWeight": "700"
+                        },
+                        {
+                          "type": "text",
+                          "id": "po_feat_b",
+                          "name": "po_feat_b",
+                          "fill": "#57534E",
+                          "content": "床前明月光，疑是地上霜。\n举头望明月，低头思故乡。",
+                          "fontFamily": "Noto Serif SC",
+                          "fontSize": 15,
+                          "fontWeight": "400",
+                          "textGrowth": "fixed-width",
+                          "width": 320,
+                          "lineHeight": 1.7
+                        },
+                        {
+                          "type": "frame",
+                          "id": "po_feat_actions",
+                          "name": "po_feat_actions",
+                          "layout": "horizontal",
+                          "gap": 8,
+                          "padding": 0,
+                          "justifyContent": "start",
+                          "alignItems": "start",
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "po_a1",
+                              "name": "默写",
+                              "layout": "horizontal",
+                              "gap": 0,
+                              "padding": [
+                                0,
+                                14
+                              ],
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "po_a1_t",
+                                  "name": "po_a1_t",
+                                  "fill": "#FFF7ED",
+                                  "content": "默写",
+                                  "fontFamily": "Noto Sans SC",
+                                  "fontSize": 14,
+                                  "fontWeight": "600"
+                                }
+                              ],
+                              "width": "fit_content",
+                              "height": 40,
+                              "fill": "$accent",
+                              "cornerRadius": 20
+                            },
+                            {
+                              "type": "frame",
+                              "id": "po_a2",
+                              "name": "释义",
+                              "layout": "horizontal",
+                              "gap": 0,
+                              "padding": [
+                                0,
+                                14
+                              ],
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "po_a2_t",
+                                  "name": "po_a2_t",
+                                  "fill": "$ink",
+                                  "content": "释义",
+                                  "fontFamily": "Noto Sans SC",
+                                  "fontSize": 14,
+                                  "fontWeight": "600"
+                                }
+                              ],
+                              "width": "fit_content",
+                              "height": 40,
+                              "fill": "#FFFBFA",
+                              "cornerRadius": 20
+                            },
+                            {
+                              "type": "frame",
+                              "id": "po_a3",
+                              "name": "加入复习",
+                              "layout": "horizontal",
+                              "gap": 0,
+                              "padding": [
+                                0,
+                                14
+                              ],
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "po_a3_t",
+                                  "name": "po_a3_t",
+                                  "fill": "$ink",
+                                  "content": "加入复习",
+                                  "fontFamily": "Noto Sans SC",
+                                  "fontSize": 14,
+                                  "fontWeight": "600"
+                                }
+                              ],
+                              "width": "fit_content",
+                              "height": 40,
+                              "fill": "#FFFBFA",
+                              "cornerRadius": 20
+                            }
+                          ],
+                          "width": "fill_container",
+                          "height": "fit_content"
+                        }
+                      ],
+                      "width": "fill_container",
+                      "height": "fit_content",
+                      "fill": "#FFFBFA",
+                      "cornerRadius": 16
+                    },
+                    {
+                      "type": "frame",
+                      "id": "po_list1",
+                      "name": "望岳",
+                      "layout": "horizontal",
+                      "gap": 12,
+                      "padding": 16,
+                      "justifyContent": "start",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "po_list1_left",
+                          "name": "po_list1_left",
+                          "layout": "vertical",
+                          "gap": 4,
+                          "padding": 0,
+                          "justifyContent": "start",
+                          "alignItems": "start",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "po_list1_t",
+                              "name": "po_list1_t",
+                              "fill": "$ink",
+                              "content": "望岳",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 16,
+                              "fontWeight": "700"
+                            },
+                            {
+                              "type": "text",
+                              "id": "po_list1_s",
+                              "name": "po_list1_s",
+                              "fill": "#57534E",
+                              "content": "杜甫 · 会当凌绝顶",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 13,
+                              "fontWeight": "400",
+                              "textGrowth": "fixed-width",
+                              "width": 240
+                            }
+                          ],
+                          "width": "fill_container",
+                          "height": "fit_content"
+                        },
+                        {
+                          "type": "text",
+                          "id": "po_list1_r",
+                          "name": "po_list1_r",
+                          "fill": "$accent",
+                          "content": "未练",
+                          "fontFamily": "Noto Sans SC",
+                          "fontSize": 13,
+                          "fontWeight": "600"
+                        }
+                      ],
+                      "width": "fill_container",
+                      "height": "fit_content",
+                      "fill": "#FFFBFA",
+                      "cornerRadius": 16
+                    },
+                    {
+                      "type": "frame",
+                      "id": "po_list2",
+                      "name": "春望",
+                      "layout": "horizontal",
+                      "gap": 12,
+                      "padding": 16,
+                      "justifyContent": "start",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "po_list2_left",
+                          "name": "po_list2_left",
+                          "layout": "vertical",
+                          "gap": 4,
+                          "padding": 0,
+                          "justifyContent": "start",
+                          "alignItems": "start",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "po_list2_t",
+                              "name": "po_list2_t",
+                              "fill": "$ink",
+                              "content": "春望",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 16,
+                              "fontWeight": "700"
+                            },
+                            {
+                              "type": "text",
+                              "id": "po_list2_s",
+                              "name": "po_list2_s",
+                              "fill": "#57534E",
+                              "content": "杜甫 · 感时花溅泪",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 13,
+                              "fontWeight": "400",
+                              "textGrowth": "fixed-width",
+                              "width": 240
+                            }
+                          ],
+                          "width": "fill_container",
+                          "height": "fit_content"
+                        },
+                        {
+                          "type": "text",
+                          "id": "po_list2_r",
+                          "name": "po_list2_r",
+                          "fill": "$accent",
+                          "content": "已练",
+                          "fontFamily": "Noto Sans SC",
+                          "fontSize": 13,
+                          "fontWeight": "600"
+                        }
+                      ],
+                      "width": "fill_container",
+                      "height": "fit_content",
+                      "fill": "#FFFBFA",
+                      "cornerRadius": 16
+                    },
+                    {
+                      "type": "frame",
+                      "id": "po_list3",
+                      "name": "钱塘湖春行",
+                      "layout": "horizontal",
+                      "gap": 12,
+                      "padding": 16,
+                      "justifyContent": "start",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "po_list3_left",
+                          "name": "po_list3_left",
+                          "layout": "vertical",
+                          "gap": 4,
+                          "padding": 0,
+                          "justifyContent": "start",
+                          "alignItems": "start",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "po_list3_t",
+                              "name": "po_list3_t",
+                              "fill": "$ink",
+                              "content": "钱塘湖春行",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 16,
+                              "fontWeight": "700"
+                            },
+                            {
+                              "type": "text",
+                              "id": "po_list3_s",
+                              "name": "po_list3_s",
+                              "fill": "#57534E",
+                              "content": "白居易 · 几处早莺争暖树",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 13,
+                              "fontWeight": "400",
+                              "textGrowth": "fixed-width",
+                              "width": 240
+                            }
+                          ],
+                          "width": "fill_container",
+                          "height": "fit_content"
+                        },
+                        {
+                          "type": "text",
+                          "id": "po_list3_r",
+                          "name": "po_list3_r",
+                          "fill": "$accent",
+                          "content": "未练",
+                          "fontFamily": "Noto Sans SC",
+                          "fontSize": 13,
+                          "fontWeight": "600"
+                        }
+                      ],
+                      "width": "fill_container",
+                      "height": "fit_content",
+                      "fill": "#FFFBFA",
+                      "cornerRadius": 16
+                    }
+                  ],
+                  "width": "fill_container",
+                  "height": "fit_content"
+                },
+                {
+                  "type": "frame",
+                  "id": "poetry_tabwrap",
+                  "name": "Tab Wrap",
+                  "layout": "vertical",
+                  "gap": 0,
+                  "padding": [
+                    0,
+                    16,
+                    12,
+                    16
+                  ],
+                  "justifyContent": "start",
+                  "alignItems": "start",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "poetry_tabs",
+                      "name": "Tab Bar",
+                      "layout": "horizontal",
+                      "gap": 4,
+                      "padding": 6,
+                      "justifyContent": "start",
+                      "alignItems": "start",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "poetry_tab_home",
+                          "name": "首页",
+                          "layout": "vertical",
+                          "gap": 4,
+                          "padding": [
+                            6,
+                            4
+                          ],
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "poetry_tabi_home",
+                              "name": "poetry_tabi_home",
+                              "fill": "$accent",
+                              "content": "●",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 14,
+                              "fontWeight": "700"
+                            },
+                            {
+                              "type": "text",
+                              "id": "poetry_tabl_home",
+                              "name": "poetry_tabl_home",
+                              "fill": "$accent",
+                              "content": "首页",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 10,
+                              "fontWeight": "600"
+                            }
+                          ],
+                          "width": "fill_container",
+                          "height": "fit_content",
+                          "fill": "$accentSoft",
+                          "cornerRadius": 20
+                        },
+                        {
+                          "type": "frame",
+                          "id": "poetry_tab_review",
+                          "name": "复习",
+                          "layout": "vertical",
+                          "gap": 4,
+                          "padding": [
+                            6,
+                            4
+                          ],
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "poetry_tabi_review",
+                              "name": "poetry_tabi_review",
+                              "fill": "$stone",
+                              "content": "○",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 14,
+                              "fontWeight": "700"
+                            },
+                            {
+                              "type": "text",
+                              "id": "poetry_tabl_review",
+                              "name": "poetry_tabl_review",
+                              "fill": "$stone",
+                              "content": "复习",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 10,
+                              "fontWeight": "400"
+                            }
+                          ],
+                          "width": "fill_container",
+                          "height": "fit_content",
+                          "cornerRadius": 20
+                        },
+                        {
+                          "type": "frame",
+                          "id": "poetry_tab_dict",
+                          "name": "词典",
+                          "layout": "vertical",
+                          "gap": 4,
+                          "padding": [
+                            6,
+                            4
+                          ],
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "poetry_tabi_dict",
+                              "name": "poetry_tabi_dict",
+                              "fill": "$stone",
+                              "content": "○",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 14,
+                              "fontWeight": "700"
+                            },
+                            {
+                              "type": "text",
+                              "id": "poetry_tabl_dict",
+                              "name": "poetry_tabl_dict",
+                              "fill": "$stone",
+                              "content": "词典",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 10,
+                              "fontWeight": "400"
+                            }
+                          ],
+                          "width": "fill_container",
+                          "height": "fit_content",
+                          "cornerRadius": 20
+                        },
+                        {
+                          "type": "frame",
+                          "id": "poetry_tab_me",
+                          "name": "我的",
+                          "layout": "vertical",
+                          "gap": 4,
+                          "padding": [
+                            6,
+                            4
+                          ],
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "poetry_tabi_me",
+                              "name": "poetry_tabi_me",
+                              "fill": "$stone",
+                              "content": "○",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 14,
+                              "fontWeight": "700"
+                            },
+                            {
+                              "type": "text",
+                              "id": "poetry_tabl_me",
+                              "name": "poetry_tabl_me",
+                              "fill": "$stone",
+                              "content": "我的",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 10,
+                              "fontWeight": "400"
+                            }
+                          ],
+                          "width": "fill_container",
+                          "height": "fit_content",
+                          "cornerRadius": 20
+                        }
+                      ],
+                      "width": "fill_container",
+                      "height": 56,
+                      "fill": "#FFFFFFF2",
+                      "cornerRadius": 28
+                    }
+                  ],
+                  "width": "fill_container",
+                  "height": "fit_content"
+                }
+              ],
+              "width": 390,
+              "height": "fit_content(844)",
+              "fill": "#F7F4EF",
+              "cornerRadius": 36,
+              "clip": true
+            }
+          ],
+          "width": "fit_content",
+          "height": "fit_content"
+        },
+        {
+          "type": "frame",
+          "id": "row2",
+          "name": "Row 2",
+          "layout": "horizontal",
+          "gap": 40,
+          "padding": 0,
+          "justifyContent": "start",
+          "alignItems": "start",
+          "children": [
+            {
+              "type": "frame",
+              "id": "dictation",
+              "name": "05 Dictation",
+              "layout": "vertical",
+              "gap": 0,
+              "padding": 0,
+              "justifyContent": "start",
+              "alignItems": "start",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "dictation_status",
+                  "name": "Status Bar",
+                  "layout": "horizontal",
+                  "gap": 0,
+                  "padding": [
+                    12,
+                    20
+                  ],
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "dictation_time",
+                      "name": "dictation_time",
+                      "fill": "$ink",
+                      "content": "9:41",
+                      "fontFamily": "Noto Sans SC",
+                      "fontSize": 15,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "dictation_sys",
+                      "name": "dictation_sys",
+                      "fill": "#57534E",
+                      "content": "■■■  LTE  100%",
+                      "fontFamily": "Noto Sans SC",
+                      "fontSize": 12,
+                      "fontWeight": "500"
+                    }
+                  ],
+                  "width": "fill_container",
+                  "height": 54
+                },
+                {
+                  "type": "frame",
+                  "id": "dictation_content",
+                  "name": "Content",
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": [
+                    0,
+                    20,
+                    16,
+                    20
+                  ],
+                  "justifyContent": "start",
+                  "alignItems": "start",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "di_title",
+                      "name": "di_title",
+                      "fill": "$ink",
+                      "content": "听写默写",
+                      "fontFamily": "Noto Serif SC",
+                      "fontSize": 24,
+                      "fontWeight": "800"
+                    },
+                    {
+                      "type": "text",
+                      "id": "di_sub",
+                      "name": "di_sub",
+                      "fill": "#57534E",
+                      "content": "对照原文，错字自动标红",
+                      "fontFamily": "Noto Sans SC",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "di_prompt",
+                      "name": "di_prompt",
+                      "layout": "vertical",
+                      "gap": 8,
+                      "padding": 16,
+                      "justifyContent": "start",
+                      "alignItems": "start",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "di_p_k",
+                          "name": "di_p_k",
+                          "fill": "$stone",
+                          "content": "听写词",
+                          "fontFamily": "Noto Sans SC",
+                          "fontSize": 12,
+                          "fontWeight": "500"
+                        },
+                        {
+                          "type": "text",
+                          "id": "di_p_w",
+                          "name": "di_p_w",
+                          "fill": "$ink",
+                          "content": "皑皑",
+                          "fontFamily": "Noto Serif SC",
+                          "fontSize": 32,
+                          "fontWeight": "700"
+                        },
+                        {
+                          "type": "text",
+                          "id": "di_p_h",
+                          "name": "di_p_h",
+                          "fill": "#57534E",
+                          "content": "āi āi · 洁白的样子",
+                          "fontFamily": "Noto Sans SC",
+                          "fontSize": 14,
+                          "fontWeight": "400"
+                        }
+                      ],
+                      "width": "fill_container",
+                      "height": "fit_content",
+                      "fill": "#FFFBFA",
+                      "cornerRadius": 16
+                    },
+                    {
+                      "type": "frame",
+                      "id": "di_input",
+                      "name": "di_input",
+                      "layout": "horizontal",
+                      "gap": 0,
+                      "padding": [
+                        0,
+                        16
+                      ],
+                      "justifyContent": "start",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "di_in",
+                          "name": "di_in",
+                          "fill": "$stone",
+                          "content": "请手写或输入…",
+                          "fontFamily": "Noto Sans SC",
+                          "fontSize": 16,
+                          "fontWeight": "400"
+                        }
+                      ],
+                      "width": "fill_container",
+                      "height": 56,
+                      "fill": "#FFFBFA",
+                      "cornerRadius": 12
+                    },
+                    {
+                      "type": "frame",
+                      "id": "di_diff",
+                      "name": "di_diff",
+                      "layout": "vertical",
+                      "gap": 8,
+                      "padding": 16,
+                      "justifyContent": "start",
+                      "alignItems": "start",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "di_diff_k",
+                          "name": "di_diff_k",
+                          "fill": "$accent",
+                          "content": "对照结果",
+                          "fontFamily": "Noto Sans SC",
+                          "fontSize": 12,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "text",
+                          "id": "di_diff_v",
+                          "name": "di_diff_v",
+                          "fill": "$ink",
+                          "content": "皑皑  ✓  正确",
+                          "fontFamily": "Noto Sans SC",
+                          "fontSize": 18,
+                          "fontWeight": "700"
+                        }
+                      ],
+                      "width": "fill_container",
+                      "height": "fit_content",
+                      "fill": "#FEF3C7",
+                      "cornerRadius": 12
+                    },
+                    {
+                      "type": "frame",
+                      "id": "di_cta",
+                      "name": "di_cta",
+                      "layout": "horizontal",
+                      "gap": 0,
+                      "padding": 0,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "di_cta_t",
+                          "name": "di_cta_t",
+                          "fill": "#FFF7ED",
+                          "content": "下一词",
+                          "fontFamily": "Noto Sans SC",
+                          "fontSize": 16,
+                          "fontWeight": "700"
+                        }
+                      ],
+                      "width": "fill_container",
+                      "height": 52,
+                      "fill": "$accent",
+                      "cornerRadius": 14
+                    }
+                  ],
+                  "width": "fill_container",
+                  "height": "fit_content"
+                },
+                {
+                  "type": "frame",
+                  "id": "dictation_tabwrap",
+                  "name": "Tab Wrap",
+                  "layout": "vertical",
+                  "gap": 0,
+                  "padding": [
+                    0,
+                    16,
+                    12,
+                    16
+                  ],
+                  "justifyContent": "start",
+                  "alignItems": "start",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "dictation_tabs",
+                      "name": "Tab Bar",
+                      "layout": "horizontal",
+                      "gap": 4,
+                      "padding": 6,
+                      "justifyContent": "start",
+                      "alignItems": "start",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "dictation_tab_home",
+                          "name": "首页",
+                          "layout": "vertical",
+                          "gap": 4,
+                          "padding": [
+                            6,
+                            4
+                          ],
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "dictation_tabi_home",
+                              "name": "dictation_tabi_home",
+                              "fill": "$accent",
+                              "content": "●",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 14,
+                              "fontWeight": "700"
+                            },
+                            {
+                              "type": "text",
+                              "id": "dictation_tabl_home",
+                              "name": "dictation_tabl_home",
+                              "fill": "$accent",
+                              "content": "首页",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 10,
+                              "fontWeight": "600"
+                            }
+                          ],
+                          "width": "fill_container",
+                          "height": "fit_content",
+                          "fill": "$accentSoft",
+                          "cornerRadius": 20
+                        },
+                        {
+                          "type": "frame",
+                          "id": "dictation_tab_review",
+                          "name": "复习",
+                          "layout": "vertical",
+                          "gap": 4,
+                          "padding": [
+                            6,
+                            4
+                          ],
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "dictation_tabi_review",
+                              "name": "dictation_tabi_review",
+                              "fill": "$stone",
+                              "content": "○",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 14,
+                              "fontWeight": "700"
+                            },
+                            {
+                              "type": "text",
+                              "id": "dictation_tabl_review",
+                              "name": "dictation_tabl_review",
+                              "fill": "$stone",
+                              "content": "复习",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 10,
+                              "fontWeight": "400"
+                            }
+                          ],
+                          "width": "fill_container",
+                          "height": "fit_content",
+                          "cornerRadius": 20
+                        },
+                        {
+                          "type": "frame",
+                          "id": "dictation_tab_dict",
+                          "name": "词典",
+                          "layout": "vertical",
+                          "gap": 4,
+                          "padding": [
+                            6,
+                            4
+                          ],
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "dictation_tabi_dict",
+                              "name": "dictation_tabi_dict",
+                              "fill": "$stone",
+                              "content": "○",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 14,
+                              "fontWeight": "700"
+                            },
+                            {
+                              "type": "text",
+                              "id": "dictation_tabl_dict",
+                              "name": "dictation_tabl_dict",
+                              "fill": "$stone",
+                              "content": "词典",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 10,
+                              "fontWeight": "400"
+                            }
+                          ],
+                          "width": "fill_container",
+                          "height": "fit_content",
+                          "cornerRadius": 20
+                        },
+                        {
+                          "type": "frame",
+                          "id": "dictation_tab_me",
+                          "name": "我的",
+                          "layout": "vertical",
+                          "gap": 4,
+                          "padding": [
+                            6,
+                            4
+                          ],
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "dictation_tabi_me",
+                              "name": "dictation_tabi_me",
+                              "fill": "$stone",
+                              "content": "○",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 14,
+                              "fontWeight": "700"
+                            },
+                            {
+                              "type": "text",
+                              "id": "dictation_tabl_me",
+                              "name": "dictation_tabl_me",
+                              "fill": "$stone",
+                              "content": "我的",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 10,
+                              "fontWeight": "400"
+                            }
+                          ],
+                          "width": "fill_container",
+                          "height": "fit_content",
+                          "cornerRadius": 20
+                        }
+                      ],
+                      "width": "fill_container",
+                      "height": 56,
+                      "fill": "#FFFFFFF2",
+                      "cornerRadius": 28
+                    }
+                  ],
+                  "width": "fill_container",
+                  "height": "fit_content"
+                }
+              ],
+              "width": 390,
+              "height": "fit_content(844)",
+              "fill": "#F7F4EF",
+              "cornerRadius": 36,
+              "clip": true
+            },
+            {
+              "type": "frame",
+              "id": "dict",
+              "name": "06 Dictionary",
+              "layout": "vertical",
+              "gap": 0,
+              "padding": 0,
+              "justifyContent": "start",
+              "alignItems": "start",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "dict_status",
+                  "name": "Status Bar",
+                  "layout": "horizontal",
+                  "gap": 0,
+                  "padding": [
+                    12,
+                    20
+                  ],
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "dict_time",
+                      "name": "dict_time",
+                      "fill": "$ink",
+                      "content": "9:41",
+                      "fontFamily": "Noto Sans SC",
+                      "fontSize": 15,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "dict_sys",
+                      "name": "dict_sys",
+                      "fill": "#57534E",
+                      "content": "■■■  LTE  100%",
+                      "fontFamily": "Noto Sans SC",
+                      "fontSize": 12,
+                      "fontWeight": "500"
+                    }
+                  ],
+                  "width": "fill_container",
+                  "height": 54
+                },
+                {
+                  "type": "frame",
+                  "id": "dict_content",
+                  "name": "Content",
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": [
+                    0,
+                    20,
+                    16,
+                    20
+                  ],
+                  "justifyContent": "start",
+                  "alignItems": "start",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "dx_title",
+                      "name": "dx_title",
+                      "fill": "$ink",
+                      "content": "新华词典",
+                      "fontFamily": "Noto Serif SC",
+                      "fontSize": 24,
+                      "fontWeight": "800"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "dx_search",
+                      "name": "dx_search",
+                      "layout": "horizontal",
+                      "gap": 0,
+                      "padding": [
+                        0,
+                        14
+                      ],
+                      "justifyContent": "start",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "dx_q",
+                          "name": "dx_q",
+                          "fill": "$stone",
+                          "content": "搜索汉字、词语…",
+                          "fontFamily": "Noto Sans SC",
+                          "fontSize": 15,
+                          "fontWeight": "400"
+                        }
+                      ],
+                      "width": "fill_container",
+                      "height": 48,
+                      "fill": "#FFFBFA",
+                      "cornerRadius": 12
+                    },
+                    {
+                      "type": "frame",
+                      "id": "dx_result",
+                      "name": "dx_result",
+                      "layout": "vertical",
+                      "gap": 10,
+                      "padding": 18,
+                      "justifyContent": "start",
+                      "alignItems": "start",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "dx_char",
+                          "name": "dx_char",
+                          "fill": "$ink",
+                          "content": "景",
+                          "fontFamily": "Noto Serif SC",
+                          "fontSize": 48,
+                          "fontWeight": "700"
+                        },
+                        {
+                          "type": "text",
+                          "id": "dx_py",
+                          "name": "dx_py",
+                          "fill": "$accent",
+                          "content": "jǐng",
+                          "fontFamily": "Noto Sans SC",
+                          "fontSize": 16,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "text",
+                          "id": "dx_def",
+                          "name": "dx_def",
+                          "fill": "#57534E",
+                          "content": "① 景色；风光。② 情况；景象。③ 尊敬；仰慕（景仰）。",
+                          "fontFamily": "Noto Sans SC",
+                          "fontSize": 15,
+                          "fontWeight": "400",
+                          "textGrowth": "fixed-width",
+                          "width": 320,
+                          "lineHeight": 1.55
+                        },
+                        {
+                          "type": "text",
+                          "id": "dx_ex",
+                          "name": "dx_ex",
+                          "fill": "$stone",
+                          "content": "例：风景 · 情景 · 景行",
+                          "fontFamily": "Noto Sans SC",
+                          "fontSize": 13,
+                          "fontWeight": "400"
+                        }
+                      ],
+                      "width": "fill_container",
+                      "height": "fit_content",
+                      "fill": "#FFFBFA",
+                      "cornerRadius": 16
+                    },
+                    {
+                      "type": "text",
+                      "id": "dx_sec",
+                      "name": "dx_sec",
+                      "fill": "$stone",
+                      "content": "年级词书",
+                      "fontFamily": "Noto Sans SC",
+                      "fontSize": 13,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "dx_b1",
+                      "name": "七年级必会字",
+                      "layout": "horizontal",
+                      "gap": 12,
+                      "padding": 16,
+                      "justifyContent": "start",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "dx_b1_left",
+                          "name": "dx_b1_left",
+                          "layout": "vertical",
+                          "gap": 4,
+                          "padding": 0,
+                          "justifyContent": "start",
+                          "alignItems": "start",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "dx_b1_t",
+                              "name": "dx_b1_t",
+                              "fill": "$ink",
+                              "content": "七年级必会字",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 16,
+                              "fontWeight": "700"
+                            },
+                            {
+                              "type": "text",
+                              "id": "dx_b1_s",
+                              "name": "dx_b1_s",
+                              "fill": "#57534E",
+                              "content": "课标字词 · 可加入复习",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 13,
+                              "fontWeight": "400",
+                              "textGrowth": "fixed-width",
+                              "width": 240
+                            }
+                          ],
+                          "width": "fill_container",
+                          "height": "fit_content"
+                        },
+                        {
+                          "type": "text",
+                          "id": "dx_b1_r",
+                          "name": "dx_b1_r",
+                          "fill": "$accent",
+                          "content": "128",
+                          "fontFamily": "Noto Sans SC",
+                          "fontSize": 13,
+                          "fontWeight": "600"
+                        }
+                      ],
+                      "width": "fill_container",
+                      "height": "fit_content",
+                      "fill": "#FFFBFA",
+                      "cornerRadius": 16
+                    },
+                    {
+                      "type": "frame",
+                      "id": "dx_b2",
+                      "name": "成语精选",
+                      "layout": "horizontal",
+                      "gap": 12,
+                      "padding": 16,
+                      "justifyContent": "start",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "dx_b2_left",
+                          "name": "dx_b2_left",
+                          "layout": "vertical",
+                          "gap": 4,
+                          "padding": 0,
+                          "justifyContent": "start",
+                          "alignItems": "start",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "dx_b2_t",
+                              "name": "dx_b2_t",
+                              "fill": "$ink",
+                              "content": "成语精选",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 16,
+                              "fontWeight": "700"
+                            },
+                            {
+                              "type": "text",
+                              "id": "dx_b2_s",
+                              "name": "dx_b2_s",
+                              "fill": "#57534E",
+                              "content": "常考成语释义",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 13,
+                              "fontWeight": "400",
+                              "textGrowth": "fixed-width",
+                              "width": 240
+                            }
+                          ],
+                          "width": "fill_container",
+                          "height": "fit_content"
+                        },
+                        {
+                          "type": "text",
+                          "id": "dx_b2_r",
+                          "name": "dx_b2_r",
+                          "fill": "$accent",
+                          "content": "40",
+                          "fontFamily": "Noto Sans SC",
+                          "fontSize": 13,
+                          "fontWeight": "600"
+                        }
+                      ],
+                      "width": "fill_container",
+                      "height": "fit_content",
+                      "fill": "#FFFBFA",
+                      "cornerRadius": 16
+                    }
+                  ],
+                  "width": "fill_container",
+                  "height": "fit_content"
+                },
+                {
+                  "type": "frame",
+                  "id": "dict_tabwrap",
+                  "name": "Tab Wrap",
+                  "layout": "vertical",
+                  "gap": 0,
+                  "padding": [
+                    0,
+                    16,
+                    12,
+                    16
+                  ],
+                  "justifyContent": "start",
+                  "alignItems": "start",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "dict_tabs",
+                      "name": "Tab Bar",
+                      "layout": "horizontal",
+                      "gap": 4,
+                      "padding": 6,
+                      "justifyContent": "start",
+                      "alignItems": "start",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "dict_tab_home",
+                          "name": "首页",
+                          "layout": "vertical",
+                          "gap": 4,
+                          "padding": [
+                            6,
+                            4
+                          ],
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "dict_tabi_home",
+                              "name": "dict_tabi_home",
+                              "fill": "$stone",
+                              "content": "○",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 14,
+                              "fontWeight": "700"
+                            },
+                            {
+                              "type": "text",
+                              "id": "dict_tabl_home",
+                              "name": "dict_tabl_home",
+                              "fill": "$stone",
+                              "content": "首页",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 10,
+                              "fontWeight": "400"
+                            }
+                          ],
+                          "width": "fill_container",
+                          "height": "fit_content",
+                          "cornerRadius": 20
+                        },
+                        {
+                          "type": "frame",
+                          "id": "dict_tab_review",
+                          "name": "复习",
+                          "layout": "vertical",
+                          "gap": 4,
+                          "padding": [
+                            6,
+                            4
+                          ],
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "dict_tabi_review",
+                              "name": "dict_tabi_review",
+                              "fill": "$stone",
+                              "content": "○",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 14,
+                              "fontWeight": "700"
+                            },
+                            {
+                              "type": "text",
+                              "id": "dict_tabl_review",
+                              "name": "dict_tabl_review",
+                              "fill": "$stone",
+                              "content": "复习",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 10,
+                              "fontWeight": "400"
+                            }
+                          ],
+                          "width": "fill_container",
+                          "height": "fit_content",
+                          "cornerRadius": 20
+                        },
+                        {
+                          "type": "frame",
+                          "id": "dict_tab_dict",
+                          "name": "词典",
+                          "layout": "vertical",
+                          "gap": 4,
+                          "padding": [
+                            6,
+                            4
+                          ],
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "dict_tabi_dict",
+                              "name": "dict_tabi_dict",
+                              "fill": "$accent",
+                              "content": "●",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 14,
+                              "fontWeight": "700"
+                            },
+                            {
+                              "type": "text",
+                              "id": "dict_tabl_dict",
+                              "name": "dict_tabl_dict",
+                              "fill": "$accent",
+                              "content": "词典",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 10,
+                              "fontWeight": "600"
+                            }
+                          ],
+                          "width": "fill_container",
+                          "height": "fit_content",
+                          "fill": "$accentSoft",
+                          "cornerRadius": 20
+                        },
+                        {
+                          "type": "frame",
+                          "id": "dict_tab_me",
+                          "name": "我的",
+                          "layout": "vertical",
+                          "gap": 4,
+                          "padding": [
+                            6,
+                            4
+                          ],
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "dict_tabi_me",
+                              "name": "dict_tabi_me",
+                              "fill": "$stone",
+                              "content": "○",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 14,
+                              "fontWeight": "700"
+                            },
+                            {
+                              "type": "text",
+                              "id": "dict_tabl_me",
+                              "name": "dict_tabl_me",
+                              "fill": "$stone",
+                              "content": "我的",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 10,
+                              "fontWeight": "400"
+                            }
+                          ],
+                          "width": "fill_container",
+                          "height": "fit_content",
+                          "cornerRadius": 20
+                        }
+                      ],
+                      "width": "fill_container",
+                      "height": 56,
+                      "fill": "#FFFFFFF2",
+                      "cornerRadius": 28
+                    }
+                  ],
+                  "width": "fill_container",
+                  "height": "fit_content"
+                }
+              ],
+              "width": 390,
+              "height": "fit_content(844)",
+              "fill": "#F7F4EF",
+              "cornerRadius": 36,
+              "clip": true
+            },
+            {
+              "type": "frame",
+              "id": "review",
+              "name": "07 FSRS Review",
+              "layout": "vertical",
+              "gap": 0,
+              "padding": 0,
+              "justifyContent": "start",
+              "alignItems": "start",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "review_status",
+                  "name": "Status Bar",
+                  "layout": "horizontal",
+                  "gap": 0,
+                  "padding": [
+                    12,
+                    20
+                  ],
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "review_time",
+                      "name": "review_time",
+                      "fill": "$ink",
+                      "content": "9:41",
+                      "fontFamily": "Noto Sans SC",
+                      "fontSize": 15,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "review_sys",
+                      "name": "review_sys",
+                      "fill": "#57534E",
+                      "content": "■■■  LTE  100%",
+                      "fontFamily": "Noto Sans SC",
+                      "fontSize": 12,
+                      "fontWeight": "500"
+                    }
+                  ],
+                  "width": "fill_container",
+                  "height": 54
+                },
+                {
+                  "type": "frame",
+                  "id": "review_content",
+                  "name": "Content",
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": [
+                    0,
+                    20,
+                    16,
+                    20
+                  ],
+                  "justifyContent": "start",
+                  "alignItems": "start",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "rv_title",
+                      "name": "rv_title",
+                      "fill": "$ink",
+                      "content": "今日复习",
+                      "fontFamily": "Noto Serif SC",
+                      "fontSize": 24,
+                      "fontWeight": "800"
+                    },
+                    {
+                      "type": "text",
+                      "id": "rv_sub",
+                      "name": "rv_sub",
+                      "fill": "#57534E",
+                      "content": "FSRS · 剩余 12 张",
+                      "fontFamily": "Noto Sans SC",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "rv_card",
+                      "name": "rv_card",
+                      "layout": "vertical",
+                      "gap": 12,
+                      "padding": 24,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "rv_k",
+                          "name": "rv_k",
+                          "fill": "$stone",
+                          "content": "默写提示",
+                          "fontFamily": "Noto Sans SC",
+                          "fontSize": 12,
+                          "fontWeight": "500"
+                        },
+                        {
+                          "type": "text",
+                          "id": "rv_q",
+                          "name": "rv_q",
+                          "fill": "#57534E",
+                          "content": "静夜思 · 第三句",
+                          "fontFamily": "Noto Sans SC",
+                          "fontSize": 18,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "text",
+                          "id": "rv_a",
+                          "name": "rv_a",
+                          "fill": "$ink",
+                          "content": "举头望明月",
+                          "fontFamily": "Noto Serif SC",
+                          "fontSize": 28,
+                          "fontWeight": "700"
+                        }
+                      ],
+                      "width": "fill_container",
+                      "height": 280,
+                      "fill": "#FFFBFA",
+                      "cornerRadius": 20
+                    },
+                    {
+                      "type": "frame",
+                      "id": "rv_rates",
+                      "name": "rv_rates",
+                      "layout": "horizontal",
+                      "gap": 8,
+                      "padding": 0,
+                      "justifyContent": "start",
+                      "alignItems": "start",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "rv_again",
+                          "name": "rv_again",
+                          "layout": "horizontal",
+                          "gap": 0,
+                          "padding": 0,
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "rv_again_t",
+                              "name": "rv_again_t",
+                              "fill": "#991B1B",
+                              "content": "重来",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 14,
+                              "fontWeight": "700"
+                            }
+                          ],
+                          "width": "fill_container",
+                          "height": 48,
+                          "fill": "#FEE2E2",
+                          "cornerRadius": 12
+                        },
+                        {
+                          "type": "frame",
+                          "id": "rv_hard",
+                          "name": "rv_hard",
+                          "layout": "horizontal",
+                          "gap": 0,
+                          "padding": 0,
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "rv_hard_t",
+                              "name": "rv_hard_t",
+                              "fill": "$accent",
+                              "content": "困难",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 14,
+                              "fontWeight": "700"
+                            }
+                          ],
+                          "width": "fill_container",
+                          "height": 48,
+                          "fill": "#FEF3C7",
+                          "cornerRadius": 12
+                        },
+                        {
+                          "type": "frame",
+                          "id": "rv_good",
+                          "name": "rv_good",
+                          "layout": "horizontal",
+                          "gap": 0,
+                          "padding": 0,
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "rv_good_t",
+                              "name": "rv_good_t",
+                              "fill": "#FFF7ED",
+                              "content": "记得",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 14,
+                              "fontWeight": "700"
+                            }
+                          ],
+                          "width": "fill_container",
+                          "height": 48,
+                          "fill": "$accent",
+                          "cornerRadius": 12
+                        }
+                      ],
+                      "width": "fill_container",
+                      "height": "fit_content"
+                    }
+                  ],
+                  "width": "fill_container",
+                  "height": "fit_content"
+                },
+                {
+                  "type": "frame",
+                  "id": "review_tabwrap",
+                  "name": "Tab Wrap",
+                  "layout": "vertical",
+                  "gap": 0,
+                  "padding": [
+                    0,
+                    16,
+                    12,
+                    16
+                  ],
+                  "justifyContent": "start",
+                  "alignItems": "start",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "review_tabs",
+                      "name": "Tab Bar",
+                      "layout": "horizontal",
+                      "gap": 4,
+                      "padding": 6,
+                      "justifyContent": "start",
+                      "alignItems": "start",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "review_tab_home",
+                          "name": "首页",
+                          "layout": "vertical",
+                          "gap": 4,
+                          "padding": [
+                            6,
+                            4
+                          ],
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "review_tabi_home",
+                              "name": "review_tabi_home",
+                              "fill": "$stone",
+                              "content": "○",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 14,
+                              "fontWeight": "700"
+                            },
+                            {
+                              "type": "text",
+                              "id": "review_tabl_home",
+                              "name": "review_tabl_home",
+                              "fill": "$stone",
+                              "content": "首页",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 10,
+                              "fontWeight": "400"
+                            }
+                          ],
+                          "width": "fill_container",
+                          "height": "fit_content",
+                          "cornerRadius": 20
+                        },
+                        {
+                          "type": "frame",
+                          "id": "review_tab_review",
+                          "name": "复习",
+                          "layout": "vertical",
+                          "gap": 4,
+                          "padding": [
+                            6,
+                            4
+                          ],
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "review_tabi_review",
+                              "name": "review_tabi_review",
+                              "fill": "$accent",
+                              "content": "●",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 14,
+                              "fontWeight": "700"
+                            },
+                            {
+                              "type": "text",
+                              "id": "review_tabl_review",
+                              "name": "review_tabl_review",
+                              "fill": "$accent",
+                              "content": "复习",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 10,
+                              "fontWeight": "600"
+                            }
+                          ],
+                          "width": "fill_container",
+                          "height": "fit_content",
+                          "fill": "$accentSoft",
+                          "cornerRadius": 20
+                        },
+                        {
+                          "type": "frame",
+                          "id": "review_tab_dict",
+                          "name": "词典",
+                          "layout": "vertical",
+                          "gap": 4,
+                          "padding": [
+                            6,
+                            4
+                          ],
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "review_tabi_dict",
+                              "name": "review_tabi_dict",
+                              "fill": "$stone",
+                              "content": "○",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 14,
+                              "fontWeight": "700"
+                            },
+                            {
+                              "type": "text",
+                              "id": "review_tabl_dict",
+                              "name": "review_tabl_dict",
+                              "fill": "$stone",
+                              "content": "词典",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 10,
+                              "fontWeight": "400"
+                            }
+                          ],
+                          "width": "fill_container",
+                          "height": "fit_content",
+                          "cornerRadius": 20
+                        },
+                        {
+                          "type": "frame",
+                          "id": "review_tab_me",
+                          "name": "我的",
+                          "layout": "vertical",
+                          "gap": 4,
+                          "padding": [
+                            6,
+                            4
+                          ],
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "review_tabi_me",
+                              "name": "review_tabi_me",
+                              "fill": "$stone",
+                              "content": "○",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 14,
+                              "fontWeight": "700"
+                            },
+                            {
+                              "type": "text",
+                              "id": "review_tabl_me",
+                              "name": "review_tabl_me",
+                              "fill": "$stone",
+                              "content": "我的",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 10,
+                              "fontWeight": "400"
+                            }
+                          ],
+                          "width": "fill_container",
+                          "height": "fit_content",
+                          "cornerRadius": 20
+                        }
+                      ],
+                      "width": "fill_container",
+                      "height": 56,
+                      "fill": "#FFFFFFF2",
+                      "cornerRadius": 28
+                    }
+                  ],
+                  "width": "fill_container",
+                  "height": "fit_content"
+                }
+              ],
+              "width": 390,
+              "height": "fit_content(844)",
+              "fill": "#F7F4EF",
+              "cornerRadius": 36,
+              "clip": true
+            },
+            {
+              "type": "frame",
+              "id": "settings",
+              "name": "08 Settings",
+              "layout": "vertical",
+              "gap": 0,
+              "padding": 0,
+              "justifyContent": "start",
+              "alignItems": "start",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "settings_status",
+                  "name": "Status Bar",
+                  "layout": "horizontal",
+                  "gap": 0,
+                  "padding": [
+                    12,
+                    20
+                  ],
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "settings_time",
+                      "name": "settings_time",
+                      "fill": "$ink",
+                      "content": "9:41",
+                      "fontFamily": "Noto Sans SC",
+                      "fontSize": 15,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "settings_sys",
+                      "name": "settings_sys",
+                      "fill": "#57534E",
+                      "content": "■■■  LTE  100%",
+                      "fontFamily": "Noto Sans SC",
+                      "fontSize": 12,
+                      "fontWeight": "500"
+                    }
+                  ],
+                  "width": "fill_container",
+                  "height": 54
+                },
+                {
+                  "type": "frame",
+                  "id": "settings_content",
+                  "name": "Content",
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": [
+                    0,
+                    20,
+                    16,
+                    20
+                  ],
+                  "justifyContent": "start",
+                  "alignItems": "start",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "st_title",
+                      "name": "st_title",
+                      "fill": "$ink",
+                      "content": "我的",
+                      "fontFamily": "Noto Serif SC",
+                      "fontSize": 24,
+                      "fontWeight": "800"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "st_grade",
+                      "name": "学习年级",
+                      "layout": "horizontal",
+                      "gap": 12,
+                      "padding": 16,
+                      "justifyContent": "start",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "st_grade_left",
+                          "name": "st_grade_left",
+                          "layout": "vertical",
+                          "gap": 4,
+                          "padding": 0,
+                          "justifyContent": "start",
+                          "alignItems": "start",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "st_grade_t",
+                              "name": "st_grade_t",
+                              "fill": "$ink",
+                              "content": "学习年级",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 16,
+                              "fontWeight": "700"
+                            },
+                            {
+                              "type": "text",
+                              "id": "st_grade_s",
+                              "name": "st_grade_s",
+                              "fill": "#57534E",
+                              "content": "七年级 · 中考轨道",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 13,
+                              "fontWeight": "400",
+                              "textGrowth": "fixed-width",
+                              "width": 240
+                            }
+                          ],
+                          "width": "fill_container",
+                          "height": "fit_content"
+                        },
+                        {
+                          "type": "text",
+                          "id": "st_grade_r",
+                          "name": "st_grade_r",
+                          "fill": "$accent",
+                          "content": "更改",
+                          "fontFamily": "Noto Sans SC",
+                          "fontSize": 13,
+                          "fontWeight": "600"
+                        }
+                      ],
+                      "width": "fill_container",
+                      "height": "fit_content",
+                      "fill": "#FFFBFA",
+                      "cornerRadius": 16
+                    },
+                    {
+                      "type": "frame",
+                      "id": "st_review",
+                      "name": "复习提醒",
+                      "layout": "horizontal",
+                      "gap": 12,
+                      "padding": 16,
+                      "justifyContent": "start",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "st_review_left",
+                          "name": "st_review_left",
+                          "layout": "vertical",
+                          "gap": 4,
+                          "padding": 0,
+                          "justifyContent": "start",
+                          "alignItems": "start",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "st_review_t",
+                              "name": "st_review_t",
+                              "fill": "$ink",
+                              "content": "复习提醒",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 16,
+                              "fontWeight": "700"
+                            },
+                            {
+                              "type": "text",
+                              "id": "st_review_s",
+                              "name": "st_review_s",
+                              "fill": "#57534E",
+                              "content": "每日 19:30",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 13,
+                              "fontWeight": "400",
+                              "textGrowth": "fixed-width",
+                              "width": 240
+                            }
+                          ],
+                          "width": "fill_container",
+                          "height": "fit_content"
+                        },
+                        {
+                          "type": "text",
+                          "id": "st_review_r",
+                          "name": "st_review_r",
+                          "fill": "$accent",
+                          "content": "开",
+                          "fontFamily": "Noto Sans SC",
+                          "fontSize": 13,
+                          "fontWeight": "600"
+                        }
+                      ],
+                      "width": "fill_container",
+                      "height": "fit_content",
+                      "fill": "#FFFBFA",
+                      "cornerRadius": 16
+                    },
+                    {
+                      "type": "frame",
+                      "id": "st_offline",
+                      "name": "离线词书",
+                      "layout": "horizontal",
+                      "gap": 12,
+                      "padding": 16,
+                      "justifyContent": "start",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "st_offline_left",
+                          "name": "st_offline_left",
+                          "layout": "vertical",
+                          "gap": 4,
+                          "padding": 0,
+                          "justifyContent": "start",
+                          "alignItems": "start",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "st_offline_t",
+                              "name": "st_offline_t",
+                              "fill": "$ink",
+                              "content": "离线词书",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 16,
+                              "fontWeight": "700"
+                            },
+                            {
+                              "type": "text",
+                              "id": "st_offline_s",
+                              "name": "st_offline_s",
+                              "fill": "#57534E",
+                              "content": "新华 · 已缓存",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 13,
+                              "fontWeight": "400",
+                              "textGrowth": "fixed-width",
+                              "width": 240
+                            }
+                          ],
+                          "width": "fill_container",
+                          "height": "fit_content"
+                        },
+                        {
+                          "type": "text",
+                          "id": "st_offline_r",
+                          "name": "st_offline_r",
+                          "fill": "$accent",
+                          "content": "管理",
+                          "fontFamily": "Noto Sans SC",
+                          "fontSize": 13,
+                          "fontWeight": "600"
+                        }
+                      ],
+                      "width": "fill_container",
+                      "height": "fit_content",
+                      "fill": "#FFFBFA",
+                      "cornerRadius": 16
+                    },
+                    {
+                      "type": "frame",
+                      "id": "st_about",
+                      "name": "关于景行语文",
+                      "layout": "horizontal",
+                      "gap": 12,
+                      "padding": 16,
+                      "justifyContent": "start",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "st_about_left",
+                          "name": "st_about_left",
+                          "layout": "vertical",
+                          "gap": 4,
+                          "padding": 0,
+                          "justifyContent": "start",
+                          "alignItems": "start",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "st_about_t",
+                              "name": "st_about_t",
+                              "fill": "$ink",
+                              "content": "关于景行语文",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 16,
+                              "fontWeight": "700"
+                            },
+                            {
+                              "type": "text",
+                              "id": "st_about_s",
+                              "name": "st_about_s",
+                              "fill": "#57534E",
+                              "content": "高山仰止，景行行止",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 13,
+                              "fontWeight": "400",
+                              "textGrowth": "fixed-width",
+                              "width": 240
+                            }
+                          ],
+                          "width": "fill_container",
+                          "height": "fit_content"
+                        },
+                        {
+                          "type": "text",
+                          "id": "st_about_r",
+                          "name": "st_about_r",
+                          "fill": "$accent",
+                          "content": "v0.1",
+                          "fontFamily": "Noto Sans SC",
+                          "fontSize": 13,
+                          "fontWeight": "600"
+                        }
+                      ],
+                      "width": "fill_container",
+                      "height": "fit_content",
+                      "fill": "#FFFBFA",
+                      "cornerRadius": 16
+                    }
+                  ],
+                  "width": "fill_container",
+                  "height": "fit_content"
+                },
+                {
+                  "type": "frame",
+                  "id": "settings_tabwrap",
+                  "name": "Tab Wrap",
+                  "layout": "vertical",
+                  "gap": 0,
+                  "padding": [
+                    0,
+                    16,
+                    12,
+                    16
+                  ],
+                  "justifyContent": "start",
+                  "alignItems": "start",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "settings_tabs",
+                      "name": "Tab Bar",
+                      "layout": "horizontal",
+                      "gap": 4,
+                      "padding": 6,
+                      "justifyContent": "start",
+                      "alignItems": "start",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "settings_tab_home",
+                          "name": "首页",
+                          "layout": "vertical",
+                          "gap": 4,
+                          "padding": [
+                            6,
+                            4
+                          ],
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "settings_tabi_home",
+                              "name": "settings_tabi_home",
+                              "fill": "$stone",
+                              "content": "○",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 14,
+                              "fontWeight": "700"
+                            },
+                            {
+                              "type": "text",
+                              "id": "settings_tabl_home",
+                              "name": "settings_tabl_home",
+                              "fill": "$stone",
+                              "content": "首页",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 10,
+                              "fontWeight": "400"
+                            }
+                          ],
+                          "width": "fill_container",
+                          "height": "fit_content",
+                          "cornerRadius": 20
+                        },
+                        {
+                          "type": "frame",
+                          "id": "settings_tab_review",
+                          "name": "复习",
+                          "layout": "vertical",
+                          "gap": 4,
+                          "padding": [
+                            6,
+                            4
+                          ],
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "settings_tabi_review",
+                              "name": "settings_tabi_review",
+                              "fill": "$stone",
+                              "content": "○",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 14,
+                              "fontWeight": "700"
+                            },
+                            {
+                              "type": "text",
+                              "id": "settings_tabl_review",
+                              "name": "settings_tabl_review",
+                              "fill": "$stone",
+                              "content": "复习",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 10,
+                              "fontWeight": "400"
+                            }
+                          ],
+                          "width": "fill_container",
+                          "height": "fit_content",
+                          "cornerRadius": 20
+                        },
+                        {
+                          "type": "frame",
+                          "id": "settings_tab_dict",
+                          "name": "词典",
+                          "layout": "vertical",
+                          "gap": 4,
+                          "padding": [
+                            6,
+                            4
+                          ],
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "settings_tabi_dict",
+                              "name": "settings_tabi_dict",
+                              "fill": "$stone",
+                              "content": "○",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 14,
+                              "fontWeight": "700"
+                            },
+                            {
+                              "type": "text",
+                              "id": "settings_tabl_dict",
+                              "name": "settings_tabl_dict",
+                              "fill": "$stone",
+                              "content": "词典",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 10,
+                              "fontWeight": "400"
+                            }
+                          ],
+                          "width": "fill_container",
+                          "height": "fit_content",
+                          "cornerRadius": 20
+                        },
+                        {
+                          "type": "frame",
+                          "id": "settings_tab_me",
+                          "name": "我的",
+                          "layout": "vertical",
+                          "gap": 4,
+                          "padding": [
+                            6,
+                            4
+                          ],
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "settings_tabi_me",
+                              "name": "settings_tabi_me",
+                              "fill": "$accent",
+                              "content": "●",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 14,
+                              "fontWeight": "700"
+                            },
+                            {
+                              "type": "text",
+                              "id": "settings_tabl_me",
+                              "name": "settings_tabl_me",
+                              "fill": "$accent",
+                              "content": "我的",
+                              "fontFamily": "Noto Sans SC",
+                              "fontSize": 10,
+                              "fontWeight": "600"
+                            }
+                          ],
+                          "width": "fill_container",
+                          "height": "fit_content",
+                          "fill": "$accentSoft",
+                          "cornerRadius": 20
+                        }
+                      ],
+                      "width": "fill_container",
+                      "height": 56,
+                      "fill": "#FFFFFFF2",
+                      "cornerRadius": 28
+                    }
+                  ],
+                  "width": "fill_container",
+                  "height": "fit_content"
+                }
+              ],
+              "width": 390,
+              "height": "fit_content(844)",
+              "fill": "#F7F4EF",
+              "cornerRadius": 36,
+              "clip": true
+            }
+          ],
+          "width": "fit_content",
+          "height": "fit_content"
+        }
+      ],
+      "width": 1800,
+      "height": "fit_content",
+      "fill": "#F5F5F4",
+      "clip": true
+    }
+  ]
+}

@@ -30,6 +30,7 @@ import '../features/home/presentation/learning_home_screen.dart';
 import '../features/jingway/presentation/jingway_exam_home_screen.dart';
 import '../features/jingway/presentation/jingway_grade_onboarding_screen.dart';
 import '../features/jingway/presentation/jingway_grade_settings_screen.dart';
+import '../features/jingway/presentation/research_lab_screen.dart';
 import '../features/poetry/presentation/poetry_catalog_screen.dart';
 import '../features/poetry/presentation/poetry_recite_screen.dart';
 import '../features/import_course/presentation/import_course_screen.dart';
@@ -144,6 +145,11 @@ GoRouter goRouter(Ref ref) => GoRouter(
       path: '/settings/grade',
       builder: (BuildContext context, GoRouterState state) =>
           const JingwayGradeSettingsScreen(),
+    ),
+    GoRoute(
+      path: '/settings/research-lab',
+      builder: (BuildContext context, GoRouterState state) =>
+          ResearchLabScreen(),
     ),
     GoRoute(
       path: '/poetry',

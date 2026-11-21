@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "jingway://research/ncr_item",
+  "title": "NCR reading MCQ item (research only)",
+  "type": "object",
+  "required": ["id", "passage", "question", "options", "answerIndex"],
+  "properties": {
+    "id": { "type": "string" },
+    "grades": {
+      "type": "array",
+      "items": { "type": "integer", "minimum": 1, "maximum": 12 }
+    },
+    "passage": { "type": "string" },
+    "question": { "type": "string" },
+    "options": {
+      "type": "array",
+      "minItems": 2,
+      "items": { "type": "string" }
+    },
+    "answerIndex": { "type": "integer", "minimum": 0 },
+    "errorCategory": {
+      "type": "string",
+      "enum": ["literal", "inference", "method"]
+    },
+    "methodCard": { "type": "string" }
+  }
+}

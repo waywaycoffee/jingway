@@ -90,4 +90,7 @@ vendor/
 # Research-only corpora (NCR / CKnowEdit) — never ship in prod assets
 data/research/**
 !data/research/.gitkeep
+!data/research/README.md
+!data/research/schemas/
+!data/research/schemas/**
 tools/cn_content/.venv_vendor/

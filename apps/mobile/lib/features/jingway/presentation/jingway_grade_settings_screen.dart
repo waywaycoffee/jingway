@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -45,6 +46,14 @@ class JingwayGradeSettingsScreen extends ConsumerWidget {
             ),
             const SizedBox(height: 20),
           ],
+          if (kDebugMode)
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              title: const Text('研究内容实验室'),
+              subtitle: const Text('NCR/CKnowEdit 原型 · 仅 debug'),
+              trailing: const Icon(Icons.science_outlined),
+              onTap: () => context.push('/settings/research-lab'),
+            ),
         ],
       ),
     );

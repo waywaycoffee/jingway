@@ -35,5 +35,6 @@ python3 tools/cn_content/build_xinhua_syllabus.py
 
 研究数据（NCR / CKnowEdit）只放 `data/research/`（gitignored），由
 `ResearchContentGate` 控制；**禁止**写入 `pubspec.yaml` assets。
+详见 `docs/RESEARCH_CONTENT.md`；debug 入口：`/settings/research-lab`。
 
 `fetch_vendors.sh` 若遇 GitHub 网络中断，可稍后重试；种子数据足够跑通 P0 UI。

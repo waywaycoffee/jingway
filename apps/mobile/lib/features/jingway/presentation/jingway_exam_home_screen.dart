@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -130,6 +131,13 @@ class _JingwayExamHomeScreenState extends ConsumerState<JingwayExamHomeScreen> {
             action: '进入专项',
             onTap: () => context.go('/exam'),
           ),
+          if (kDebugMode)
+            _HomeCard(
+              title: '研究内容（内测）',
+              subtitle: 'NCR 选择题 / CKnowEdit 填空原型 · 不进正式包',
+              action: '打开实验室',
+              onTap: () => context.push('/settings/research-lab'),
+            ),
         ],
       ),
     );
