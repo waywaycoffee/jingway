@@ -12,6 +12,7 @@ import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart';
 
 import '../../../config/theme/theme_logic.dart';
+import '../../../flavors/app_flavor.dart';
 import '../../../router/app_router.dart';
 import '../../daily_review/presentation/daily_review_provider.dart';
 import '../../home/presentation/learning_dashboard_provider.dart';
@@ -1775,6 +1776,9 @@ Future<void> _settleChineseFillIfAlreadyPresent() async {
   }
 
   Future<void> _ensureImportTimeSubtitleCompletion() async {
+    if (!FlavorConfig.enableAutoSubtitleGeneration) {
+      return;
+    }
     if (!mounted) {
       return;
     }
@@ -2884,7 +2888,9 @@ Future<void> _settleChineseFillIfAlreadyPresent() async {
         .asData
         ?.value;
     final bool canGenerateAiSubtitles =
-        (_videoAsset?.isNotEmpty ?? false) && !_usingAiSubtitles;
+        FlavorConfig.enableAutoSubtitleGeneration &&
+        (_videoAsset?.isNotEmpty ?? false) &&
+        !_usingAiSubtitles;
     if (widget.autoOpenFullscreen &&
         !_didAutoOpenFullscreen &&
         !_isBootstrapping) {
@@ -3245,17 +3251,23 @@ Future<void> _settleChineseFillIfAlreadyPresent() async {
             isPlaying: state.isPlaying,
             onTogglePlaying: _handleTogglePlaying,
             onPronounce: _stopVideo,
-            onRerecognizeEnglish: !_generatingAiSubtitles
+            onRerecognizeEnglish:
+                FlavorConfig.enableAutoSubtitleGeneration &&
+                    !_generatingAiSubtitles
                 ? () => unawaited(
                     _handleResetEpisodeSubtitles(SubtitleResetSide.english),
                   )
                 : null,
-            onRerecognizeChinese: !_generatingAiSubtitles
+            onRerecognizeChinese:
+                FlavorConfig.enableAutoSubtitleGeneration &&
+                    FlavorConfig.enableMachineTranslation &&
+                    !_generatingAiSubtitles
                 ? () => unawaited(
                     _handleResetEpisodeSubtitles(SubtitleResetSide.chinese),
                   )
                 : null,
-            onRegenerateAiLine: _usingAiSubtitles
+            onRegenerateAiLine:
+                FlavorConfig.enableAutoSubtitleGeneration && _usingAiSubtitles
                 ? _handleRegenerateAiLine
                 : null,
             onEditEnglishLine: _editEnglishLine,
@@ -3337,11 +3349,13 @@ Future<void> _settleChineseFillIfAlreadyPresent() async {
             studyDarkStyle: true,
           );
         }
-        return const Center(
+        return Center(
           child: Text(
-            '当前剧集没有可用字幕或视频\n导入本地视频后可用语音识别生成字幕',
+            FlavorConfig.enableAutoSubtitleGeneration
+                ? '当前剧集没有可用字幕或视频\n导入本地视频后可用语音识别生成字幕'
+                : '当前剧集没有可用字幕或视频\n请导入带字幕的视频后播放',
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 15,
               fontWeight: FontWeight.w700,
               height: 1.5,
@@ -5182,7 +5196,8 @@ Future<void> _settleChineseFillIfAlreadyPresent() async {
             onLoopFromLine: _handleLoopFromLine,
             onDictationLine: _handleDictationLine,
             onAiExplain: _handleAiExplain,
-            onRegenerateAiLine: _usingAiSubtitles
+            onRegenerateAiLine:
+                FlavorConfig.enableAutoSubtitleGeneration && _usingAiSubtitles
                 ? _handleRegenerateAiLine
                 : null,
             onEditEnglishLine: _editEnglishLine,

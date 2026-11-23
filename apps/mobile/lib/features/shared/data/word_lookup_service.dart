@@ -6,8 +6,9 @@ import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_ce/hive.dart';
-import '../../authentication/presentation/auth_session.dart';
 
+import '../../../flavors/app_flavor.dart';
+import '../../authentication/presentation/auth_session.dart';
 import '../../settings/data/api_usage_ledger.dart';
 import '../../settings/presentation/settings_provider.dart';
 import '../domain/sentence_grammar_analysis.dart';
@@ -264,6 +265,9 @@ class WordLookupService {
     required LearningSettingsState settings,
     String targetLanguage = 'zh',
   }) async {
+    if (!FlavorConfig.enableMachineTranslation) {
+      return null;
+    }
     final String text = sentence.trim();
     if (text.isEmpty) return null;
     final bool toEnglish = targetLanguage.trim().toLowerCase().startsWith('en');

@@ -236,7 +236,7 @@ class _ReadingHubScreenState extends ConsumerState<ReadingHubScreen> {
       readingIPlus1MatchesProvider,
     );
     return PadScaffold(
-      currentDestination: AppNavDestination.reading,
+      currentDestination: AppNavDestination.readingHub,
       showContinueLearning: false,
       topBar: PadTopBar(
         title: '我的书架',

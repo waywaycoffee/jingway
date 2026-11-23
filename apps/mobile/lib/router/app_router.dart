@@ -133,17 +133,14 @@ String? _jingwayEnglishRouteRedirect(String location) {
     return location == '/exam' ? null : '/exam';
   }
 
+  // Kept: /library, /importCourse, /episodes/*, /reading*, /growth,
+  // /discover, /digital-human (AI老师). Block English-only leftovers.
   const Set<String> exactBlocked = <String>{
-    '/library',
-    '/growth',
-    '/discover',
-    '/digital-human',
     '/peer-oral',
     '/guide',
     '/phrases',
     '/words',
     '/home/legacy',
-    '/importCourse',
     '/vocabularyPlacement',
     '/review/sm2',
     '/review/learning',
@@ -153,8 +150,6 @@ String? _jingwayEnglishRouteRedirect(String location) {
     return _jingwayUnavailablePath;
   }
   if (location.startsWith('/learn/') ||
-      location.startsWith('/reading') ||
-      location.startsWith('/episodes/') ||
       location.startsWith('/writing/') ||
       location.startsWith('/shared/')) {
     return _jingwayUnavailablePath;

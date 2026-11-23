@@ -93,22 +93,23 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
           }
         }());
       });
-      unawaited(SubtitleCompletionRuntime.instance.init());
-      SubtitleCompletionScheduler.instance.attach(
-        settingsReader: () => ref.read(learningSettingsProvider),
-        catalogReader: () => ref.read(libraryCatalogProvider),
-        catalogNotifier: () => ref.read(libraryCatalogProvider.notifier),
-        onProgress: (String episodeId, String label) {
-          ref
-              .read(subtitleCompletionStatusProvider.notifier)
-              .reportProgress(episodeId, label);
-        },
-        onQueueChanged: () {
-          unawaited(
-            ref.read(subtitleCompletionStatusProvider.notifier).refresh(),
-          );
-        },
-        onPersisted:
+      if (FlavorConfig.enableAutoSubtitleGeneration) {
+        unawaited(SubtitleCompletionRuntime.instance.init());
+        SubtitleCompletionScheduler.instance.attach(
+          settingsReader: () => ref.read(learningSettingsProvider),
+          catalogReader: () => ref.read(libraryCatalogProvider),
+          catalogNotifier: () => ref.read(libraryCatalogProvider.notifier),
+          onProgress: (String episodeId, String label) {
+            ref
+                .read(subtitleCompletionStatusProvider.notifier)
+                .reportProgress(episodeId, label);
+          },
+          onQueueChanged: () {
+            unawaited(
+              ref.read(subtitleCompletionStatusProvider.notifier).refresh(),
+            );
+          },
+          onPersisted:
             ({
               required String episodeId,
               required String englishPath,
@@ -168,7 +169,8 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
                 }
               }
             },
-      );
+        );
+      }
     });
   }
 
@@ -187,7 +189,9 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
       // Keep non-fullscreen routes portrait after returning from background.
       ensureDefaultPortraitOrientation();
       // Re-scan + drain unfinished ASR subtitle jobs while the app is open.
-      SubtitleCompletionScheduler.instance.kick(delay: Duration.zero);
+      if (FlavorConfig.enableAutoSubtitleGeneration) {
+        SubtitleCompletionScheduler.instance.kick(delay: Duration.zero);
+      }
       unawaited(_drainIdleOnResume());
     }
   }

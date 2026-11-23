@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hive_ce/hive.dart';
 import 'package:media_kit/media_kit.dart';
 import '../../sync/data/acquire_api_client.dart';
+import '../../../flavors/app_flavor.dart';
 
 import '../../authentication/presentation/account_storage.dart';
 import '../../daily_review/data/word_encounter_store.dart';
@@ -558,7 +559,7 @@ class _ReadingReaderScreenState extends ConsumerState<ReadingReaderScreen> {
     setState(() => _focusedSentence = sentence);
 
     String? zh;
-    if (_sentenceTranslate) {
+    if (_sentenceTranslate && FlavorConfig.enableMachineTranslation) {
       try {
         zh = await ref
             .read(wordLookupServiceProvider)
@@ -642,21 +643,25 @@ class _ReadingReaderScreenState extends ConsumerState<ReadingReaderScreen> {
                   backgroundColor: AppDesignTokens.brandGreenDark,
                 ),
               ),
-              const SizedBox(height: 8),
-              OutlinedButton(
-                onPressed: () {
-                  final bool next = !_sentenceTranslate;
-                  setState(() => _sentenceTranslate = next);
-                  unawaited(_persistPrefs());
-                  Navigator.pop(ctx);
-                  if (next) {
-                    unawaited(
-                      _onSentenceLongPress(doc: doc, start: start, end: end),
-                    );
-                  }
-                },
-                child: Text(_sentenceTranslate ? '句译：开（点此关闭）' : '句译：关（点此开启）'),
-              ),
+              if (FlavorConfig.enableMachineTranslation) ...<Widget>[
+                const SizedBox(height: 8),
+                OutlinedButton(
+                  onPressed: () {
+                    final bool next = !_sentenceTranslate;
+                    setState(() => _sentenceTranslate = next);
+                    unawaited(_persistPrefs());
+                    Navigator.pop(ctx);
+                    if (next) {
+                      unawaited(
+                        _onSentenceLongPress(doc: doc, start: start, end: end),
+                      );
+                    }
+                  },
+                  child: Text(
+                    _sentenceTranslate ? '句译：开（点此关闭）' : '句译：关（点此开启）',
+                  ),
+                ),
+              ],
               if (_soeEnabled) ...<Widget>[
                 const SizedBox(height: 12),
                 AssessmentPanel(reference: sentence),
@@ -835,7 +840,7 @@ class _ReadingReaderScreenState extends ConsumerState<ReadingReaderScreen> {
         : ' · 生词率 ${(_unknownRate! * 100).toStringAsFixed(1)}%';
 
     return PadScaffold(
-      currentDestination: AppNavDestination.reading,
+      currentDestination: AppNavDestination.readingHub,
       showContinueLearning: false,
       showNavigation: false,
       topBar: PadTopBar(

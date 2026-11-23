@@ -147,6 +147,18 @@ class _JingwayExamHomeScreenState extends ConsumerState<JingwayExamHomeScreen> {
             onTap: () => context.go('/poetry'),
           ),
           _HomeCard(
+            title: '阅读',
+            subtitle: '导入读物与书架，按篇精读',
+            action: '打开书架',
+            onTap: () => context.go('/reading'),
+          ),
+          _HomeCard(
+            title: '视频导入',
+            subtitle: '导入本地视频与已有字幕（不自动翻译 / 生成字幕）',
+            action: '开始导入',
+            onTap: () => context.go('/importCourse'),
+          ),
+          _HomeCard(
             title: '考试专项',
             subtitle: '专项题包筹备中（阅读 / 文言 / 作文将按年级上线）',
             action: '查看说明',

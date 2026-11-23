@@ -21,6 +21,13 @@ class FlavorConfig {
   /// AcquireEnglish flavor so English nav/settings/code can stay in-tree.
   static bool get isJingwayProduct => true;
 
+  /// Machine translation (EN↔ZH) UI and pipelines. Off for Jingway.
+  static bool get enableMachineTranslation => !isJingwayProduct;
+
+  /// Auto ASR /「生成字幕」/ subtitle-completion queue. Off for Jingway;
+  /// existing imported videos still play with whatever captions they already have.
+  static bool get enableAutoSubtitleGeneration => !isJingwayProduct;
+
   static bool get isChineseLocale {
     final Locale locale = PlatformDispatcher.instance.locale;
     return locale.languageCode.toLowerCase() == 'zh';

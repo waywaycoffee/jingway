@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:path_provider/path_provider.dart';
 
+import '../../flavors/app_flavor.dart';
 import '../import_course/data/bilibili_episode_prepare.dart';
 import '../import_course/data/bilibili_multipage.dart';
 import '../import_course/data/ensure_official_softsubs.dart';
@@ -290,6 +291,10 @@ Future<void> enqueueSubtitleCompletionForEpisode({
   bool skipSharedLookup = false,
   bool networkFetchOfficial = true,
 }) async {
+  // Jingway: play existing captions only — never queue ASR / MT fill.
+  if (!FlavorConfig.enableAutoSubtitleGeneration) {
+    return;
+  }
   if (!isUsableLocalVideoPath(videoPath)) {
     return;
   }

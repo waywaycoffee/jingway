@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../flavors/app_flavor.dart';
 import '../../../library/presentation/library_catalog_provider.dart';
 import '../../../library/presentation/library_mock_data.dart';
 import '../../../shared/presentation/pad/app_design_tokens.dart';
@@ -571,7 +572,7 @@ class _ImportCourseFlowState extends ConsumerState<ImportCourseFlow> {
           .where((ImportMatchRow row) => row.matched)
           .length;
 
-      if (imported) {
+      if (imported && FlavorConfig.enableAutoSubtitleGeneration) {
         // Import-time bilingual check + ASR/translate — not deferred to player open.
         // Course.spokenLanguage (set above) drives Chinese / mixed Whisper path.
         await enqueuePendingSubtitleCompletionsForCatalog(
@@ -588,7 +589,9 @@ class _ImportCourseFlowState extends ConsumerState<ImportCourseFlow> {
           SnackBar(
             content: Text(
               imported
-                  ? '导入成功：${parsedRows.length} 个视频，$matchedCount 个字幕已匹配；缺的中/英字幕已在导入时开始后台补全'
+                  ? (FlavorConfig.enableAutoSubtitleGeneration
+                        ? '导入成功：${parsedRows.length} 个视频，$matchedCount 个字幕已匹配；缺的中/英字幕已在导入时开始后台补全'
+                        : '导入成功：${parsedRows.length} 个视频，$matchedCount 个字幕已匹配（景行不自动翻译 / 生成字幕）')
                   : '该课程已导入！',
             ),
           ),

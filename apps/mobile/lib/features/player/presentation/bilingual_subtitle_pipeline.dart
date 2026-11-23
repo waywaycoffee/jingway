@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:media_kit/media_kit.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../../../flavors/app_flavor.dart';
 import '../../settings/presentation/settings_provider.dart';
 import '../../shared/data/word_lookup_service.dart';
 import 'asr_subtitle_cache.dart';
@@ -123,6 +124,10 @@ class BilingualSubtitlePipeline {
 
   /// Returns true when monolingual official cues need bilingual fill.
   static bool shouldAutoStart(List<PlayerSubtitleLine> seedLines) {
+    if (!FlavorConfig.enableAutoSubtitleGeneration ||
+        !FlavorConfig.enableMachineTranslation) {
+      return false;
+    }
     return needsBilingualFill(seedLines);
   }
 
@@ -145,6 +150,9 @@ class BilingualSubtitlePipeline {
     /// are not wiped by a stale open-course snapshot.
     List<PlayerSubtitleLine> Function()? currentLines,
   }) async {
+    if (!FlavorConfig.enableMachineTranslation) {
+      return lines;
+    }
     final MissingSubtitleSide missing = detectMissingSubtitleSide(lines);
     if (lines.isEmpty ||
         (missing != MissingSubtitleSide.english &&

@@ -1274,6 +1274,49 @@ class SettingsScreen extends ConsumerWidget {
             ],
           ),
           SizedBox(height: context.padSectionGap),
+          SettingsGroupCard(
+            title: '功能入口',
+            icon: Icons.apps_rounded,
+            children: <Widget>[
+              _ActionRow(
+                title: '阅读',
+                description: '导入读物与书架精读。',
+                icon: Icons.menu_book_rounded,
+                onTap: () => context.go(AppNavDestination.readingHub.route),
+              ),
+              _ActionRow(
+                title: '视频 / 导入',
+                description: '打开视频库，或进入本地视频导入。',
+                icon: Icons.video_library_rounded,
+                onTap: () => context.go(AppNavDestination.library.route),
+              ),
+              _ActionRow(
+                title: '视频导入',
+                description: '选择本地视频与字幕文件导入。',
+                icon: Icons.file_upload_rounded,
+                onTap: () => context.go(AppNavDestination.importCourse.route),
+              ),
+              _ActionRow(
+                title: '成长',
+                description: '查看学习轨迹与掌握度。',
+                icon: Icons.emoji_events_rounded,
+                onTap: () => context.go(AppNavDestination.growth.route),
+              ),
+              _ActionRow(
+                title: '社区真题',
+                description: '真题资料共享与同桌协作。',
+                icon: Icons.groups_rounded,
+                onTap: () => context.go(AppNavDestination.discover.route),
+              ),
+              _ActionRow(
+                title: 'AI老师',
+                description: '数字人陪练与场景识词。',
+                icon: Icons.record_voice_over_rounded,
+                onTap: () => context.go(AppNavDestination.oralCoach.route),
+              ),
+            ],
+          ),
+          SizedBox(height: context.padSectionGap),
           Card(
             child: ListTile(
               leading: const Icon(Icons.workspace_premium_rounded),

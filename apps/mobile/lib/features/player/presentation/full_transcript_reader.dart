@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart' show SelectedContent;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../flavors/app_flavor.dart';
 import '../../settings/presentation/settings_provider.dart';
 import '../../shared/data/word_lookup_service.dart';
 import '../../shared/data/word_pronunciation_service.dart';
@@ -801,26 +802,27 @@ class _ReaderHeader extends StatelessWidget {
               runSpacing: 4,
               crossAxisAlignment: WrapCrossAlignment.center,
               children: <Widget>[
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Text(
-                      '翻译',
-                      style: TextStyle(
-                        color: AppDesignTokens.textSecondary,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w800,
+                if (FlavorConfig.enableMachineTranslation)
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Text(
+                        '翻译',
+                        style: TextStyle(
+                          color: AppDesignTokens.textSecondary,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w800,
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: 4),
-                    Switch(
-                      key: const ValueKey<String>('reader-translation-toggle'),
-                      value: showTranslations,
-                      onChanged: onTranslationChanged,
-                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    ),
-                  ],
-                ),
+                      const SizedBox(width: 4),
+                      Switch(
+                        key: const ValueKey<String>('reader-translation-toggle'),
+                        value: showTranslations,
+                        onChanged: onTranslationChanged,
+                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      ),
+                    ],
+                  ),
                 OutlinedButton.icon(
                   key: const ValueKey<String>('reader-play-full-transcript'),
                   onPressed: onListenFullTranscript,

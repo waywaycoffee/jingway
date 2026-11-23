@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hive_ce/hive.dart';
 
+import '../../../flavors/app_flavor.dart';
 import '../../../router/app_router.dart';
 import '../../import_course/data/bilibili_collection_download.dart';
 import '../../import_course/data/bilibili_cover_refresh.dart';
@@ -696,19 +697,20 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                               },
                             ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: TextButton.icon(
-                          onPressed: () => unawaited(
-                            _confirmReimportCourseSubtitles(selectedCourse),
+                    if (FlavorConfig.enableAutoSubtitleGeneration)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: TextButton.icon(
+                            onPressed: () => unawaited(
+                              _confirmReimportCourseSubtitles(selectedCourse),
+                            ),
+                            icon: const Icon(Icons.subtitles_outlined, size: 18),
+                            label: const Text('重新导入字幕'),
                           ),
-                          icon: const Icon(Icons.subtitles_outlined, size: 18),
-                          label: const Text('重新导入字幕'),
                         ),
                       ),
-                    ),
                     Align(
                       alignment: Alignment.centerRight,
                       child: Wrap(
@@ -917,42 +919,54 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                                           selectedCourse,
                                           item,
                                         ),
-                                    onRerecognizeEnglish: () {
-                                      unawaited(
-                                        _confirmResetEpisodeSubtitles(
-                                          selectedCourse,
-                                          item,
-                                          SubtitleResetSide.english,
-                                        ),
-                                      );
-                                    },
-                                    onRerecognizeChinese: () {
-                                      unawaited(
-                                        _confirmResetEpisodeSubtitles(
-                                          selectedCourse,
-                                          item,
-                                          SubtitleResetSide.chinese,
-                                        ),
-                                      );
-                                    },
-                                    onMissingEnglishTap: () {
-                                      unawaited(
-                                        _requestMissingSubtitleFill(
-                                          course: selectedCourse,
-                                          episode: item,
-                                          chip: SubtitleFillChip.english,
-                                        ),
-                                      );
-                                    },
-                                    onMissingChineseTap: () {
-                                      unawaited(
-                                        _requestMissingSubtitleFill(
-                                          course: selectedCourse,
-                                          episode: item,
-                                          chip: SubtitleFillChip.chinese,
-                                        ),
-                                      );
-                                    },
+                                    onRerecognizeEnglish:
+                                        FlavorConfig.enableAutoSubtitleGeneration
+                                        ? () {
+                                            unawaited(
+                                              _confirmResetEpisodeSubtitles(
+                                                selectedCourse,
+                                                item,
+                                                SubtitleResetSide.english,
+                                              ),
+                                            );
+                                          }
+                                        : null,
+                                    onRerecognizeChinese:
+                                        FlavorConfig.enableAutoSubtitleGeneration
+                                        ? () {
+                                            unawaited(
+                                              _confirmResetEpisodeSubtitles(
+                                                selectedCourse,
+                                                item,
+                                                SubtitleResetSide.chinese,
+                                              ),
+                                            );
+                                          }
+                                        : null,
+                                    onMissingEnglishTap:
+                                        FlavorConfig.enableAutoSubtitleGeneration
+                                        ? () {
+                                            unawaited(
+                                              _requestMissingSubtitleFill(
+                                                course: selectedCourse,
+                                                episode: item,
+                                                chip: SubtitleFillChip.english,
+                                              ),
+                                            );
+                                          }
+                                        : null,
+                                    onMissingChineseTap:
+                                        FlavorConfig.enableAutoSubtitleGeneration
+                                        ? () {
+                                            unawaited(
+                                              _requestMissingSubtitleFill(
+                                                course: selectedCourse,
+                                                episode: item,
+                                                chip: SubtitleFillChip.chinese,
+                                              ),
+                                            );
+                                          }
+                                        : null,
                                     trailing: ReorderableDragStartListener(
                                       index: index,
                                       child: Icon(
@@ -1021,42 +1035,58 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                                             selectedCourse,
                                             item,
                                           ),
-                                      onRerecognizeEnglish: () {
-                                        unawaited(
-                                          _confirmResetEpisodeSubtitles(
-                                            selectedCourse,
-                                            item,
-                                            SubtitleResetSide.english,
-                                          ),
-                                        );
-                                      },
-                                      onRerecognizeChinese: () {
-                                        unawaited(
-                                          _confirmResetEpisodeSubtitles(
-                                            selectedCourse,
-                                            item,
-                                            SubtitleResetSide.chinese,
-                                          ),
-                                        );
-                                      },
-                                      onMissingEnglishTap: () {
-                                        unawaited(
-                                          _requestMissingSubtitleFill(
-                                            course: selectedCourse,
-                                            episode: item,
-                                            chip: SubtitleFillChip.english,
-                                          ),
-                                        );
-                                      },
-                                      onMissingChineseTap: () {
-                                        unawaited(
-                                          _requestMissingSubtitleFill(
-                                            course: selectedCourse,
-                                            episode: item,
-                                            chip: SubtitleFillChip.chinese,
-                                          ),
-                                        );
-                                      },
+                                      onRerecognizeEnglish:
+                                          FlavorConfig
+                                              .enableAutoSubtitleGeneration
+                                          ? () {
+                                              unawaited(
+                                                _confirmResetEpisodeSubtitles(
+                                                  selectedCourse,
+                                                  item,
+                                                  SubtitleResetSide.english,
+                                                ),
+                                              );
+                                            }
+                                          : null,
+                                      onRerecognizeChinese:
+                                          FlavorConfig
+                                              .enableAutoSubtitleGeneration
+                                          ? () {
+                                              unawaited(
+                                                _confirmResetEpisodeSubtitles(
+                                                  selectedCourse,
+                                                  item,
+                                                  SubtitleResetSide.chinese,
+                                                ),
+                                              );
+                                            }
+                                          : null,
+                                      onMissingEnglishTap:
+                                          FlavorConfig
+                                              .enableAutoSubtitleGeneration
+                                          ? () {
+                                              unawaited(
+                                                _requestMissingSubtitleFill(
+                                                  course: selectedCourse,
+                                                  episode: item,
+                                                  chip: SubtitleFillChip.english,
+                                                ),
+                                              );
+                                            }
+                                          : null,
+                                      onMissingChineseTap:
+                                          FlavorConfig
+                                              .enableAutoSubtitleGeneration
+                                          ? () {
+                                              unawaited(
+                                                _requestMissingSubtitleFill(
+                                                  course: selectedCourse,
+                                                  episode: item,
+                                                  chip: SubtitleFillChip.chinese,
+                                                ),
+                                              );
+                                            }
+                                          : null,
                                     );
                                   },
                                 ),

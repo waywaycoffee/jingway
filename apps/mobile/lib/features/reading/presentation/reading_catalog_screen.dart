@@ -207,7 +207,7 @@ class _ReadingCatalogScreenState extends ConsumerState<ReadingCatalogScreen> {
     final bool atRoot = _source == null;
     final ReadingCatalogClient client = ref.watch(readingCatalogClientProvider);
     return PadScaffold(
-      currentDestination: AppNavDestination.reading,
+      currentDestination: AppNavDestination.readingHub,
       showContinueLearning: false,
       topBar: PadTopBar(
         title: atRoot

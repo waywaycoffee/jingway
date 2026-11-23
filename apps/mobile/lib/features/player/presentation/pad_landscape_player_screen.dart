@@ -10,6 +10,7 @@ import 'package:go_router/go_router.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart';
 
+import '../../../flavors/app_flavor.dart';
 import '../../../router/app_router.dart';
 import '../../guide/presentation/guide_screen.dart';
 import '../../home/presentation/learning_dashboard_provider.dart';
@@ -2615,7 +2616,9 @@ Future<void> _settleChineseFillIfAlreadyPresent() async {
         .asData
         ?.value;
     final bool canGenerateAiSubtitles =
-        (_videoAsset?.isNotEmpty ?? false) && !_usingAiSubtitles;
+        FlavorConfig.enableAutoSubtitleGeneration &&
+        (_videoAsset?.isNotEmpty ?? false) &&
+        !_usingAiSubtitles;
     final LearningDashboardStats dashboard = ref.watch(
       learningDashboardProvider,
     );
@@ -2880,6 +2883,8 @@ Future<void> _settleChineseFillIfAlreadyPresent() async {
                                       onTogglePlaying: _handleTogglePlaying,
                                       onPronounce: _stopVideo,
                                       onRerecognizeEnglish:
+                                          FlavorConfig
+                                                  .enableAutoSubtitleGeneration &&
                                               !_generatingAiSubtitles
                                           ? () => unawaited(
                                               _handleUserRegenerateSubtitles(
@@ -2888,6 +2893,10 @@ Future<void> _settleChineseFillIfAlreadyPresent() async {
                                             )
                                           : null,
                                       onRerecognizeChinese:
+                                          FlavorConfig
+                                                  .enableAutoSubtitleGeneration &&
+                                              FlavorConfig
+                                                  .enableMachineTranslation &&
                                               !_generatingAiSubtitles
                                           ? () => unawaited(
                                               _handleUserRegenerateSubtitles(
@@ -2895,7 +2904,10 @@ Future<void> _settleChineseFillIfAlreadyPresent() async {
                                               ),
                                             )
                                           : null,
-                                      onRegenerateAiLine: _usingAiSubtitles
+                                      onRegenerateAiLine:
+                                          FlavorConfig
+                                                      .enableAutoSubtitleGeneration &&
+                                                  _usingAiSubtitles
                                           ? _handleRegenerateAiLine
                                           : null,
                                       onEditEnglishLine: _editEnglishLine,
@@ -2908,8 +2920,13 @@ Future<void> _settleChineseFillIfAlreadyPresent() async {
                                       bilingualPipelineProgressValue:
                                           _bilingualPipelineProgress,
                                       showAiCompleteButton:
-                                          _bilingualShowAiComplete,
-                                      onAiComplete: _bilingualShowAiComplete
+                                          FlavorConfig
+                                                  .enableAutoSubtitleGeneration &&
+                                              _bilingualShowAiComplete,
+                                      onAiComplete:
+                                          FlavorConfig
+                                                      .enableAutoSubtitleGeneration &&
+                                                  _bilingualShowAiComplete
                                           ? _handleAiCompleteSubtitles
                                           : null,
                                       onCancelBilingualPipeline:

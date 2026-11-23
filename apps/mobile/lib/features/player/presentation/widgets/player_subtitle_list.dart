@@ -7,6 +7,7 @@ import 'package:flutter/rendering.dart'
 import 'package:flutter/services.dart';
 
 import '../../../daily_review/data/word_encounter_store.dart';
+import '../../../../flavors/app_flavor.dart';
 import '../../../shared/domain/subtitle_letter_case.dart';
 import '../../../shared/presentation/pad/app_design_tokens.dart';
 import '../../../shared/presentation/word_lookup_popup.dart';
@@ -1072,17 +1073,18 @@ class _PlayerSubtitleListState extends State<PlayerSubtitleList> {
                   selectableRegionState.clearSelection();
                 },
               ),
-              ContextMenuButtonItem(
-                label: '翻译',
-                onPressed: () {
-                  ContextMenuController.removeAny();
-                  final String text = (_lastSelectedPlainText ?? '').trim();
-                  if (text.isEmpty) {
-                    return;
-                  }
-                  _openLookupForSelectedText(text);
-                },
-              ),
+              if (FlavorConfig.enableMachineTranslation)
+                ContextMenuButtonItem(
+                  label: '翻译',
+                  onPressed: () {
+                    ContextMenuController.removeAny();
+                    final String text = (_lastSelectedPlainText ?? '').trim();
+                    if (text.isEmpty) {
+                      return;
+                    }
+                    _openLookupForSelectedText(text);
+                  },
+                ),
             ];
             return AdaptiveTextSelectionToolbar.buttonItems(
               anchors: selectableRegionState.contextMenuAnchors,
