@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../constants/assets.dart';
 import '../../daily_review/data/memory_item_store.dart';
 import '../../navigation/presentation/navigation_destination.dart';
 import '../../shared/presentation/pad/app_design_tokens.dart';
@@ -54,19 +55,32 @@ class _JingwayExamHomeScreenState extends ConsumerState<JingwayExamHomeScreen> {
       body: ListView(
         padding: const EdgeInsets.fromLTRB(20, 24, 20, 100),
         children: <Widget>[
-          Text(
-            '景行语文',
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.w800,
-                ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            '高山仰止，景行行止',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: const Color(0xFF9A3412),
-                  fontWeight: FontWeight.w600,
-                ),
+          Column(
+            children: <Widget>[
+              Image.asset(
+                Assets.logo,
+                width: 64,
+                height: 64,
+                filterQuality: FilterQuality.high,
+              ),
+              const SizedBox(height: 12),
+              Text(
+                '景行语文',
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.w800,
+                    ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                '高山仰止，景行行止',
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: const Color(0xFF9A3412),
+                      fontWeight: FontWeight.w600,
+                    ),
+              ),
+            ],
           ),
           const SizedBox(height: 8),
           Text(

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hive_ce/hive.dart';
 
+import '../../../constants/assets.dart';
 import '../../onboarding/presentation/onboarding_provider.dart';
 import '../../shared/presentation/pad/app_design_tokens.dart';
 import '../domain/cn_grade_registry.dart';
@@ -50,24 +51,38 @@ class _JingwayGradeOnboardingScreenState
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              Text(
-                '景行语文',
-                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                      fontWeight: FontWeight.w800,
-                      color: const Color(0xFF1C1917),
-                    ),
-              ),
-              const SizedBox(height: 6),
-              Text(
-                '高山仰止，景行行止',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: const Color(0xFF9A3412),
-                      fontWeight: FontWeight.w600,
-                    ),
+              Column(
+                children: <Widget>[
+                  Image.asset(
+                    Assets.logo,
+                    width: 72,
+                    height: 72,
+                    filterQuality: FilterQuality.high,
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    '景行语文',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                          fontWeight: FontWeight.w800,
+                          color: const Color(0xFF1C1917),
+                        ),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    '高山仰止，景行行止',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          color: const Color(0xFF9A3412),
+                          fontWeight: FontWeight.w600,
+                        ),
+                  ),
+                ],
               ),
               const SizedBox(height: 8),
               Text(
                 '先选年级，我们会匹配对应的字词、古诗文与练习。',
+                textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       color: const Color(0xFF57534E),
                       height: 1.45,
@@ -106,6 +121,9 @@ class _JingwayGradeOnboardingScreenState
                 style: FilledButton.styleFrom(
                   backgroundColor: const Color(0xFF9A3412),
                   foregroundColor: Colors.white,
+                  // Visible on cream #F7F4EF but clearly inactive.
+                  disabledBackgroundColor: const Color(0xFFD6C4B8),
+                  disabledForegroundColor: const Color(0xFF7C2D12),
                   minimumSize: const Size.fromHeight(52),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(14),
