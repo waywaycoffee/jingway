@@ -34,6 +34,8 @@ import '../data/reading_continuous_tts.dart';
 import '../data/reading_gloss.dart';
 import '../data/reading_tts.dart';
 import '../data/reading_vocab_lists.dart';
+import '../domain/reading_bookmarks.dart';
+import '../domain/reading_chapters.dart';
 import '../domain/reading_doc.dart';
 import '../domain/reading_study_mode.dart';
 import 'content_media_provider.dart';
@@ -83,11 +85,58 @@ class _ReadingReaderScreenState extends ConsumerState<ReadingReaderScreen> {
   bool _glossLoading = false;
   double? _unknownRate;
   String _focusedSentence = '';
+  List<ReadingChapter> _chapters = const <ReadingChapter>[];
+  int _chapterIndex = 0;
+  String? _chaptersDocId;
+  List<ReadingBookmark> _bookmarks = const <ReadingBookmark>[];
+  bool _restoredProgress = false;
 
   @override
   void initState() {
     super.initState();
     _loadPrefs();
+  }
+
+  void _ensureChapters(ReadingDoc doc) {
+    if (_chaptersDocId == doc.id && _chapters.isNotEmpty) return;
+    _chapters = detectReadingChapters(doc.plainText);
+    _chaptersDocId = doc.id;
+    _chapterIndex = 0;
+    _bookmarks = loadReadingBookmarks(ref.read(studyAccountProvider), doc.id);
+  }
+
+  ReadingChapter get _currentChapter {
+    if (_chapters.isEmpty) {
+      return const ReadingChapter(
+        index: 0,
+        title: '全文',
+        start: 0,
+        end: 0,
+        bodyStart: 0,
+        body: '',
+      );
+    }
+    return _chapters[_chapterIndex.clamp(0, _chapters.length - 1)];
+  }
+
+  Future<void> _goChapter(int index, {double localPercent = 0}) async {
+    if (_chapters.isEmpty) return;
+    setState(() => _chapterIndex = index.clamp(0, _chapters.length - 1));
+    await Future<void>.delayed(Duration.zero);
+    if (!_scroll.hasClients) return;
+    final double max = _scroll.position.maxScrollExtent;
+    _scroll.jumpTo((localPercent.clamp(0.0, 1.0) * max).clamp(0.0, max));
+  }
+
+  Future<void> _jumpToGlobalOffset(ReadingDoc doc, int offset) async {
+    _ensureChapters(doc);
+    final int idx = chapterIndexForOffset(_chapters, offset);
+    final ReadingChapter ch = _chapters[idx];
+    final int bodyLen = ch.body.length;
+    final double local = bodyLen <= 0
+        ? 0
+        : ((offset - ch.bodyStart) / bodyLen).clamp(0.0, 1.0);
+    await _goChapter(idx, localPercent: local);
   }
 
   void _loadPrefs() {
@@ -197,7 +246,9 @@ class _ReadingReaderScreenState extends ConsumerState<ReadingReaderScreen> {
       return;
     }
     final int generation = ++_continuousGeneration;
-    final List<ReadingSpeakUnit> units = splitReadingSpeakUnits(doc.plainText);
+    _ensureChapters(doc);
+    final List<ReadingSpeakUnit> units =
+        splitReadingSpeakUnits(_currentChapter.body);
     if (units.isEmpty) return;
     setState(() => _continuousPlaying = true);
     final double rate = _effectiveRate;
@@ -390,19 +441,199 @@ class _ReadingReaderScreenState extends ConsumerState<ReadingReaderScreen> {
     _saveDebounce?.cancel();
     _saveDebounce = Timer(const Duration(milliseconds: 400), () {
       if (!_scroll.hasClients || !mounted) return;
+      _ensureChapters(doc);
       final double max = _scroll.position.maxScrollExtent;
       final double offset = _scroll.offset;
-      final double percent = max <= 0 ? 1.0 : (offset / max).clamp(0.0, 1.0);
+      final double local = max <= 0 ? 1.0 : (offset / max).clamp(0.0, 1.0);
+      final ReadingChapter ch = _currentChapter;
+      final double percent = readingGlobalPercent(
+        chapters: _chapters,
+        chapterIndex: _chapterIndex,
+        localPercent: local,
+      );
+      final int offsetChars = (ch.bodyStart + local * ch.body.length)
+          .round()
+          .clamp(0, doc.plainText.length);
       unawaited(
-        ref
-            .read(readingLibraryProvider.notifier)
-            .updateProgress(
+        ref.read(readingLibraryProvider.notifier).updateProgress(
               docId: doc.id,
-              offsetChars: (percent * doc.plainText.length).round(),
+              offsetChars: offsetChars,
               percent: percent,
             ),
       );
     });
+  }
+
+  Future<void> _showToc(ReadingDoc doc) async {
+    _ensureChapters(doc);
+    final int? selected = await showModalBottomSheet<int>(
+      context: context,
+      isScrollControlled: true,
+      showDragHandle: true,
+      builder: (BuildContext ctx) {
+        return SafeArea(
+          child: SizedBox(
+            height: MediaQuery.sizeOf(ctx).height * 0.7,
+            child: ListView.builder(
+              itemCount: _chapters.length,
+              itemBuilder: (BuildContext context, int i) {
+                final ReadingChapter ch = _chapters[i];
+                return ListTile(
+                  selected: i == _chapterIndex,
+                  title: Text(ch.title),
+                  subtitle: Text('约 ${ch.body.runes.length} 字'),
+                  onTap: () => Navigator.pop(ctx, i),
+                );
+              },
+            ),
+          ),
+        );
+      },
+    );
+    if (selected != null) await _goChapter(selected);
+  }
+
+  Future<void> _showSearch(ReadingDoc doc) async {
+    _ensureChapters(doc);
+    final TextEditingController q = TextEditingController();
+    List<ReadingSearchHit> hits = const <ReadingSearchHit>[];
+    final ReadingSearchHit? hit = await showModalBottomSheet<ReadingSearchHit>(
+      context: context,
+      isScrollControlled: true,
+      showDragHandle: true,
+      builder: (BuildContext ctx) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setSheet) {
+            return SafeArea(
+              child: Padding(
+                padding: EdgeInsets.only(
+                  left: 16,
+                  right: 16,
+                  bottom: MediaQuery.viewInsetsOf(ctx).bottom + 12,
+                ),
+                child: Column(
+                  children: <Widget>[
+                    TextField(
+                      controller: q,
+                      autofocus: true,
+                      decoration: const InputDecoration(
+                        labelText: '在全书中搜索',
+                        prefixIcon: Icon(Icons.search),
+                      ),
+                      onChanged: (String value) {
+                        setSheet(() {
+                          hits = searchReadingText(
+                            plainText: doc.plainText,
+                            query: value,
+                            chapters: _chapters,
+                          );
+                        });
+                      },
+                    ),
+                    const SizedBox(height: 8),
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: hits.length,
+                        itemBuilder: (BuildContext context, int i) {
+                          final ReadingSearchHit h = hits[i];
+                          final String title = _chapters[h.chapterIndex].title;
+                          return ListTile(
+                            title: Text(h.snippet, maxLines: 2),
+                            subtitle: Text(title),
+                            onTap: () => Navigator.pop(ctx, h),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+    q.dispose();
+    if (hit != null) await _jumpToGlobalOffset(doc, hit.offset);
+  }
+
+  Future<void> _showBookmarks(ReadingDoc doc) async {
+    final String account = ref.read(studyAccountProvider);
+    setState(() {
+      _bookmarks = loadReadingBookmarks(account, doc.id);
+    });
+    final ReadingBookmark? picked =
+        await showModalBottomSheet<ReadingBookmark>(
+      context: context,
+      showDragHandle: true,
+      builder: (BuildContext ctx) {
+        if (_bookmarks.isEmpty) {
+          return const SafeArea(
+            child: Padding(
+              padding: EdgeInsets.all(20),
+              child: Text('暂无书签。可点工具栏「书签」添加当前位置。'),
+            ),
+          );
+        }
+        return SafeArea(
+          child: ListView(
+            children: <Widget>[
+              for (final ReadingBookmark b in _bookmarks)
+                ListTile(
+                  title: Text(b.snippet, maxLines: 2),
+                  subtitle: Text(
+                    b.chapterTitle.isEmpty ? '位置 ${b.offset}' : b.chapterTitle,
+                  ),
+                  trailing: IconButton(
+                    icon: const Icon(Icons.delete_outline),
+                    onPressed: () async {
+                      final List<ReadingBookmark> next =
+                          await removeReadingBookmark(
+                        account: account,
+                        docId: doc.id,
+                        bookmarkId: b.id,
+                      );
+                      if (!ctx.mounted) return;
+                      setState(() => _bookmarks = next);
+                      Navigator.pop(ctx);
+                      unawaited(_showBookmarks(doc));
+                    },
+                  ),
+                  onTap: () => Navigator.pop(ctx, b),
+                ),
+            ],
+          ),
+        );
+      },
+    );
+    if (picked != null) await _jumpToGlobalOffset(doc, picked.offset);
+  }
+
+  Future<void> _addBookmarkHere(ReadingDoc doc) async {
+    _ensureChapters(doc);
+    final ReadingChapter ch = _currentChapter;
+    double local = 0;
+    if (_scroll.hasClients) {
+      final double max = _scroll.position.maxScrollExtent;
+      local = max <= 0 ? 0 : (_scroll.offset / max).clamp(0.0, 1.0);
+    }
+    final int offset = (ch.bodyStart + local * ch.body.length).round();
+    final int snipEnd = (offset + 40).clamp(0, doc.plainText.length);
+    final int snipStart = offset.clamp(0, doc.plainText.length);
+    final String snippet =
+        doc.plainText.substring(snipStart, snipEnd).replaceAll('\n', ' ');
+    final List<ReadingBookmark> next = await addReadingBookmark(
+      account: ref.read(studyAccountProvider),
+      docId: doc.id,
+      offset: offset,
+      snippet: snippet,
+      chapterTitle: ch.title,
+    );
+    if (!mounted) return;
+    setState(() => _bookmarks = next);
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('已添加书签')),
+    );
   }
 
   Future<void> _recordLearnedContext(String rawWord, String sentence) async {
@@ -846,20 +1077,35 @@ class _ReadingReaderScreenState extends ConsumerState<ReadingReaderScreen> {
         body: const Center(child: Text('找不到这篇读物')),
       );
     }
+    _ensureChapters(doc);
     if (!_opened) {
       _opened = true;
       WidgetsBinding.instance.addPostFrameCallback((_) {
         unawaited(
           ref.read(readingLibraryProvider.notifier).touchOpened(doc.id),
         );
+        if (!mounted || _restoredProgress) return;
+        _restoredProgress = true;
         final ReadingProgress? p = library.progressFor(doc.id);
-        if (p != null && p.percent > 0 && _scroll.hasClients) {
-          final double max = _scroll.position.maxScrollExtent;
-          _scroll.jumpTo((p.percent * max).clamp(0.0, max));
-        }
+        if (p == null) return;
+        unawaited(
+          _jumpToGlobalOffset(
+            doc,
+            p.offsetChars > 0
+                ? p.offsetChars
+                : (p.percent * doc.plainText.length).round(),
+          ),
+        );
       });
     }
     unawaited(_ensureGlosses(doc));
+    final ReadingChapter chapter = _currentChapter;
+    final String chapterText =
+        chapter.body.isEmpty ? doc.plainText : chapter.body;
+    final int charCount = doc.plainText.runes.length;
+    final String metaLabel = FlavorConfig.isJingwayProduct
+        ? '${_chapterIndex + 1}/${_chapters.length} · $charCount 字'
+        : '${doc.level} · ${doc.wordCount} words';
 
     final bool showChinese = _mode.showInlineChinese;
     final Color bg = readingBackgroundColor(_dark);
@@ -890,11 +1136,25 @@ class _ReadingReaderScreenState extends ConsumerState<ReadingReaderScreen> {
       topBar: PadTopBar(
         title: doc.title,
         trailing: const SizedBox.shrink(),
-        description: _mode == ReadingStudyMode.immersion
-            ? '沉浸 · ${_ttsGender.labelCn} · 连续朗读${_slowMode ? ' · 慢读' : ''}$rateLabel'
-            : '精读 · ${_ttsGender.labelCn} · 难词(>$_freqThreshold)${_slowMode ? ' · 慢读' : ''}$rateLabel',
+        description: '${chapter.title} · $metaLabel$rateLabel',
         leading: PadBackButton(onPressed: () => context.pop()),
         actions: <Widget>[
+          IconButton(
+            tooltip: '目录',
+            onPressed: () => unawaited(_showToc(doc)),
+            icon: const Icon(Icons.list_alt_rounded),
+          ),
+          IconButton(
+            tooltip: '搜索',
+            onPressed: () => unawaited(_showSearch(doc)),
+            icon: const Icon(Icons.search_rounded),
+          ),
+          IconButton(
+            tooltip: '添加书签',
+            onPressed: () => unawaited(_addBookmarkHere(doc)),
+            onLongPress: () => unawaited(_showBookmarks(doc)),
+            icon: const Icon(Icons.bookmark_add_outlined),
+          ),
           if (FlavorConfig.isJingwayProduct &&
               jingwayPracticePackForDoc(doc.id) != null)
             IconButton(
@@ -905,18 +1165,7 @@ class _ReadingReaderScreenState extends ConsumerState<ReadingReaderScreen> {
               ),
             ),
           IconButton(
-            tooltip:
-                '切换为${_ttsGender == ReadingTtsGender.female ? '男声' : '女声'}',
-            onPressed: () => unawaited(_toggleTtsGender()),
-            icon: Icon(
-              _ttsGender == ReadingTtsGender.female
-                  ? Icons.woman_rounded
-                  : Icons.man_rounded,
-              color: AppDesignTokens.brandGreenDark,
-            ),
-          ),
-          IconButton(
-            tooltip: _continuousPlaying ? '停止朗读' : '连续朗读',
+            tooltip: _continuousPlaying ? '停止朗读' : '朗读本章',
             onPressed: () => unawaited(_playContinuous(doc)),
             icon: Icon(
               _continuousPlaying
@@ -1067,13 +1316,25 @@ class _ReadingReaderScreenState extends ConsumerState<ReadingReaderScreen> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    '${doc.level} · ${doc.wordCount} words',
+                    metaLabel,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: fg.withValues(alpha: 0.6),
                       fontSize: 12,
                     ),
                   ),
+                  if (_chapters.length > 1) ...<Widget>[
+                    const SizedBox(height: 10),
+                    Text(
+                      chapter.title,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700,
+                        color: fg,
+                      ),
+                    ),
+                  ],
                   const SizedBox(height: 28),
                   if (_mode.showChunkLegend || showChinese)
                     Padding(
@@ -1125,19 +1386,19 @@ class _ReadingReaderScreenState extends ConsumerState<ReadingReaderScreen> {
                   Text.rich(
                     TextSpan(
                       children: buildReadingTextSpans(
-                        text: doc.plainText,
+                        text: chapterText,
                         textColor: fg,
                         fontSize: _fontSize,
                         lineHeight: _lineHeight,
                         dark: _dark,
                         showChinese: showChinese,
-                        showChunks: true,
+                        showChunks: !FlavorConfig.isJingwayProduct,
                         learnedWords: learned,
                         hardGlosses: _hardGlosses,
                         chunkHighlighter: chunks,
                         onWordTap: (String word, int start, int end) {
                           final String sentence = sentenceBounds(
-                            doc.plainText,
+                            chapterText,
                             start,
                             end,
                           ).text;
@@ -1153,14 +1414,14 @@ class _ReadingReaderScreenState extends ConsumerState<ReadingReaderScreen> {
                           unawaited(
                             _onSentenceLongPress(
                               doc: doc,
-                              start: start,
-                              end: end,
+                              start: chapter.bodyStart + start,
+                              end: chapter.bodyStart + end,
                             ),
                           );
                         },
                         onChunkDoubleTap: (String phrase, int start, int end) {
                           final String sentence = sentenceBounds(
-                            doc.plainText,
+                            chapterText,
                             start,
                             end,
                           ).text;
@@ -1176,8 +1437,8 @@ class _ReadingReaderScreenState extends ConsumerState<ReadingReaderScreen> {
                           unawaited(
                             _onSentenceLongPress(
                               doc: doc,
-                              start: start,
-                              end: end,
+                              start: chapter.bodyStart + start,
+                              end: chapter.bodyStart + end,
                             ),
                           );
                         },
@@ -1185,8 +1446,84 @@ class _ReadingReaderScreenState extends ConsumerState<ReadingReaderScreen> {
                       ),
                     ),
                   ),
+                  const SizedBox(height: 24),
+                  if (_chapters.length > 1)
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: OutlinedButton(
+                            onPressed: _chapterIndex <= 0
+                                ? null
+                                : () => unawaited(_goChapter(_chapterIndex - 1)),
+                            child: const Text('上一章'),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: FilledButton(
+                            onPressed: _chapterIndex >= _chapters.length - 1
+                                ? null
+                                : () => unawaited(_goChapter(_chapterIndex + 1)),
+                            child: const Text('下一章'),
+                          ),
+                        ),
+                      ],
+                    ),
                 ],
               ),
+            ),
+          ),
+        ),
+      ),
+      bottomNavigationBar: Material(
+        color: bg,
+        elevation: 6,
+        child: SafeArea(
+          top: false,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(16, 6, 16, 8),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Text(
+                        chapter.title,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: fg.withValues(alpha: 0.7),
+                        ),
+                      ),
+                    ),
+                    Text(
+                      '${((library.progressFor(doc.id)?.percent ?? 0) * 100).round()}%',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                        color: fg.withValues(alpha: 0.8),
+                      ),
+                    ),
+                  ],
+                ),
+                Slider(
+                  value: (library.progressFor(doc.id)?.percent ?? 0)
+                      .clamp(0.0, 1.0),
+                  onChanged: (double v) {
+                    final int offset = (v * doc.plainText.length).round();
+                    unawaited(_jumpToGlobalOffset(doc, offset));
+                    unawaited(
+                      ref.read(readingLibraryProvider.notifier).updateProgress(
+                            docId: doc.id,
+                            offsetChars: offset,
+                            percent: v,
+                          ),
+                    );
+                  },
+                ),
+              ],
             ),
           ),
         ),

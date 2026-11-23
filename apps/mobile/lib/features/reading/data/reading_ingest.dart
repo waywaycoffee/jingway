@@ -223,13 +223,31 @@ String parseEpubImport(Uint8List bytes) {
     ..sort((ArchiveFile a, ArchiveFile b) =>
         _naturalEpubPathCompare(a.name, b.name));
   final StringBuffer buf = StringBuffer();
+  int part = 1;
   for (final ArchiveFile file in htmlFiles) {
-    final String xml = utf8.decode(file.content as List<int>, allowMalformed: true);
-    final String plain = html_parser.parse(xml).body?.text ?? '';
+    final String xml =
+        utf8.decode(file.content as List<int>, allowMalformed: true);
+    final document = html_parser.parse(xml);
+    final String plain = document.body?.text ?? '';
     final String cleaned = plain.replaceAll(RegExp(r'\s+'), ' ').trim();
     if (cleaned.isEmpty) continue;
+    String title =
+        (document.querySelector('h1')?.text ??
+                document.querySelector('h2')?.text ??
+                '')
+            .trim();
+    if (title.isEmpty) {
+      final String base = file.name.split('/').last.replaceAll(
+            RegExp(r'\.(xhtml|html|htm)$', caseSensitive: false),
+            '',
+          );
+      title = base.replaceAll(RegExp(r'[_-]+'), ' ').trim();
+      if (title.isEmpty) title = '第$part 节';
+    }
     if (buf.isNotEmpty) buf.writeln();
+    buf.writeln('＃＃＃ $title');
     buf.writeln(cleaned);
+    part += 1;
   }
   return buf.toString().trim();
 }
