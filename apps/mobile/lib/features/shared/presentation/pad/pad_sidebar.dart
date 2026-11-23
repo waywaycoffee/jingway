@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../flavors/app_flavor.dart';
 import '../../../growth/presentation/growth_provider.dart';
+import '../../../jingway/presentation/jingway_colors.dart';
 import '../../../navigation/presentation/navigation_destination.dart';
 import '../../data/daily_english_service.dart';
 import '../../data/word_pronunciation_service.dart';
@@ -208,6 +209,28 @@ class _PadSidebarState extends ConsumerState<PadSidebar> {
                     final AppNavDestination destination = items[index];
                     final bool selected = destination == widget.current;
 
+                    final bool jingway = FlavorConfig.isJingwayProduct;
+                    final Color selectedFill = jingway
+                        ? JingwayColors.accent
+                        : AppDesignTokens.brandGreen;
+                    final Color selectedIconColor = jingway
+                        ? JingwayColors.accentStrong
+                        : AppDesignTokens.brandGreenDark;
+                    final Color selectedIconBg = jingway
+                        ? JingwayColors.surface
+                        : AppDesignTokens.onAccent;
+                    final Color selectedLabel = jingway
+                        ? const Color(0xFFFFF8F0)
+                        : AppDesignTokens.onAccent;
+                    final List<BoxShadow> selectedShadow = jingway
+                        ? const <BoxShadow>[
+                            BoxShadow(
+                              color: JingwayColors.accentStrong,
+                              offset: Offset(0, 4),
+                            ),
+                          ]
+                        : AppDesignTokens.toyButtonShadow;
+
                     return InkWell(
                       borderRadius: BorderRadius.circular(24),
                       onTap: () {
@@ -217,12 +240,10 @@ class _PadSidebarState extends ConsumerState<PadSidebar> {
                       },
                       child: DecoratedBox(
                         decoration: BoxDecoration(
-                          color: selected
-                              ? AppDesignTokens.brandGreen
-                              : Colors.transparent,
+                          color: selected ? selectedFill : Colors.transparent,
                           borderRadius: BorderRadius.circular(24),
                           boxShadow: selected
-                              ? AppDesignTokens.toyButtonShadow
+                              ? selectedShadow
                               : const <BoxShadow>[],
                         ),
                         child: Padding(
@@ -235,7 +256,7 @@ class _PadSidebarState extends ConsumerState<PadSidebar> {
                               DecoratedBox(
                                 decoration: BoxDecoration(
                                   color: selected
-                                      ? AppDesignTokens.onAccent
+                                      ? selectedIconBg
                                       : Colors.transparent,
                                   borderRadius: BorderRadius.circular(16),
                                 ),
@@ -247,8 +268,10 @@ class _PadSidebarState extends ConsumerState<PadSidebar> {
                                         ? destination.activeIcon
                                         : destination.icon,
                                     color: selected
-                                        ? AppDesignTokens.brandGreenDark
-                                        : AppDesignTokens.textSecondary,
+                                        ? selectedIconColor
+                                        : (jingway
+                                            ? JingwayColors.hint
+                                            : AppDesignTokens.textSecondary),
                                     size: compact ? 21 : 23,
                                   ),
                                 ),
@@ -263,8 +286,10 @@ class _PadSidebarState extends ConsumerState<PadSidebar> {
                                         ? FontWeight.w800
                                         : FontWeight.w700,
                                     color: selected
-                                        ? AppDesignTokens.onAccent
-                                        : AppDesignTokens.textPrimary,
+                                        ? selectedLabel
+                                        : (jingway
+                                            ? JingwayColors.body
+                                            : AppDesignTokens.textPrimary),
                                   ),
                                 ),
                               ),

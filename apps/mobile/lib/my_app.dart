@@ -232,12 +232,15 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
           statusBarColor: Colors.transparent,
           statusBarIconBrightness: isDark ? Brightness.light : Brightness.dark,
           statusBarBrightness: isDark ? Brightness.dark : Brightness.light,
-          systemNavigationBarColor: isDark
-              ? const Color(0xFF12141A)
-              : const Color(0xFFF3F4F7),
-          systemNavigationBarIconBrightness: isDark
-              ? Brightness.light
-              : Brightness.dark,
+          systemNavigationBarColor: FlavorConfig.isJingwayProduct
+              ? const Color(0xFFF1E6C8)
+              : (isDark
+                  ? const Color(0xFF12141A)
+                  : const Color(0xFFF3F4F7)),
+          systemNavigationBarIconBrightness:
+              FlavorConfig.isJingwayProduct || !isDark
+                  ? Brightness.dark
+                  : Brightness.light,
           systemStatusBarContrastEnforced: false,
           systemNavigationBarContrastEnforced: false,
         ),
