@@ -7,6 +7,8 @@ import '../../daily_review/domain/daily_review.dart';
 import '../../daily_review/domain/memory_item.dart';
 import '../../jingway/data/xinhua_dictionary.dart';
 import '../../jingway/domain/grade_tags.dart';
+import '../../jingway/presentation/jingway_bamboo_slip_frame.dart';
+import '../../jingway/presentation/jingway_colors.dart';
 import '../../jingway/presentation/jingway_profile_provider.dart';
 import '../../jingway/presentation/xinhua_lookup_sheet.dart';
 import '../../navigation/presentation/navigation_destination.dart';
@@ -76,20 +78,10 @@ class _PoetryReciteScreenState extends ConsumerState<PoetryReciteScreen> {
         return PadScaffold(
           currentDestination: AppNavDestination.reading,
           showContinueLearning: false,
+          backgroundColor: JingwayColors.cream,
           body: ListView(
             padding: const EdgeInsets.fromLTRB(16, 20, 16, 100),
             children: <Widget>[
-              Text(
-                unit.title,
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.w800,
-                    ),
-              ),
-              Text(
-                '${unit.dynasty} · ${unit.author}',
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              const SizedBox(height: 12),
               SegmentedButton<_ReciteMode>(
                 segments: const <ButtonSegment<_ReciteMode>>[
                   ButtonSegment(value: _ReciteMode.mask, label: Text('遮挡')),
@@ -112,9 +104,30 @@ class _PoetryReciteScreenState extends ConsumerState<PoetryReciteScreen> {
                 },
               ),
               const SizedBox(height: 16),
-              if (_mode == _ReciteMode.mask) ..._buildMask(unit),
-              if (_mode == _ReciteMode.nextLine) ..._buildNextLine(unit),
-              if (_mode == _ReciteMode.dictation) ..._buildDictation(unit),
+              JingwayBambooSlipFrame(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    Text(
+                      unit.title,
+                      textAlign: TextAlign.center,
+                      style: jingwayClassicalTitleStyle(context),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      '${unit.dynasty} · ${unit.author}',
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: JingwayColors.hint,
+                          ),
+                    ),
+                    const SizedBox(height: 16),
+                    if (_mode == _ReciteMode.mask) ..._buildMask(unit),
+                    if (_mode == _ReciteMode.nextLine) ..._buildNextLine(unit),
+                    if (_mode == _ReciteMode.dictation) ..._buildDictation(unit),
+                  ],
+                ),
+              ),
             ],
           ),
         );
@@ -143,8 +156,12 @@ class _PoetryReciteScreenState extends ConsumerState<PoetryReciteScreen> {
       if (_maskLevel == 0)
         ...unit.lines.map(
           (String line) => Padding(
-            padding: const EdgeInsets.only(bottom: 6),
-            child: Text(line, style: Theme.of(context).textTheme.titleMedium),
+            padding: const EdgeInsets.only(bottom: 8),
+            child: Text(
+              line,
+              textAlign: TextAlign.center,
+              style: jingwayClassicalBodyStyle(context),
+            ),
           ),
         )
       else
@@ -155,8 +172,12 @@ class _PoetryReciteScreenState extends ConsumerState<PoetryReciteScreen> {
                   ? ''
                   : '${String.fromCharCode(line.runes.first)}${List<String>.filled(line.runes.length - 1, '＿').join()}');
           return Padding(
-            padding: const EdgeInsets.only(bottom: 8),
-            child: Text(shown, style: Theme.of(context).textTheme.titleLarge),
+            padding: const EdgeInsets.only(bottom: 10),
+            child: Text(
+              shown,
+              textAlign: TextAlign.center,
+              style: jingwayClassicalBodyStyle(context),
+            ),
           );
         }),
       TextButton(
@@ -173,8 +194,18 @@ class _PoetryReciteScreenState extends ConsumerState<PoetryReciteScreen> {
     final String prompt = unit.lines[i];
     final String answer = unit.lines[i + 1];
     return <Widget>[
-      Text('上句', style: Theme.of(context).textTheme.labelLarge),
-      Text(prompt, style: Theme.of(context).textTheme.headlineSmall),
+      Text(
+        '上句',
+        textAlign: TextAlign.center,
+        style: Theme.of(context).textTheme.labelLarge?.copyWith(
+              color: JingwayColors.hint,
+            ),
+      ),
+      Text(
+        prompt,
+        textAlign: TextAlign.center,
+        style: jingwayClassicalBodyStyle(context),
+      ),
       const SizedBox(height: 12),
       TextField(
         controller: _input,

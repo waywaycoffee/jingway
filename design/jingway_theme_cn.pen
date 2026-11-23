@@ -1,0 +1,1184 @@
+{
+  "version": "2.25",
+  "children": [
+    {
+      "type": "frame",
+      "id": "board",
+      "x": 0,
+      "y": 0,
+      "name": "景行语文 · 宣纸中国风",
+      "width": 980,
+      "fill": "$lightPaper",
+      "layout": "vertical",
+      "gap": 28,
+      "padding": 40,
+      "children": [
+        {
+          "type": "text",
+          "id": "ZMpeK",
+          "name": "主标题",
+          "fill": "$lightInk",
+          "content": "景行语文 · 宣纸中国风",
+          "fontFamily": "Noto Serif SC",
+          "fontSize": 34,
+          "fontWeight": "700"
+        },
+        {
+          "type": "text",
+          "id": "v8G7AA",
+          "name": "副标题",
+          "fill": "$lightMuted",
+          "content": "浅色宣纸略泛黄为主 · 深色墨夜为辅 · 诗词标题用行楷（近王羲之行书气质）",
+          "fontFamily": "Noto Sans SC",
+          "fontSize": 14,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "DzmdT",
+          "name": "色板说明",
+          "fill": "$lightMuted",
+          "content": "Paper #F3EAD6 · Surface #FAF3E4 · Ink #2A2118 · 朱砂 #9A3412 · 行楷 Xingkai SC",
+          "fontFamily": "Noto Sans SC",
+          "fontSize": 12,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "frame",
+          "id": "WtIjI",
+          "name": "首页对照",
+          "gap": 28,
+          "children": [
+            {
+              "type": "frame",
+              "id": "Dh1y9",
+              "name": "浅色 · 备考（宣纸）",
+              "clip": true,
+              "width": 390,
+              "height": 844,
+              "fill": "$lightPaper",
+              "cornerRadius": 28,
+              "layout": "vertical",
+              "gap": 12,
+              "padding": 20,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "qGxsX",
+                  "name": "L_rule",
+                  "width": "fill_container",
+                  "height": 2,
+                  "fill": "$lightRule"
+                },
+                {
+                  "type": "frame",
+                  "id": "qp322",
+                  "name": "L_head",
+                  "width": "fill_container",
+                  "gap": 12,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "y5t7G",
+                      "name": "L_mark",
+                      "width": 44,
+                      "height": 44,
+                      "fill": "$lightAccent",
+                      "cornerRadius": 10,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "xii72",
+                          "name": "L_mark_zi",
+                          "fill": "#FAF3E4",
+                          "content": "景",
+                          "fontFamily": "Zhi Mang Xing",
+                          "fontSize": 28,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "x7f080",
+                      "name": "L_titles",
+                      "layout": "vertical",
+                      "gap": 2,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "N4K5SJ",
+                          "name": "L_brand",
+                          "fill": "$lightInk",
+                          "content": "景行语文",
+                          "fontFamily": "Noto Serif SC",
+                          "fontSize": 22,
+                          "fontWeight": "700"
+                        },
+                        {
+                          "type": "text",
+                          "id": "s0Y8Zc",
+                          "name": "L_slogan",
+                          "fill": "$lightAccent",
+                          "content": "高山仰止，景行行止",
+                          "fontFamily": "Zhi Mang Xing",
+                          "fontSize": 16,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "H4sUBS",
+                  "name": "L_grade",
+                  "fill": "$lightMuted",
+                  "content": "当前：七年级 · 可更换",
+                  "fontFamily": "Noto Sans SC",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "nvw85",
+                  "name": "L_search",
+                  "width": "fill_container",
+                  "fill": "$lightSurface",
+                  "cornerRadius": 12,
+                  "stroke": "$lightBorder",
+                  "padding": [
+                    10,
+                    14
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "UgqsX",
+                      "name": "L_search_t",
+                      "fill": "$lightMuted",
+                      "content": "查字 · 新华词典",
+                      "fontFamily": "Noto Sans SC",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "hWQEQ",
+                  "name": "L_card_今日复习",
+                  "width": "fill_container",
+                  "fill": "$lightSurface",
+                  "cornerRadius": 14,
+                  "stroke": "$lightBorder",
+                  "gap": 10,
+                  "padding": 14,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "s3ZPpj",
+                      "name": "L_bar_今日复习",
+                      "width": 3,
+                      "height": 40,
+                      "fill": "$lightAccent",
+                      "cornerRadius": 2
+                    },
+                    {
+                      "type": "frame",
+                      "id": "QL2ww",
+                      "name": "L_col_今日复习",
+                      "layout": "vertical",
+                      "gap": 4,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "Lk6wD",
+                          "name": "L_ct_今日复习",
+                          "fill": "$lightInk",
+                          "content": "今日复习",
+                          "fontFamily": "Noto Serif SC",
+                          "fontSize": 16,
+                          "fontWeight": "700"
+                        },
+                        {
+                          "type": "text",
+                          "id": "T3PQnH",
+                          "name": "L_cs_今日复习",
+                          "fill": "$lightMuted",
+                          "content": "错字与默写到期卡",
+                          "fontFamily": "Noto Sans SC",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "DfWdw",
+                  "name": "L_card_字词听写",
+                  "width": "fill_container",
+                  "fill": "$lightSurface",
+                  "cornerRadius": 14,
+                  "stroke": "$lightBorder",
+                  "gap": 10,
+                  "padding": 14,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "tK2Wq",
+                      "name": "L_bar_字词听写",
+                      "width": 3,
+                      "height": 40,
+                      "fill": "$lightAccent",
+                      "cornerRadius": 2
+                    },
+                    {
+                      "type": "frame",
+                      "id": "UM81w",
+                      "name": "L_col_字词听写",
+                      "layout": "vertical",
+                      "gap": 4,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "azIKY",
+                          "name": "L_ct_字词听写",
+                          "fill": "$lightInk",
+                          "content": "字词听写",
+                          "fontFamily": "Noto Serif SC",
+                          "fontSize": 16,
+                          "fontWeight": "700"
+                        },
+                        {
+                          "type": "text",
+                          "id": "bbfCv",
+                          "name": "L_cs_字词听写",
+                          "fill": "$lightMuted",
+                          "content": "七年级 · 80 字",
+                          "fontFamily": "Noto Sans SC",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "o4DeY",
+                  "name": "L_card_古诗文",
+                  "width": "fill_container",
+                  "fill": "$lightSurface",
+                  "cornerRadius": 14,
+                  "stroke": "$lightBorder",
+                  "gap": 10,
+                  "padding": 14,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "ue8Jg",
+                      "name": "L_bar_古诗文",
+                      "width": 3,
+                      "height": 40,
+                      "fill": "$lightAccent",
+                      "cornerRadius": 2
+                    },
+                    {
+                      "type": "frame",
+                      "id": "ILMx4",
+                      "name": "L_col_古诗文",
+                      "layout": "vertical",
+                      "gap": 4,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "AYBbN",
+                          "name": "L_ct_古诗文",
+                          "fill": "$lightInk",
+                          "content": "古诗文",
+                          "fontFamily": "Noto Serif SC",
+                          "fontSize": 16,
+                          "fontWeight": "700"
+                        },
+                        {
+                          "type": "text",
+                          "id": "oVSVq",
+                          "name": "L_cs_古诗文",
+                          "fill": "$lightMuted",
+                          "content": "按年级精选必背",
+                          "fontFamily": "Noto Sans SC",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "a5kDoz",
+                  "name": "L_card_教材目录",
+                  "width": "fill_container",
+                  "fill": "$lightSurface",
+                  "cornerRadius": 14,
+                  "stroke": "$lightBorder",
+                  "gap": 10,
+                  "padding": 14,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "U7zpFc",
+                      "name": "L_bar_教材目录",
+                      "width": 3,
+                      "height": 40,
+                      "fill": "$lightAccent",
+                      "cornerRadius": 2
+                    },
+                    {
+                      "type": "frame",
+                      "id": "hmKDB",
+                      "name": "L_col_教材目录",
+                      "layout": "vertical",
+                      "gap": 4,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "if4LD",
+                          "name": "L_ct_教材目录",
+                          "fill": "$lightInk",
+                          "content": "教材目录",
+                          "fontFamily": "Noto Serif SC",
+                          "fontSize": 16,
+                          "fontWeight": "700"
+                        },
+                        {
+                          "type": "text",
+                          "id": "N3YODt",
+                          "name": "L_cs_教材目录",
+                          "fill": "$lightMuted",
+                          "content": "按需打开 · 不内置正文",
+                          "fontFamily": "Noto Sans SC",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "uttg7",
+              "name": "深色 · 备考（墨夜）",
+              "clip": true,
+              "width": 390,
+              "height": 844,
+              "fill": "$darkPaper",
+              "cornerRadius": 28,
+              "layout": "vertical",
+              "gap": 12,
+              "padding": 20,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "iSvU4",
+                  "name": "D_rule",
+                  "width": "fill_container",
+                  "height": 2,
+                  "fill": "$darkBorder"
+                },
+                {
+                  "type": "frame",
+                  "id": "oK2Tt",
+                  "name": "D_head",
+                  "width": "fill_container",
+                  "gap": 12,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "NKq5A",
+                      "name": "D_mark",
+                      "width": 44,
+                      "height": 44,
+                      "fill": "$darkAccent",
+                      "cornerRadius": 10,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "Jdyu8",
+                          "name": "D_mark_zi",
+                          "fill": "#FAF3E4",
+                          "content": "景",
+                          "fontFamily": "Zhi Mang Xing",
+                          "fontSize": 28,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "h26jN",
+                      "name": "D_titles",
+                      "layout": "vertical",
+                      "gap": 2,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "r8DlTg",
+                          "name": "D_brand",
+                          "fill": "$darkInk",
+                          "content": "景行语文",
+                          "fontFamily": "Noto Serif SC",
+                          "fontSize": 22,
+                          "fontWeight": "700"
+                        },
+                        {
+                          "type": "text",
+                          "id": "Jnmvf",
+                          "name": "D_slogan",
+                          "fill": "$darkAccent",
+                          "content": "高山仰止，景行行止",
+                          "fontFamily": "Zhi Mang Xing",
+                          "fontSize": 16,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "L7ivAR",
+                  "name": "D_grade",
+                  "fill": "$darkMuted",
+                  "content": "当前：七年级 · 可更换",
+                  "fontFamily": "Noto Sans SC",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "kfBYV",
+                  "name": "D_search",
+                  "width": "fill_container",
+                  "fill": "$darkSurface",
+                  "cornerRadius": 12,
+                  "stroke": "$darkBorder",
+                  "padding": [
+                    10,
+                    14
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "J0972V",
+                      "name": "D_search_t",
+                      "fill": "$darkMuted",
+                      "content": "查字 · 新华词典",
+                      "fontFamily": "Noto Sans SC",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "eCTKU",
+                  "name": "D_card_今日复习",
+                  "width": "fill_container",
+                  "fill": "$darkSurface",
+                  "cornerRadius": 14,
+                  "stroke": "$darkBorder",
+                  "gap": 10,
+                  "padding": 14,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "bi8M9",
+                      "name": "D_bar_今日复习",
+                      "width": 3,
+                      "height": 40,
+                      "fill": "$darkAccent",
+                      "cornerRadius": 2
+                    },
+                    {
+                      "type": "frame",
+                      "id": "A51pA",
+                      "name": "D_col_今日复习",
+                      "layout": "vertical",
+                      "gap": 4,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "CnNDG",
+                          "name": "D_ct_今日复习",
+                          "fill": "$darkInk",
+                          "content": "今日复习",
+                          "fontFamily": "Noto Serif SC",
+                          "fontSize": 16,
+                          "fontWeight": "700"
+                        },
+                        {
+                          "type": "text",
+                          "id": "i8lHO",
+                          "name": "D_cs_今日复习",
+                          "fill": "$darkMuted",
+                          "content": "错字与默写到期卡",
+                          "fontFamily": "Noto Sans SC",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "HDFWL",
+                  "name": "D_card_字词听写",
+                  "width": "fill_container",
+                  "fill": "$darkSurface",
+                  "cornerRadius": 14,
+                  "stroke": "$darkBorder",
+                  "gap": 10,
+                  "padding": 14,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "DDl1C",
+                      "name": "D_bar_字词听写",
+                      "width": 3,
+                      "height": 40,
+                      "fill": "$darkAccent",
+                      "cornerRadius": 2
+                    },
+                    {
+                      "type": "frame",
+                      "id": "VxhKA",
+                      "name": "D_col_字词听写",
+                      "layout": "vertical",
+                      "gap": 4,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "Sazcg",
+                          "name": "D_ct_字词听写",
+                          "fill": "$darkInk",
+                          "content": "字词听写",
+                          "fontFamily": "Noto Serif SC",
+                          "fontSize": 16,
+                          "fontWeight": "700"
+                        },
+                        {
+                          "type": "text",
+                          "id": "RCEPB",
+                          "name": "D_cs_字词听写",
+                          "fill": "$darkMuted",
+                          "content": "七年级 · 80 字",
+                          "fontFamily": "Noto Sans SC",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "k7Kwr",
+                  "name": "D_card_古诗文",
+                  "width": "fill_container",
+                  "fill": "$darkSurface",
+                  "cornerRadius": 14,
+                  "stroke": "$darkBorder",
+                  "gap": 10,
+                  "padding": 14,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "xpVFn",
+                      "name": "D_bar_古诗文",
+                      "width": 3,
+                      "height": 40,
+                      "fill": "$darkAccent",
+                      "cornerRadius": 2
+                    },
+                    {
+                      "type": "frame",
+                      "id": "I2B101",
+                      "name": "D_col_古诗文",
+                      "layout": "vertical",
+                      "gap": 4,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "XHp1g",
+                          "name": "D_ct_古诗文",
+                          "fill": "$darkInk",
+                          "content": "古诗文",
+                          "fontFamily": "Noto Serif SC",
+                          "fontSize": 16,
+                          "fontWeight": "700"
+                        },
+                        {
+                          "type": "text",
+                          "id": "f1sVY",
+                          "name": "D_cs_古诗文",
+                          "fill": "$darkMuted",
+                          "content": "按年级精选必背",
+                          "fontFamily": "Noto Sans SC",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "cxHnT",
+                  "name": "D_card_教材目录",
+                  "width": "fill_container",
+                  "fill": "$darkSurface",
+                  "cornerRadius": 14,
+                  "stroke": "$darkBorder",
+                  "gap": 10,
+                  "padding": 14,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "jVg58",
+                      "name": "D_bar_教材目录",
+                      "width": 3,
+                      "height": 40,
+                      "fill": "$darkAccent",
+                      "cornerRadius": 2
+                    },
+                    {
+                      "type": "frame",
+                      "id": "VzaPb",
+                      "name": "D_col_教材目录",
+                      "layout": "vertical",
+                      "gap": 4,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "o8TM9",
+                          "name": "D_ct_教材目录",
+                          "fill": "$darkInk",
+                          "content": "教材目录",
+                          "fontFamily": "Noto Serif SC",
+                          "fontSize": 16,
+                          "fontWeight": "700"
+                        },
+                        {
+                          "type": "text",
+                          "id": "sBiZj",
+                          "name": "D_cs_教材目录",
+                          "fill": "$darkMuted",
+                          "content": "按需打开 · 不内置正文",
+                          "fontFamily": "Noto Sans SC",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "hXm1R",
+          "name": "诗文对照",
+          "gap": 28,
+          "children": [
+            {
+              "type": "frame",
+              "id": "zJBQ2",
+              "name": "浅色 · 诗文（行楷标题）",
+              "clip": true,
+              "width": 390,
+              "height": 844,
+              "fill": "$lightPaper",
+              "cornerRadius": 28,
+              "layout": "vertical",
+              "gap": 14,
+              "padding": 20,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "LBdkV",
+                  "name": "PL_h",
+                  "fill": "$lightInk",
+                  "content": "诗文",
+                  "fontFamily": "Noto Serif SC",
+                  "fontSize": 24,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "text",
+                  "id": "GdFpb",
+                  "name": "PL_sub",
+                  "fill": "$lightMuted",
+                  "content": "标题行书气质 · 正文宋体（近王羲之行书，非商用字库名）",
+                  "fontFamily": "Noto Sans SC",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "v1Iy5",
+                  "name": "PL_modes",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "sgunt",
+                      "name": "PL_m_遮挡背诵",
+                      "fill": "$lightSurface",
+                      "cornerRadius": 18,
+                      "stroke": "$lightBorder",
+                      "padding": [
+                        8,
+                        12
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "mEjR2",
+                          "name": "PL_mt_遮挡背诵",
+                          "fill": "$lightInk",
+                          "content": "遮挡背诵",
+                          "fontFamily": "Noto Sans SC",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "nSB4Q",
+                      "name": "PL_m_上下句",
+                      "fill": "$lightSurface",
+                      "cornerRadius": 18,
+                      "stroke": "$lightBorder",
+                      "padding": [
+                        8,
+                        12
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "y8Y8Nj",
+                          "name": "PL_mt_上下句",
+                          "fill": "$lightInk",
+                          "content": "上下句",
+                          "fontFamily": "Noto Sans SC",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "t238S3",
+                      "name": "PL_m_逐字默写",
+                      "fill": "$lightAccent",
+                      "cornerRadius": 18,
+                      "stroke": "$lightBorder",
+                      "padding": [
+                        8,
+                        12
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "IlVZh",
+                          "name": "PL_mt_逐字默写",
+                          "fill": "#FAF3E4",
+                          "content": "逐字默写",
+                          "fontFamily": "Noto Sans SC",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "bGR4Q",
+                  "name": "PL_poem",
+                  "width": "fill_container",
+                  "fill": "$lightSurface",
+                  "cornerRadius": 16,
+                  "stroke": "$lightBorder",
+                  "layout": "vertical",
+                  "gap": 10,
+                  "padding": 20,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "u6Gbj",
+                      "name": "PL_poem_title",
+                      "fill": "$lightInk",
+                      "content": "静夜思",
+                      "fontFamily": "Zhi Mang Xing",
+                      "fontSize": 44,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "n5joZ",
+                      "name": "PL_poem_meta",
+                      "fill": "$lightMuted",
+                      "content": "唐 · 李白 · 七年级",
+                      "fontFamily": "Noto Sans SC",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "yd5yP",
+                      "name": "PL_rule2",
+                      "width": "fill_container",
+                      "height": 1,
+                      "fill": "$lightRule"
+                    },
+                    {
+                      "type": "text",
+                      "id": "U0F8d",
+                      "name": "PL_line_床前明月光，",
+                      "fill": "$lightInk",
+                      "content": "床前明月光，",
+                      "fontFamily": "Noto Serif SC",
+                      "fontSize": 20,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "eMHAT",
+                      "name": "PL_line_疑是地上霜。",
+                      "fill": "$lightInk",
+                      "content": "疑是地上霜。",
+                      "fontFamily": "Noto Serif SC",
+                      "fontSize": 20,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "ZaZ2v",
+                      "name": "PL_line_举头望明月，",
+                      "fill": "$lightInk",
+                      "content": "举头望明月，",
+                      "fontFamily": "Noto Serif SC",
+                      "fontSize": 20,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "anAyr",
+                      "name": "PL_line_低头思故乡。",
+                      "fill": "$lightInk",
+                      "content": "低头思故乡。",
+                      "fontFamily": "Noto Serif SC",
+                      "fontSize": 20,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "Ujh0X",
+              "name": "深色 · 诗文（行楷标题）",
+              "clip": true,
+              "width": 390,
+              "height": 844,
+              "fill": "$darkPaper",
+              "cornerRadius": 28,
+              "layout": "vertical",
+              "gap": 14,
+              "padding": 20,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "xVoCX",
+                  "name": "PD_h",
+                  "fill": "$darkInk",
+                  "content": "诗文",
+                  "fontFamily": "Noto Serif SC",
+                  "fontSize": 24,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "text",
+                  "id": "oKT8b",
+                  "name": "PD_sub",
+                  "fill": "$darkMuted",
+                  "content": "标题行楷 · 正文宋体",
+                  "fontFamily": "Noto Sans SC",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "aG8cV",
+                  "name": "PD_modes",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "CKlaG",
+                      "name": "PD_m_遮挡背诵",
+                      "fill": "$darkSurface",
+                      "cornerRadius": 18,
+                      "stroke": "$darkBorder",
+                      "padding": [
+                        8,
+                        12
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "CcoxP",
+                          "name": "PD_mt_遮挡背诵",
+                          "fill": "$darkInk",
+                          "content": "遮挡背诵",
+                          "fontFamily": "Noto Sans SC",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "V5wNeb",
+                      "name": "PD_m_上下句",
+                      "fill": "$darkSurface",
+                      "cornerRadius": 18,
+                      "stroke": "$darkBorder",
+                      "padding": [
+                        8,
+                        12
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "AE4h3",
+                          "name": "PD_mt_上下句",
+                          "fill": "$darkInk",
+                          "content": "上下句",
+                          "fontFamily": "Noto Sans SC",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "u1wGaS",
+                      "name": "PD_m_逐字默写",
+                      "fill": "$darkAccent",
+                      "cornerRadius": 18,
+                      "stroke": "$darkBorder",
+                      "padding": [
+                        8,
+                        12
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "EtQMv",
+                          "name": "PD_mt_逐字默写",
+                          "fill": "#FAF3E4",
+                          "content": "逐字默写",
+                          "fontFamily": "Noto Sans SC",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "uf5hf",
+                  "name": "PD_poem",
+                  "width": "fill_container",
+                  "fill": "$darkSurface",
+                  "cornerRadius": 16,
+                  "stroke": "$darkBorder",
+                  "layout": "vertical",
+                  "gap": 10,
+                  "padding": 20,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "SNd5B",
+                      "name": "PD_poem_title",
+                      "fill": "$darkInk",
+                      "content": "静夜思",
+                      "fontFamily": "Zhi Mang Xing",
+                      "fontSize": 44,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "Z2szRI",
+                      "name": "PD_poem_meta",
+                      "fill": "$darkMuted",
+                      "content": "唐 · 李白 · 七年级",
+                      "fontFamily": "Noto Sans SC",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "TXUeg",
+                      "name": "PD_rule2",
+                      "width": "fill_container",
+                      "height": 1,
+                      "fill": "$darkBorder"
+                    },
+                    {
+                      "type": "text",
+                      "id": "ymIgq",
+                      "name": "PD_line_床前明月光，",
+                      "fill": "$darkInk",
+                      "content": "床前明月光，",
+                      "fontFamily": "Noto Serif SC",
+                      "fontSize": 20,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "tOdQW",
+                      "name": "PD_line_疑是地上霜。",
+                      "fill": "$darkInk",
+                      "content": "疑是地上霜。",
+                      "fontFamily": "Noto Serif SC",
+                      "fontSize": 20,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "geXDZ",
+                      "name": "PD_line_举头望明月，",
+                      "fill": "$darkInk",
+                      "content": "举头望明月，",
+                      "fontFamily": "Noto Serif SC",
+                      "fontSize": 20,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "pnhMB",
+                      "name": "PD_line_低头思故乡。",
+                      "fill": "$darkInk",
+                      "content": "低头思故乡。",
+                      "fontFamily": "Noto Serif SC",
+                      "fontSize": 20,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "NSntC",
+          "name": "字体说明",
+          "fill": "$lightMuted",
+          "content": "说明：真机无法内置「王羲之」商业字库时，诗词标题用系统/授权行楷（Xingkai SC）；正文用宋体；界面用苹方。Android 需另配开源行楷（如 LXGW WenKai）。",
+          "fontFamily": "Noto Sans SC",
+          "fontSize": 12,
+          "fontWeight": "normal"
+        }
+      ]
+    }
+  ],
+  "variables": {
+    "lightPaper": {
+      "type": "color",
+      "value": "#F1E6C8"
+    },
+    "lightSurface": {
+      "type": "color",
+      "value": "#F8F0DA"
+    },
+    "lightInk": {
+      "type": "color",
+      "value": "#2A2118"
+    },
+    "lightMuted": {
+      "type": "color",
+      "value": "#7A6A55"
+    },
+    "lightAccent": {
+      "type": "color",
+      "value": "#9A3412"
+    },
+    "lightBorder": {
+      "type": "color",
+      "value": "#E0D2B8"
+    },
+    "darkPaper": {
+      "type": "color",
+      "value": "#1A1610"
+    },
+    "darkSurface": {
+      "type": "color",
+      "value": "#2C241C"
+    },
+    "darkInk": {
+      "type": "color",
+      "value": "#F5ECD8"
+    },
+    "darkMuted": {
+      "type": "color",
+      "value": "#B5A894"
+    },
+    "darkAccent": {
+      "type": "color",
+      "value": "#E07A4F"
+    },
+    "darkBorder": {
+      "type": "color",
+      "value": "#4A3F32"
+    },
+    "lightRule": {
+      "type": "color",
+      "value": "#D4C09A"
+    },
+    "fontUi": {
+      "type": "string",
+      "value": "Noto Sans SC"
+    },
+    "fontDisplay": {
+      "type": "string",
+      "value": "Noto Serif SC"
+    },
+    "fontCalligraphy": {
+      "type": "string",
+      "value": "Zhi Mang Xing"
+    }
+  },
+  "fileToken": "84fc7d49-c379-4dfa-8ce9-03d3078c56f2"
+}

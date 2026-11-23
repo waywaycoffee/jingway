@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
-/// Cream + terracotta palette for Jingway surfaces (WCAG-minded on #F7F4EF).
+/// Warm rice-paper + terracotta palette for Jingway surfaces.
 ///
 /// Do not use [AppDesignTokens] surfaces here — those follow global dark mode
 /// and paint navy chips / muddied grays on cream.
 abstract final class JingwayColors {
-  static const Color cream = Color(0xFFF7F4EF);
-  static const Color surface = Color(0xFFFFFBF7);
+  /// Slightly yellowed 宣纸.
+  static const Color cream = Color(0xFFF1E6C8);
+  static const Color surface = Color(0xFFF8F0DA);
   static const Color title = Color(0xFF1C1917);
   static const Color body = Color(0xFF292524);
   static const Color section = Color(0xFF44403C);
