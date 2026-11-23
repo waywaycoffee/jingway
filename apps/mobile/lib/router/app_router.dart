@@ -28,7 +28,7 @@ import '../features/growth/presentation/growth_screen.dart';
 import '../features/guide/presentation/guide_screen.dart';
 import '../features/home/presentation/learning_home_screen.dart';
 import '../features/jingway/presentation/jingway_exam_home_screen.dart';
-import '../features/jingway/presentation/jingway_exam_stub_screen.dart';
+import '../features/jingway/presentation/jingway_exam_screen.dart';
 import '../features/jingway/presentation/jingway_grade_onboarding_screen.dart';
 import '../features/jingway/presentation/jingway_grade_settings_screen.dart';
 import '../features/jingway/presentation/jingway_textbook_hub_screen.dart';
@@ -232,7 +232,7 @@ GoRouter goRouter(Ref ref) => GoRouter(
       path: '/exam',
       builder: (BuildContext context, GoRouterState state) {
         if (FlavorConfig.isJingwayProduct) {
-          return const JingwayExamStubScreen();
+          return const JingwayExamScreen();
         }
         return const ExamHomeScreen();
       },

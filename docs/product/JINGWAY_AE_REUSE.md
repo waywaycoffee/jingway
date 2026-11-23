@@ -12,7 +12,7 @@
 |------|------|
 | 技术底座 vs 产品叙事 | 可复用调度引擎、播放壳、导入管线、账号/路由/设置壳、社区 API；不复用「爱快英语 / CEFR / 背单词 hub」叙事与英语默认文案。 |
 | 产品门闸 | `FlavorConfig.isJingwayProduct == true`；`enableMachineTranslation`、`enableAutoSubtitleGeneration` 均为 **false**（见 `apps/mobile/lib/flavors/app_flavor.dart`）。 |
-| 路由软阻断 | 英语独占路径进 `/jingway/unavailable`；`/exam/*` 子路径收回 `/exam` 语文专项 stub（`_jingwayEnglishRouteRedirect`）。 |
+| 路由软阻断 | 英语独占路径进 `/jingway/unavailable`；`/exam/*` 子路径收回 `/exam` 语文专项（`_jingwayEnglishRouteRedirect`）。 |
 | 版权 | 正式包仅 MIT：新华 / 诗文 / dictionary；部编正文 **禁止**打进 APK；教材三源仅目录 + 按需打开。 |
 | 媒体 | 音视频只走 ECS（`foundation` / `reading` / `oral` / `course` / `misc` / `exam` + `imports/`）；禁止打进 `apps/mobile/assets`。 |
 | 研究数据 | NCR / CKnowEdit 等仅 debug / research lab；`ResearchContentGate` 在 release 关闭。 |
@@ -25,7 +25,7 @@
 | GATE OFF | 机翻 UI/管线；ASR「生成字幕」/ 闲时字幕补齐队列 / 双语 pipeline 入口 |
 | 语文核心 | 年级档案、诗文默写、字词听写、FSRS 年级过滤复习、新华查字 |
 | 教材 | ChinaTextbook / yuwen / dianzi-keben → 目录资产 + 远程/外链；无部编正文资产 |
-| 英语 hub | CEFR 考试主路径改为 stub；短语库 / 单词本 nav / phonics 等零基础 `/learn/*` / 词汇量测评 / 怎么学 阻断 |
+| 英语 hub | CEFR 考试主路径改为语文专项；短语库 / 单词本 nav / phonics 等零基础 `/learn/*` / 词汇量测评 / 怎么学 阻断 |
 
 ---
 
@@ -63,7 +63,7 @@
 | 成长 | `/growth` 可进 | 等级/打卡可保留；称号与「英语习得」文案换景行 |
 | 社区真题 | `/discover` KEEP | 考试族/素材仍可偏英语注册表；需语文真题分类与审核策略 |
 | AI老师 | `/digital-human` KEEP | 场景/提示词/音色改语文陪练；拍照识词可接新华 |
-| 错题本 / 考试会话骨架 | `ExamErrorBookScreen`、`ExamSessionScreen` 等仍在路由树 | 景行 `/exam` 为 stub，子路径被重定向；复用专项/错题壳时需挂语文题包而非 CEFR packs |
+| 错题本 / 考试会话骨架 | `ExamErrorBookScreen`、`ExamSessionScreen` 等仍在路由树 | 景行 `/exam` 已接入七年级原创试练；旧子路径仍重定向。考试会话与错题壳保留为后续复用候选 |
 | 词书 / syllabus | `/words/syllabus*` **未**进 exact block（首页「字词听写」跳此） | 用 `cn_g*_dictation` 等语文词书；勿引导英语云词书主路径 |
 | 影子跟读 / 句听写 | 播放器内 | 评测与回流 FSRS 可留；提示与评分文案改中文课语境 |
 | Pad 设计 Token / 主题 | `AppDesignTokens` + `JingwayColors` 并存 | 统一景行视觉，减少英语休息室残留文案 |
@@ -87,7 +87,7 @@
 | 英语写作 | `/writing*` block | |
 | 公开学习卡 | `/shared/*` block | |
 | 旧英语首页 | `/home/legacy` block | 现 `/home` = `JingwayExamHomeScreen` |
-| CEFR 考试 hub | `/exam` → `JingwayExamStubScreen`；子路径收口 | 官方薄题包 / 模考英语路径不做主入口 |
+| CEFR 考试 hub | `/exam` → `JingwayExamScreen`；子路径收口 | 官方薄题包 / 模考英语路径不做主入口 |
 | AE 设置：翻译引擎 / Whisper / AI 字幕管理 | 景行设置不渲染该大段 UI | 代码仍在同一文件，仅 flavor 分支 |
 
 ---
@@ -101,7 +101,7 @@
 | 新华查字 | `xinhua_dictionary`、首页查字框、`xinhua_lookup_sheet` | 离线 seed；MIT chinese-xinhua |
 | 字词听写词书 | `assets/syllabus/cn_g*_dictation.json` 等 | 年级生字/成语；非 AE 英语词书 |
 | 教材三源目录 | `/textbooks`，`assets/jingway/textbooks/*.json` | ChinaTextbook PDF 远程、yuwen MD 按需、dianzi-keben 外链；**无正文入包** |
-| 备考首页 / 复习 hub / 专项 stub / unavailable | `features/jingway/presentation/*` | 替换 AE 学习首页与背单词 hub |
+| 备考首页 / 复习 hub / 专项 / unavailable | `features/jingway/presentation/*` | 替换 AE 学习首页与背单词 hub |
 | 年级标签键 | `grade_tags.dart`（`jingwayCharReviewKey` 等） | 错字卡与年级绑定 |
 | 包名与品牌 | `com.jingway.chinese`，`FlavorConfig.appName` | 与 `com.acquire.english` 可并列安装 |
 
@@ -114,7 +114,7 @@
 3. **视频保持「有字幕可学」**：导入/库/播放器只承诺已有字幕；不做 MT/ASR 生成承诺。  
 4. **社区真题语文化**：分类、审核与 `exam` 命名空间素材规范；同桌 PK 词源改字词/诗文。  
 5. **AI老师提示词与识词**：默认场景改语文；识词接新华；示范音仍 ECS `oral`。  
-6. **专项题包**：在 stub 上挂年级阅读/文言客观题，复用考试会话 + 错题回流 FSRS；勿拉起 CEFR packs 主路径。  
+6. **专项题包**：扩充七年级现代文试练与文言客观题，逐步接上统一错题本和 FSRS。
 7. **设置与侧栏文案清扫**：去掉残留英语休息室 / 背单词叙事；TTS 若要对用户开放，单独做景行面板而非打开 AE 全套 ASR。
 
 ---
@@ -126,7 +126,7 @@
 | 备考主页 | `/home` | 景行自建 |
 | 诗文 | `/poetry` | 景行自建 |
 | 复习 | `/review` → session | 换皮 FSRS |
-| 专项 | `/exam` | stub |
+| 专项 | `/exam` | 七年级原创试练 |
 | 我的 | `/settings` | 裁剪壳 |
 | 阅读 / 教材 / 视频 / 导入 / 成长 / 社区 / AI老师 | 见上 KEEP | 换皮或自建目录 |
 
