@@ -28,6 +28,8 @@ import '../features/growth/presentation/growth_screen.dart';
 import '../features/guide/presentation/guide_screen.dart';
 import '../features/home/presentation/learning_home_screen.dart';
 import '../features/jingway/presentation/jingway_exam_home_screen.dart';
+import '../features/jingway/presentation/jingway_reading_screen.dart';
+import '../features/jingway/presentation/jingway_writing_screen.dart';
 import '../features/jingway/presentation/jingway_exam_screen.dart';
 import '../features/jingway/presentation/jingway_grade_onboarding_screen.dart';
 import '../features/jingway/presentation/jingway_grade_settings_screen.dart';
@@ -128,7 +130,7 @@ String? _jingwayEnglishRouteRedirect(String location) {
     return null;
   }
 
-  // Chinese exam specialty stub replaces CEFR English exam hub.
+  // Chinese exam specialty replaces CEFR English exam hub.
   if (location == '/exam' ||
       location.startsWith('/exam/')) {
     return location == '/exam' ? null : '/exam';
@@ -232,7 +234,7 @@ GoRouter goRouter(Ref ref) => GoRouter(
       path: '/exam',
       builder: (BuildContext context, GoRouterState state) {
         if (FlavorConfig.isJingwayProduct) {
-          return const JingwayExamScreen();
+          return JingwayExamScreen(packId: state.uri.queryParameters['pack']);
         }
         return const ExamHomeScreen();
       },
@@ -467,6 +469,16 @@ GoRouter goRouter(Ref ref) => GoRouter(
       builder: (BuildContext context, GoRouterState state) =>
           const LilinjiCatalogScreen(),
     ).fade(),
+    if (FlavorConfig.isJingwayProduct) ...[
+      GoRoute(
+        path: '/jingway/reading',
+        builder: (context, state) => const JingwayReadingScreen(),
+      ),
+      GoRoute(
+        path: '/jingway/writing',
+        builder: (context, state) => const JingwayWritingScreen(),
+      ),
+    ],
     GoRoute(
       path: '/reading',
       builder: (BuildContext context, GoRouterState state) =>

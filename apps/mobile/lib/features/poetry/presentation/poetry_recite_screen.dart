@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -14,10 +16,18 @@ import '../../jingway/presentation/jingway_rice_paper.dart';
 import '../../jingway/presentation/xinhua_lookup_sheet.dart';
 import '../../navigation/presentation/navigation_destination.dart';
 import '../../player/domain/cn_dictation_diff.dart';
+import '../../reading/data/reading_tts.dart';
 import '../../shared/presentation/pad/pad_scaffold.dart';
+import '../domain/poetry_cloze.dart';
+import '../domain/poetry_comprehension.dart';
 import 'poetry_catalog_screen.dart';
 
-enum _ReciteMode { mask, nextLine, dictation }
+enum _ReciteMode { listen, mask, nextLine, cloze, comprehension, dictation }
+
+final poetryComprehensionProvider =
+    FutureProvider.autoDispose<List<PoetryComprehensionItem>>((Ref ref) {
+  return loadPoetryComprehensions();
+});
 
 class PoetryReciteScreen extends ConsumerStatefulWidget {
   const PoetryReciteScreen({required this.unitId, super.key});
@@ -29,17 +39,28 @@ class PoetryReciteScreen extends ConsumerStatefulWidget {
 }
 
 class _PoetryReciteScreenState extends ConsumerState<PoetryReciteScreen> {
-  _ReciteMode _mode = _ReciteMode.mask;
-  JingwayWritingDirection _writing =
-      JingwayWritingDirection.horizontalLtr;
+  _ReciteMode _mode = _ReciteMode.listen;
+  JingwayWritingDirection _writing = JingwayWritingDirection.horizontalLtr;
   int _maskLevel = 1;
   int _lineIndex = 0;
   final TextEditingController _input = TextEditingController();
+  final List<TextEditingController> _blankInputs = <TextEditingController>[];
   CnDictationDiffResult? _lastDiff;
+  List<PoetryClozeItem> _cloze = const <PoetryClozeItem>[];
+  int _clozeIndex = 0;
+  bool _clozeOk = false;
+  String? _clozeHint;
+  int _compIndex = 0;
+  bool? _compOk;
+  int? _speakLine;
+  bool _speaking = false;
 
   @override
   void dispose() {
     _input.dispose();
+    for (final TextEditingController c in _blankInputs) {
+      c.dispose();
+    }
     super.dispose();
   }
 
@@ -50,9 +71,70 @@ class _PoetryReciteScreenState extends ConsumerState<PoetryReciteScreen> {
     return null;
   }
 
+  void _resetPracticeState() {
+    _lastDiff = null;
+    _input.clear();
+    _clozeOk = false;
+    _clozeHint = null;
+    _compOk = null;
+    for (final TextEditingController c in _blankInputs) {
+      c.clear();
+    }
+  }
+
+  void _ensureCloze(PoetryUnit unit) {
+    if (_cloze.isNotEmpty) return;
+    _cloze = buildPoetryCloze(lines: unit.lines, blanksPerPass: 2);
+    _clozeIndex = 0;
+  }
+
+  void _syncBlankControllers(int count) {
+    while (_blankInputs.length < count) {
+      _blankInputs.add(TextEditingController());
+    }
+    while (_blankInputs.length > count) {
+      _blankInputs.removeLast().dispose();
+    }
+  }
+
+  Future<void> _speakLines(PoetryUnit unit) async {
+    if (_speaking) return;
+    setState(() {
+      _speaking = true;
+      _mode = _ReciteMode.listen;
+      _speakLine = 0;
+    });
+    try {
+      for (int i = 0; i < unit.lines.length; i++) {
+        if (!mounted) return;
+        setState(() => _speakLine = i);
+        final String line = unit.lines[i].trim();
+        if (line.isEmpty) continue;
+        await speakReadingText(ref, line);
+        // Estimate dwell so highlight stays readable between network TTS calls.
+        final int ms = (line.runes.length * 280).clamp(600, 3200);
+        await Future<void>.delayed(Duration(milliseconds: ms ~/ 4));
+      }
+    } catch (_) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('朗读暂不可用，请检查网络后重试')),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _speaking = false;
+          _speakLine = null;
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final async = ref.watch(poetryCatalogProvider);
+    final compsAsync = ref.watch(poetryComprehensionProvider);
     return async.when(
       loading: () => const PadScaffold(
         currentDestination: AppNavDestination.reading,
@@ -78,6 +160,11 @@ class _PoetryReciteScreenState extends ConsumerState<PoetryReciteScreen> {
             ),
           );
         }
+        final List<PoetryComprehensionItem> comps = compsAsync.maybeWhen(
+          data: (List<PoetryComprehensionItem> allComps) =>
+              comprehensionsForPoem(allComps, unit.id),
+          orElse: () => const <PoetryComprehensionItem>[],
+        );
         return PadScaffold(
           currentDestination: AppNavDestination.reading,
           showContinueLearning: false,
@@ -91,29 +178,33 @@ class _PoetryReciteScreenState extends ConsumerState<PoetryReciteScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
-                      SegmentedButton<_ReciteMode>(
-                        segments: const <ButtonSegment<_ReciteMode>>[
-                          ButtonSegment(
-                            value: _ReciteMode.mask,
-                            label: Text('遮挡'),
-                          ),
-                          ButtonSegment(
-                            value: _ReciteMode.nextLine,
-                            label: Text('上下句'),
-                          ),
-                          ButtonSegment(
-                            value: _ReciteMode.dictation,
-                            label: Text('默写'),
-                          ),
+                      Wrap(
+                        spacing: 8,
+                        runSpacing: 8,
+                        children: <Widget>[
+                          for (final _ReciteMode m in _ReciteMode.values)
+                            ChoiceChip(
+                              label: Text(switch (m) {
+                                _ReciteMode.listen => '朗读',
+                                _ReciteMode.mask => '遮挡',
+                                _ReciteMode.nextLine => '上下句',
+                                _ReciteMode.cloze => '挖空',
+                                _ReciteMode.comprehension => '理解默写',
+                                _ReciteMode.dictation => '全文',
+                              }),
+                              selected: _mode == m,
+                              onSelected: (_) {
+                                setState(() {
+                                  _mode = m;
+                                  _resetPracticeState();
+                                  if (m == _ReciteMode.cloze) {
+                                    _cloze = const <PoetryClozeItem>[];
+                                    _ensureCloze(unit);
+                                  }
+                                });
+                              },
+                            ),
                         ],
-                        selected: <_ReciteMode>{_mode},
-                        onSelectionChanged: (Set<_ReciteMode> s) {
-                          setState(() {
-                            _mode = s.first;
-                            _lastDiff = null;
-                            _input.clear();
-                          });
-                        },
                       ),
                       const SizedBox(height: 10),
                       SegmentedButton<JingwayWritingDirection>(
@@ -129,8 +220,7 @@ class _PoetryReciteScreenState extends ConsumerState<PoetryReciteScreen> {
                           ),
                         ],
                         selected: <JingwayWritingDirection>{_writing},
-                        onSelectionChanged:
-                            (Set<JingwayWritingDirection> s) {
+                        onSelectionChanged: (Set<JingwayWritingDirection> s) {
                           setState(() => _writing = s.first);
                         },
                       ),
@@ -142,9 +232,13 @@ class _PoetryReciteScreenState extends ConsumerState<PoetryReciteScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
+                      if (_mode == _ReciteMode.listen) ..._buildListen(unit),
                       if (_mode == _ReciteMode.mask) ..._buildMask(unit),
                       if (_mode == _ReciteMode.nextLine)
                         ..._buildNextLine(unit),
+                      if (_mode == _ReciteMode.cloze) ..._buildCloze(unit),
+                      if (_mode == _ReciteMode.comprehension)
+                        ..._buildComprehension(unit, comps),
                       if (_mode == _ReciteMode.dictation)
                         ..._buildDictation(unit),
                     ],
@@ -156,6 +250,32 @@ class _PoetryReciteScreenState extends ConsumerState<PoetryReciteScreen> {
         );
       },
     );
+  }
+
+  List<Widget> _buildListen(PoetryUnit unit) {
+    final List<String> display = <String>[
+      for (int i = 0; i < unit.lines.length; i++) unit.lines[i],
+    ];
+    return <Widget>[
+      FilledButton.icon(
+        onPressed: _speaking ? null : () => unawaited(_speakLines(unit)),
+        icon: Icon(_speaking ? Icons.volume_up : Icons.play_arrow),
+        label: Text(_speaking ? '朗读中…' : '逐句朗读（ECS）'),
+      ),
+      const SizedBox(height: 12),
+      JingwayClassicalText(
+        lines: display,
+        direction: _writing,
+        title: unit.title,
+        meta: '${unit.dynasty} · ${unit.author} · 素扉式逐句高亮',
+        highlightLineIndex: _speakLine,
+      ),
+      const SizedBox(height: 8),
+      const Text(
+        '点句可查新华释义。音频走 ECS，不打进安装包。',
+        style: TextStyle(color: JingwayColors.hint, fontSize: 12),
+      ),
+    ];
   }
 
   List<Widget> _buildMask(PoetryUnit unit) {
@@ -245,6 +365,164 @@ class _PoetryReciteScreenState extends ConsumerState<PoetryReciteScreen> {
           },
           child: const Text('下一组'),
         ),
+      ],
+    ];
+  }
+
+  List<Widget> _buildCloze(PoetryUnit unit) {
+    _ensureCloze(unit);
+    if (_cloze.isEmpty) {
+      return const <Widget>[Text('本篇过短，暂无法挖空')];
+    }
+    final PoetryClozeItem item =
+        _cloze[_clozeIndex.clamp(0, _cloze.length - 1)];
+    return <Widget>[
+      Text(
+        '挖空 ${_clozeIndex + 1} / ${_cloze.length}（Reciter 结构）',
+        style: const TextStyle(color: JingwayColors.hint, fontSize: 12),
+      ),
+      const SizedBox(height: 8),
+      JingwayClassicalText(
+        lines: <String>[item.displayLine],
+        direction: _writing,
+        title: unit.title,
+        meta: '${unit.dynasty} · ${unit.author}',
+      ),
+      const SizedBox(height: 12),
+      TextField(
+        controller: _input,
+        decoration: const InputDecoration(
+          labelText: '填入空缺字',
+          border: OutlineInputBorder(),
+        ),
+      ),
+      const SizedBox(height: 8),
+      FilledButton(
+        onPressed: () {
+          final bool ok = acceptsPoetryCloze(item.blank, _input.text);
+          setState(() {
+            _clozeOk = ok;
+            _clozeHint = ok ? null : item.blank;
+          });
+          if (!ok) {
+            unawaited(
+              _enqueueWrongChars(
+                unit,
+                diffCnDictation(expected: item.blank, actual: _input.text),
+              ),
+            );
+          }
+        },
+        child: const Text('核对'),
+      ),
+      if (_clozeOk) ...<Widget>[
+        const SizedBox(height: 8),
+        const Text('正确'),
+        TextButton(
+          onPressed: () {
+            setState(() {
+              if (_clozeIndex >= _cloze.length - 1) {
+                _cloze = const <PoetryClozeItem>[];
+                _ensureCloze(unit);
+                _clozeIndex = 0;
+              } else {
+                _clozeIndex += 1;
+              }
+              _input.clear();
+              _clozeOk = false;
+              _clozeHint = null;
+            });
+          },
+          child: const Text('下一空'),
+        ),
+      ] else if (_clozeHint != null) ...<Widget>[
+        const SizedBox(height: 8),
+        Text('参考：$_clozeHint'),
+      ],
+    ];
+  }
+
+  List<Widget> _buildComprehension(
+    PoetryUnit unit,
+    List<PoetryComprehensionItem> comps,
+  ) {
+    if (comps.isEmpty) {
+      return const <Widget>[
+        Text('本篇暂无理解性默写题。可先用挖空或全文默写。'),
+      ];
+    }
+    final int i = _compIndex.clamp(0, comps.length - 1);
+    final PoetryComprehensionItem item = comps[i];
+    _syncBlankControllers(item.answers.length);
+    return <Widget>[
+      Text(
+        '理解默写 ${i + 1} / ${comps.length}',
+        style: const TextStyle(color: JingwayColors.hint, fontSize: 12),
+      ),
+      const SizedBox(height: 8),
+      Text(
+        item.promptWithFills(
+          _blankInputs.map((TextEditingController c) => c.text).toList(),
+        ),
+        style: const TextStyle(fontSize: 16, height: 1.6),
+      ),
+      const SizedBox(height: 12),
+      for (int b = 0; b < item.answers.length; b++) ...<Widget>[
+        TextField(
+          controller: _blankInputs[b],
+          decoration: InputDecoration(
+            labelText: '空 ${b + 1}',
+            border: const OutlineInputBorder(),
+          ),
+          onChanged: (_) => setState(() {}),
+        ),
+        const SizedBox(height: 8),
+      ],
+      FilledButton(
+        onPressed: () {
+          final List<String> fills = _blankInputs
+              .take(item.answers.length)
+              .map((TextEditingController c) => c.text)
+              .toList(growable: false);
+          final bool ok = acceptsComprehensionAnswers(
+            expected: item.answers,
+            actual: fills,
+          );
+          setState(() => _compOk = ok);
+          if (!ok) {
+            final String expectedJoined = item.answers.join();
+            final String actualJoined = fills.join();
+            unawaited(
+              _enqueueWrongChars(
+                unit,
+                diffCnDictation(
+                  expected: expectedJoined,
+                  actual: actualJoined,
+                ),
+              ),
+            );
+          }
+        },
+        child: const Text('提交'),
+      ),
+      if (_compOk == true) ...<Widget>[
+        const SizedBox(height: 8),
+        const Text('正确'),
+        TextButton(
+          onPressed: () {
+            setState(() {
+              _compIndex = i >= comps.length - 1 ? 0 : i + 1;
+              _compOk = null;
+              for (final TextEditingController c in _blankInputs) {
+                c.clear();
+              }
+            });
+          },
+          child: const Text('下一题'),
+        ),
+      ] else if (_compOk == false) ...<Widget>[
+        const SizedBox(height: 8),
+        Text('参考：${item.answers.join('，')}'),
       ],
     ];
   }

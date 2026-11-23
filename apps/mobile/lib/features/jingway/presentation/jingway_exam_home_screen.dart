@@ -148,9 +148,9 @@ class _JingwayExamHomeScreenState extends ConsumerState<JingwayExamHomeScreen> {
           ),
           _HomeCard(
             title: '阅读',
-            subtitle: '导入读物与书架，按篇精读',
-            action: '打开书架',
-            onTap: () => context.go('/reading'),
+            subtitle: '课内目录、课外短篇与个人书架',
+            action: '开始阅读',
+            onTap: () => context.push('/jingway/reading'),
           ),
           _HomeCard(
             title: '教材',
@@ -184,9 +184,15 @@ class _JingwayExamHomeScreenState extends ConsumerState<JingwayExamHomeScreen> {
           ),
           _HomeCard(
             title: '考试专项',
-            subtitle: '专项题包筹备中（阅读 / 文言 / 作文将按年级上线）',
-            action: '查看说明',
+            subtitle: '七年级字词基础与现代文阅读试练',
+            action: '进入专项',
             onTap: () => context.go('/exam'),
+          ),
+          _HomeCard(
+            title: '作文训练',
+            subtitle: '技巧课、片段练习和整篇批改',
+            action: '开始写作',
+            onTap: () => context.push('/jingway/writing'),
           ),
           if (kDebugMode)
             _HomeCard(

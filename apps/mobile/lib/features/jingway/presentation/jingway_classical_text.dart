@@ -21,6 +21,7 @@ class JingwayClassicalText extends StatelessWidget {
     this.meta,
     this.titleStyle,
     this.metaStyle,
+    this.highlightLineIndex,
     super.key,
   });
 
@@ -32,9 +33,17 @@ class JingwayClassicalText extends StatelessWidget {
   final TextStyle? titleStyle;
   final TextStyle? metaStyle;
 
+  /// SuFei-style TTS 逐句高亮（可选）。
+  final int? highlightLineIndex;
+
   @override
   Widget build(BuildContext context) {
     final TextStyle body = style ?? jingwayClassicalBodyStyle(context);
+    final TextStyle hi = body.copyWith(
+      color: JingwayColors.accentStrong,
+      backgroundColor: JingwayColors.accent.withValues(alpha: 0.12),
+      fontWeight: FontWeight.w700,
+    );
     if (direction == JingwayWritingDirection.horizontalLtr) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -58,16 +67,15 @@ class JingwayClassicalText extends StatelessWidget {
             ],
             const SizedBox(height: 16),
           ],
-          ...lines.map(
-            (String line) => Padding(
+          for (int i = 0; i < lines.length; i++)
+            Padding(
               padding: const EdgeInsets.only(bottom: 10),
               child: Text(
-                line,
+                lines[i],
                 textAlign: TextAlign.center,
-                style: body,
+                style: highlightLineIndex == i ? hi : body,
               ),
             ),
-          ),
         ],
       );
     }
@@ -105,13 +113,23 @@ class JingwayClassicalText extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 textDirection: TextDirection.rtl,
                 children: <Widget>[
-                  for (final String line in lines)
+                  for (int i = 0; i < lines.length; i++)
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8),
-                      child: _VerticalColumn(
-                        text: line,
-                        style: body,
-                        charSize: body.fontSize ?? 20,
+                      child: DecoratedBox(
+                        decoration: highlightLineIndex == i
+                            ? BoxDecoration(
+                                color: JingwayColors.accent.withValues(
+                                  alpha: 0.12,
+                                ),
+                                borderRadius: BorderRadius.circular(4),
+                              )
+                            : const BoxDecoration(),
+                        child: _VerticalColumn(
+                          text: lines[i],
+                          style: highlightLineIndex == i ? hi : body,
+                          charSize: body.fontSize ?? 20,
+                        ),
                       ),
                     ),
                 ],

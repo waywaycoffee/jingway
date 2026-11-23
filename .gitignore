@@ -58,6 +58,9 @@ deploy/_qa_web_creds.json
 **/*SESSDATA*
 tools/livetalking/livetalking_turn.env.ps1
 
+# Local open-source reference clones (do not push)
+tools/vendor_refs/
+
 # Local deploy / vendor artifacts (do not push)
 _acquireenglish_deploy.tar.gz
 _deploy_stage/

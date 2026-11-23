@@ -21,6 +21,7 @@ import '../../shared/presentation/pad/pad_top_bar.dart';
 import '../../shared/presentation/word_lookup_popup.dart';
 import '../../daily_review/presentation/foundation_media_video_sheet.dart';
 import '../../learning_modules/assessment_panel.dart';
+import '../../jingway/domain/jingway_practice.dart';
 import '../../words/data/offline_word_dictionary.dart';
 import '../../words/domain/foundation_media.dart';
 import '../../words/presentation/foundation_media_provider.dart';
@@ -851,6 +852,12 @@ class _ReadingReaderScreenState extends ConsumerState<ReadingReaderScreen> {
             : '精读 · ${_ttsGender.labelCn} · 难词(>$_freqThreshold)${_slowMode ? ' · 慢读' : ''}$rateLabel',
         leading: PadBackButton(onPressed: () => context.pop()),
         actions: <Widget>[
+          if (FlavorConfig.isJingwayProduct && doc.id == jingwayReadingSampleId)
+            IconButton(
+              tooltip: '篇后练习',
+              icon: const Icon(Icons.quiz_outlined),
+              onPressed: () => context.push('/exam?pack=$jingwayReadingPracticeId'),
+            ),
           IconButton(
             tooltip:
                 '切换为${_ttsGender == ReadingTtsGender.female ? '男声' : '女声'}',
@@ -982,6 +989,7 @@ class _ReadingReaderScreenState extends ConsumerState<ReadingReaderScreen> {
         ],
       ),
       body: ReadingDigitalHumanBallHost(
+        enabled: !FlavorConfig.isJingwayProduct || doc.id == jingwayReadingSampleId,
         doc: doc,
         focusedSentence: _focusedSentence,
         child: ColoredBox(

@@ -30,11 +30,13 @@ class ReadingDigitalHumanBallHost extends ConsumerStatefulWidget {
     required this.doc,
     required this.child,
     this.focusedSentence = '',
+    this.enabled = true,
     super.key,
   });
 
   final ReadingDoc doc;
   final Widget child;
+  final bool enabled;
   final String focusedSentence;
 
   @override
@@ -65,6 +67,7 @@ class _ReadingDigitalHumanBallHostState
 
   @override
   Widget build(BuildContext context) {
+    if (!widget.enabled) return widget.child;
     final DigitalHumanPersona persona =
         ref.watch(learningSettingsProvider).selectedDigitalHuman;
     final String avatar = persona.assetPath;

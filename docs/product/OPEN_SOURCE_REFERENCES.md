@@ -64,6 +64,8 @@ NCR、CKnowEdit 等：**禁止进正式包**（PRD / ATTRIBUTION）。
 4. **能力评估**：CMRC/完形学「题型与过程技能标注」，不用研究集冒充课内真题。  
 5. **明确不碰**：ChinaTextbook PDF 正文进包；未授权高考真题整包商用；研究集进正式 APK。
 
+**落地进度**见 [OPEN_SOURCE_INTEGRATION.md](./OPEN_SOURCE_INTEGRATION.md)（诗文挖空/理解默写/朗读高亮、读练报告、分级故事样本已接）。
+
 ---
 
 ## 6. 后续可继续扫的关键词

@@ -7,6 +7,8 @@
 | [chinese-xinhua](https://github.com/pwxcoo/chinese-xinhua) | MIT | 汉字/成语释义、听写与点词 |
 | [chinese-poetry](https://github.com/chinese-poetry/chinese-poetry) | MIT | 古诗文原文精选（古籍公有领域整理） |
 | [chinese-dictionary](https://gitee.com/ridp/chinese-dictionary) | MIT | 多音字、分级、词性、文言补充 |
+| [Binkic/Reciter](https://github.com/Binkic/Reciter)（结构启发） | MIT | 挖空/理解性默写题型结构；景行题干为原创，不整包引入其题库 |
+| [wceng/SuFei](https://github.com/wceng/SuFei)（交互启发） | MIT | 宣纸阅读与逐句朗读高亮交互 |
 
 ## 教材目录（按需打开，不打进 APK 正文）
 

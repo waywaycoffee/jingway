@@ -1,0 +1,54 @@
+{
+  "version": 1,
+  "source": "jingway original prompts; schema inspired by Binkic/Reciter (MIT); texts from chinese-poetry",
+  "comprehensions": [
+    {
+      "id": "jingye_si_c1",
+      "poemId": "jingye_si",
+      "title": "静夜思",
+      "author": "李白",
+      "content": "李白《静夜思》中，写诗人误把月光当成霜的句子是「$0」。",
+      "answer": ["疑是地上霜"]
+    },
+    {
+      "id": "jingye_si_c2",
+      "poemId": "jingye_si",
+      "title": "静夜思",
+      "author": "李白",
+      "content": "《静夜思》末两句写望月思乡：「$0，$1」。",
+      "answer": ["举头望明月", "低头思故乡"]
+    },
+    {
+      "id": "chun_xiao_c1",
+      "poemId": "chun_xiao",
+      "title": "春晓",
+      "author": "孟浩然",
+      "content": "孟浩然《春晓》中写出春雨后落花之多的句子是「$0」。",
+      "answer": ["花落知多少"]
+    },
+    {
+      "id": "deng_guanquelou_c1",
+      "poemId": "deng_guanquelou",
+      "title": "登鹳雀楼",
+      "author": "王之涣",
+      "content": "王之涣《登鹳雀楼》中表现积极进取、高瞻远瞩的名句是「$0，$1」。",
+      "answer": ["欲穷千里目", "更上一层楼"]
+    },
+    {
+      "id": "wang_yue_c1",
+      "poemId": "wang_yue",
+      "title": "望岳",
+      "author": "杜甫",
+      "content": "杜甫《望岳》中表现诗人不怕困难、敢于攀登的句子是「$0，$1」。",
+      "answer": ["会当凌绝顶", "一览众山小"]
+    },
+    {
+      "id": "you_zi_yin_c1",
+      "poemId": "you_zi_yin",
+      "title": "游子吟",
+      "author": "孟郊",
+      "content": "孟郊《游子吟》中写母爱细腻的千古名句是「$0，$1」。",
+      "answer": ["谁言寸草心", "报得三春晖"]
+    }
+  ]
+}
