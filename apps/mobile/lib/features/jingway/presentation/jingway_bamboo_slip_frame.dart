@@ -11,12 +11,35 @@ enum JingwayWritingDirection {
   verticalRtl,
 }
 
-/// Full vertical bamboo-slip (竹简) background with warm rice-paper fill.
+/// Full-bleed vertical bamboo-slip (竹简) page background.
+class JingwayBambooSlipBackdrop extends StatelessWidget {
+  const JingwayBambooSlipBackdrop({
+    required this.child,
+    this.stripWidth = 32,
+    super.key,
+  });
+
+  final Widget child;
+  final double stripWidth;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      painter: BambooSlipBackgroundPainter(
+        stripWidth: stripWidth,
+        washOpacity: 0.22,
+      ),
+      child: SizedBox.expand(child: child),
+    );
+  }
+}
+
+/// Framed bamboo panel for poetry content (also paints vertical slips).
 class JingwayBambooSlipFrame extends StatelessWidget {
   const JingwayBambooSlipFrame({
     required this.child,
     this.padding = const EdgeInsets.fromLTRB(18, 20, 18, 22),
-    this.stripWidth = 28,
+    this.stripWidth = 30,
     super.key,
   });
 
@@ -27,58 +50,77 @@ class JingwayBambooSlipFrame extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(10),
+      borderRadius: BorderRadius.circular(12),
       child: CustomPaint(
-        painter: _BambooSlipBackgroundPainter(stripWidth: stripWidth),
-        child: Padding(
-          padding: padding,
-          child: child,
+        painter: BambooSlipBackgroundPainter(
+          stripWidth: stripWidth,
+          washOpacity: 0.28,
+          drawCords: true,
+        ),
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: const Color(0xFF6B5428).withValues(alpha: 0.45),
+            ),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Padding(
+            padding: padding,
+            child: child,
+          ),
         ),
       ),
     );
   }
 }
 
-class _BambooSlipBackgroundPainter extends CustomPainter {
-  const _BambooSlipBackgroundPainter({required this.stripWidth});
+/// Paints vertical bamboo slips edge-to-edge.
+class BambooSlipBackgroundPainter extends CustomPainter {
+  const BambooSlipBackgroundPainter({
+    required this.stripWidth,
+    this.washOpacity = 0.25,
+    this.drawCords = true,
+  });
 
   final double stripWidth;
+  final double washOpacity;
+  final bool drawCords;
 
-  static const Color _bamboo = Color(0xFFC9AE7A);
-  static const Color _bambooDark = Color(0xFF8B6914);
-  static const Color _bambooMid = Color(0xFFB89555);
-  static const Color _bambooLight = Color(0xFFE6D4A6);
-  static const Color _gap = Color(0xFF6B5428);
+  static const Color _bamboo = Color(0xFFC4A574);
+  static const Color _bambooDark = Color(0xFF7A5C28);
+  static const Color _bambooMid = Color(0xFFA8884A);
+  static const Color _bambooLight = Color(0xFFE8D5A8);
+  static const Color _gap = Color(0xFF4A3818);
   static const Color _cord = Color(0xFF7C2D12);
-  static const Color _paperWash = Color(0x66F8F0DA);
+  static const Color _node = Color(0xFF5C4318);
 
   @override
   void paint(Canvas canvas, Size size) {
-    canvas.drawRect(
-      Offset.zero & size,
-      Paint()..color = JingwayColors.cream,
-    );
+    // Dark base so gaps between slips read clearly.
+    canvas.drawRect(Offset.zero & size, Paint()..color = _gap);
 
-    final double pitch = stripWidth + 3;
+    final double gap = 4;
+    final double pitch = stripWidth + gap;
     int i = 0;
-    for (double x = 0; x < size.width + pitch; x += pitch, i++) {
+    for (double x = -stripWidth * 0.25; x < size.width + pitch; x += pitch, i++) {
       _drawStrip(
         canvas,
         Rect.fromLTWH(x, 0, stripWidth, size.height),
         mirror: i.isOdd,
       );
-      // Gap between slips.
+    }
+
+    if (washOpacity > 0) {
       canvas.drawRect(
-        Rect.fromLTWH(x + stripWidth, 0, 3, size.height),
-        Paint()..color = _gap.withValues(alpha: 0.35),
+        Offset.zero & size,
+        Paint()..color = JingwayColors.surface.withValues(alpha: washOpacity),
       );
     }
 
-    // Soft paper wash so text stays readable.
-    canvas.drawRect(Offset.zero & size, Paint()..color = _paperWash);
-
-    _drawCord(canvas, y: 16, width: size.width);
-    _drawCord(canvas, y: size.height - 16, width: size.width);
+    if (drawCords) {
+      _drawCord(canvas, y: 18, width: size.width);
+      _drawCord(canvas, y: size.height - 18, width: size.width);
+    }
   }
 
   void _drawStrip(Canvas canvas, Rect rect, {required bool mirror}) {
@@ -88,16 +130,43 @@ class _BambooSlipBackgroundPainter extends CustomPainter {
             ? const <Color>[_bambooLight, _bamboo, _bambooDark]
             : const <Color>[_bambooDark, _bambooMid, _bambooLight],
       ).createShader(rect);
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(rect.deflate(0.5), const Radius.circular(2)),
-      fill,
+
+    final RRect slip = RRect.fromRectAndRadius(
+      rect.deflate(0.4),
+      const Radius.circular(3),
+    );
+    canvas.drawRRect(slip, fill);
+
+    // Edge bevel for strip separation.
+    canvas.drawLine(
+      Offset(rect.left + 0.8, rect.top),
+      Offset(rect.left + 0.8, rect.bottom),
+      Paint()
+        ..color = Colors.white.withValues(alpha: 0.22)
+        ..strokeWidth = 1.2,
+    );
+    canvas.drawLine(
+      Offset(rect.right - 0.8, rect.top),
+      Offset(rect.right - 0.8, rect.bottom),
+      Paint()
+        ..color = _gap.withValues(alpha: 0.55)
+        ..strokeWidth = 1.4,
     );
 
+    // Bamboo nodes (节).
     final Paint ring = Paint()
-      ..color = _bambooDark.withValues(alpha: 0.5)
-      ..strokeWidth = 1.1
+      ..color = _node.withValues(alpha: 0.7)
+      ..strokeWidth = 1.4
       ..style = PaintingStyle.stroke;
-    for (double y = 28; y < rect.height - 28; y += 44) {
+    final Paint ringFill = Paint()..color = _node.withValues(alpha: 0.18);
+    for (double y = 36; y < rect.height - 36; y += 52) {
+      final Rect band = Rect.fromLTWH(
+        rect.left + 1,
+        rect.top + y,
+        rect.width - 2,
+        5,
+      );
+      canvas.drawRect(band, ringFill);
       canvas
         ..drawLine(
           Offset(rect.left + 1, rect.top + y),
@@ -105,37 +174,57 @@ class _BambooSlipBackgroundPainter extends CustomPainter {
           ring,
         )
         ..drawLine(
-          Offset(rect.left + 1, rect.top + y + 2.5),
-          Offset(rect.right - 1, rect.top + y + 2.5),
+          Offset(rect.left + 1, rect.top + y + 5),
+          Offset(rect.right - 1, rect.top + y + 5),
           ring,
         );
     }
 
+    // Specular highlight down the slip.
     canvas.drawRRect(
       RRect.fromRectAndRadius(
-        Rect.fromLTWH(rect.left + 4, rect.top + 10, 2.5, rect.height - 20),
-        const Radius.circular(1),
+        Rect.fromLTWH(rect.left + 5, rect.top + 8, 3.2, rect.height - 16),
+        const Radius.circular(1.5),
       ),
-      Paint()..color = Colors.white.withValues(alpha: 0.18),
+      Paint()..color = Colors.white.withValues(alpha: 0.28),
     );
   }
 
   void _drawCord(Canvas canvas, {required double y, required double width}) {
     final Paint cord = Paint()
-      ..color = _cord.withValues(alpha: 0.85)
-      ..strokeWidth = 2
+      ..color = _cord.withValues(alpha: 0.9)
+      ..strokeWidth = 2.4
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke;
     final Path path = Path()
-      ..moveTo(8, y)
-      ..cubicTo(width * 0.28, y - 3, width * 0.42, y + 4, width * 0.5, y)
-      ..cubicTo(width * 0.58, y - 4, width * 0.72, y + 3, width - 8, y);
+      ..moveTo(6, y)
+      ..cubicTo(width * 0.28, y - 4, width * 0.42, y + 5, width * 0.5, y)
+      ..cubicTo(width * 0.58, y - 5, width * 0.72, y + 4, width - 6, y);
     canvas.drawPath(path, cord);
+
+    // Binding knots.
+    final Paint knot = Paint()..color = _cord;
+    for (final double kx in <double>[
+      18,
+      width * 0.25,
+      width * 0.5,
+      width * 0.75,
+      width - 18,
+    ]) {
+      canvas.drawCircle(Offset(kx, y), 3.2, knot);
+      canvas.drawCircle(
+        Offset(kx, y),
+        1.4,
+        Paint()..color = const Color(0xFFE8D5A8).withValues(alpha: 0.55),
+      );
+    }
   }
 
   @override
-  bool shouldRepaint(covariant _BambooSlipBackgroundPainter oldDelegate) =>
-      oldDelegate.stripWidth != stripWidth;
+  bool shouldRepaint(covariant BambooSlipBackgroundPainter oldDelegate) =>
+      oldDelegate.stripWidth != stripWidth ||
+      oldDelegate.washOpacity != washOpacity ||
+      oldDelegate.drawCords != drawCords;
 }
 
 /// Renders classical lines in horizontal LTR or vertical RTL layout.
@@ -161,8 +250,7 @@ class JingwayClassicalText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextStyle body =
-        style ?? jingwayClassicalBodyStyle(context);
+    final TextStyle body = style ?? jingwayClassicalBodyStyle(context);
     if (direction == JingwayWritingDirection.horizontalLtr) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -278,7 +366,7 @@ class _VerticalColumn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<String> chars = text.runes
-        .map((int r) => String.fromCharCode(r))
+        .map(String.fromCharCode)
         .where((String c) => c.trim().isNotEmpty || c == '　')
         .toList(growable: false);
     return Column(

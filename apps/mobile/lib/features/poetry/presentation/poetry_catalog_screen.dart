@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../jingway/presentation/jingway_bamboo_slip_frame.dart';
+import '../../jingway/presentation/jingway_colors.dart';
 import '../../jingway/presentation/jingway_profile_provider.dart';
 import '../../navigation/presentation/navigation_destination.dart';
 import '../../shared/presentation/pad/pad_scaffold.dart';
@@ -64,45 +66,78 @@ class PoetryCatalogScreen extends ConsumerWidget {
     return PadScaffold(
       currentDestination: AppNavDestination.reading,
       showContinueLearning: false,
-      body: async.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (Object e, StackTrace st) => Center(child: Text('加载失败：$e')),
-        data: (List<PoetryUnit> all) {
-          final List<PoetryUnit> items = grade == null
-              ? all
-              : all
-                  .where((PoetryUnit u) => u.grades.contains(grade))
-                  .toList(growable: false);
-          if (items.isEmpty) {
-            return const Center(child: Text('当前年级暂无必背篇目'));
-          }
-          return ListView.separated(
-            padding: const EdgeInsets.fromLTRB(16, 20, 16, 100),
-            itemCount: items.length + 1,
-            separatorBuilder: (_, __) => const SizedBox(height: 8),
-            itemBuilder: (BuildContext context, int i) {
-              if (i == 0) {
-                return Text(
-                  '古诗文 · ${grade == null ? '全部' : '$grade 年级'}',
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.w800,
+      backgroundColor: const Color(0xFFA8884A),
+      body: JingwayBambooSlipBackdrop(
+        child: async.when(
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (Object e, StackTrace st) =>
+              Center(child: Text('加载失败：$e')),
+          data: (List<PoetryUnit> all) {
+            final List<PoetryUnit> items = grade == null
+                ? all
+                : all
+                    .where((PoetryUnit u) => u.grades.contains(grade))
+                    .toList(growable: false);
+            if (items.isEmpty) {
+              return const Center(child: Text('当前年级暂无必背篇目'));
+            }
+            return ListView.separated(
+              padding: const EdgeInsets.fromLTRB(16, 20, 16, 100),
+              itemCount: items.length + 1,
+              separatorBuilder: (_, __) => const SizedBox(height: 8),
+              itemBuilder: (BuildContext context, int i) {
+                if (i == 0) {
+                  return DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: JingwayColors.surface.withValues(alpha: 0.9),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: JingwayColors.chipBorder),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 14,
+                        vertical: 12,
                       ),
+                      child: Text(
+                        '古诗文 · ${grade == null ? '全部' : '$grade 年级'}',
+                        style:
+                            Theme.of(context).textTheme.titleLarge?.copyWith(
+                                  fontFamily: 'ZhiMangXing',
+                                  fontWeight: FontWeight.w500,
+                                  color: JingwayColors.title,
+                                ),
+                      ),
+                    ),
+                  );
+                }
+                final PoetryUnit u = items[i - 1];
+                return ListTile(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14),
+                    side: const BorderSide(color: JingwayColors.chipBorder),
+                  ),
+                  tileColor: JingwayColors.surface.withValues(alpha: 0.92),
+                  title: Text(
+                    u.title,
+                    style: const TextStyle(
+                      color: JingwayColors.title,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  subtitle: Text(
+                    '${u.dynasty} · ${u.author}',
+                    style: const TextStyle(color: JingwayColors.hint),
+                  ),
+                  trailing: const Icon(
+                    Icons.chevron_right,
+                    color: JingwayColors.section,
+                  ),
+                  onTap: () => context.push('/poetry/${u.id}'),
                 );
-              }
-              final PoetryUnit u = items[i - 1];
-              return ListTile(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(14),
-                ),
-                tileColor: Colors.white,
-                title: Text(u.title),
-                subtitle: Text('${u.dynasty} · ${u.author}'),
-                trailing: const Icon(Icons.chevron_right),
-                onTap: () => context.push('/poetry/${u.id}'),
-              );
-            },
-          );
-        },
+              },
+            );
+          },
+        ),
       ),
     );
   }
