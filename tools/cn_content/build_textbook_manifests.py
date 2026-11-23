@@ -11,6 +11,7 @@ Never writes PDF or lesson body into the repo — only titles, grades, URLs.
 
 from __future__ import annotations
 
+import hashlib
 import json
 import re
 import ssl
@@ -171,9 +172,12 @@ def build_china_textbook() -> dict:
             }
         )
     items.sort(key=lambda x: (x.get("grade") or 99, x.get("volume") or "", x["title"]))
-    # Stable ids from path
+    # Stable unique ids: keep CJK (paths are Chinese); hash suffix avoids collisions.
     for it in items:
-        it["id"] = "china_" + re.sub(r"[^a-zA-Z0-9]+", "_", it["path"])[:64].strip("_")
+        path = it["path"]
+        slug = re.sub(r"[^a-zA-Z0-9\u4e00-\u9fff]+", "_", path)[:56].strip("_")
+        digest = hashlib.sha1(path.encode("utf-8")).hexdigest()[:10]
+        it["id"] = f"china_{slug}_{digest}" if slug else f"china_{digest}"
     return {
         "source": "china_textbook",
         "repo": "https://github.com/TapXWorld/ChinaTextbook",

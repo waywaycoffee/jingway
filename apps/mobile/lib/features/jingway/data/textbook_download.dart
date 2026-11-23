@@ -35,11 +35,15 @@ class TextbookDownloadService {
   }
 
   String _safeFileName(TextbookItem item, {required String ext}) {
+    final String seed = item.path.isNotEmpty
+        ? item.path
+        : (item.remoteUrl.isNotEmpty ? item.remoteUrl : item.id);
+    final String digest = seed.hashCode.toUnsigned(32).toRadixString(16);
     final String base = item.id
         .replaceAll(RegExp(r'[^a-zA-Z0-9_\-\u4e00-\u9fff]'), '_')
         .replaceAll(RegExp(r'_+'), '_');
-    final String clipped = base.length > 80 ? base.substring(0, 80) : base;
-    return '$clipped.$ext';
+    final String clipped = base.length > 64 ? base.substring(0, 64) : base;
+    return '${clipped}_$digest.$ext';
   }
 
   Future<File?> localFileIfExists(
