@@ -133,9 +133,12 @@ String? _jingwayEnglishRouteRedirect(String location) {
     return location == '/exam' ? null : '/exam';
   }
 
-  // Kept: /library, /importCourse, /episodes/*, /reading*, /growth,
-  // /discover, /digital-human (AI老师). Block English-only leftovers.
+  // Keep 阅读 (/reading*) and 视频导入 (/importCourse + /library + /episodes/*).
+  // Still block English-leaning product surfaces.
   const Set<String> exactBlocked = <String>{
+    '/growth',
+    '/discover',
+    '/digital-human',
     '/peer-oral',
     '/guide',
     '/phrases',
