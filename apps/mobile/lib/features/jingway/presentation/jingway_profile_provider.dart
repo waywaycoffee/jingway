@@ -7,15 +7,15 @@ import '../domain/jingway_profile.dart';
 
 const String kJingwayProfileHiveKey = 'jingway_profile_v1';
 
-final jingwayProfileProvider =
-    StateNotifierProvider<JingwayProfileNotifier, JingwayProfile>(
-  (Ref ref) => JingwayProfileNotifier(),
-);
+final NotifierProvider<JingwayProfileNotifier, JingwayProfile>
+jingwayProfileProvider =
+    NotifierProvider<JingwayProfileNotifier, JingwayProfile>(
+      JingwayProfileNotifier.new,
+    );
 
-class JingwayProfileNotifier extends StateNotifier<JingwayProfile> {
-  JingwayProfileNotifier() : super(_load()) {
-    // Ensure Hive box is available; _load tolerates missing box.
-  }
+class JingwayProfileNotifier extends Notifier<JingwayProfile> {
+  @override
+  JingwayProfile build() => _load();
 
   static JingwayProfile _load() {
     try {

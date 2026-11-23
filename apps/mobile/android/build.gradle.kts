@@ -1,6 +1,8 @@
 allprojects {
     repositories {
-        // Prefer China Flutter storage mirror when Google Storage times out.
+        // Prefer China mirrors when Google/Maven Central are slow or blocked.
+        maven { url = uri("https://maven.aliyun.com/repository/google") }
+        maven { url = uri("https://maven.aliyun.com/repository/central") }
         maven { url = uri("https://storage.flutter-io.cn/download.flutter.io") }
         maven { url = uri("https://storage.googleapis.com/download.flutter.io") }
         google()
