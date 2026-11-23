@@ -5,9 +5,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../jingway/presentation/jingway_bamboo_slip_frame.dart';
+import '../../jingway/presentation/jingway_classical_text.dart';
 import '../../jingway/presentation/jingway_colors.dart';
 import '../../jingway/presentation/jingway_profile_provider.dart';
+import '../../jingway/presentation/jingway_rice_paper.dart';
 import '../../navigation/presentation/navigation_destination.dart';
 import '../../shared/presentation/pad/pad_scaffold.dart';
 
@@ -66,8 +67,8 @@ class PoetryCatalogScreen extends ConsumerWidget {
     return PadScaffold(
       currentDestination: AppNavDestination.reading,
       showContinueLearning: false,
-      backgroundColor: const Color(0xFFA8884A),
-      body: JingwayBambooSlipBackdrop(
+      backgroundColor: JingwayColors.cream,
+      body: JingwayRicePaperBackdrop(
         child: async.when(
           loading: () => const Center(child: CircularProgressIndicator()),
           error: (Object e, StackTrace st) =>
@@ -87,52 +88,34 @@ class PoetryCatalogScreen extends ConsumerWidget {
               separatorBuilder: (_, __) => const SizedBox(height: 8),
               itemBuilder: (BuildContext context, int i) {
                 if (i == 0) {
-                  return DecoratedBox(
-                    decoration: BoxDecoration(
-                      color: JingwayColors.surface.withValues(alpha: 0.9),
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: JingwayColors.chipBorder),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 14,
-                        vertical: 12,
-                      ),
-                      child: Text(
-                        '古诗文 · ${grade == null ? '全部' : '$grade 年级'}',
-                        style:
-                            Theme.of(context).textTheme.titleLarge?.copyWith(
-                                  fontFamily: 'ZhiMangXing',
-                                  fontWeight: FontWeight.w500,
-                                  color: JingwayColors.title,
-                                ),
-                      ),
+                  return Text(
+                    '古诗文 · ${grade == null ? '全部' : '$grade 年级'}',
+                    style: jingwayClassicalTitleStyle(context).copyWith(
+                      fontSize: 26,
                     ),
                   );
                 }
                 final PoetryUnit u = items[i - 1];
-                return ListTile(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14),
-                    side: const BorderSide(color: JingwayColors.chipBorder),
-                  ),
-                  tileColor: JingwayColors.surface.withValues(alpha: 0.92),
-                  title: Text(
-                    u.title,
-                    style: const TextStyle(
-                      color: JingwayColors.title,
-                      fontWeight: FontWeight.w700,
+                return JingwayRicePaperPanel(
+                  padding: EdgeInsets.zero,
+                  child: ListTile(
+                    title: Text(
+                      u.title,
+                      style: const TextStyle(
+                        color: JingwayColors.title,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
+                    subtitle: Text(
+                      '${u.dynasty} · ${u.author}',
+                      style: const TextStyle(color: JingwayColors.hint),
+                    ),
+                    trailing: const Icon(
+                      Icons.chevron_right,
+                      color: JingwayColors.section,
+                    ),
+                    onTap: () => context.push('/poetry/${u.id}'),
                   ),
-                  subtitle: Text(
-                    '${u.dynasty} · ${u.author}',
-                    style: const TextStyle(color: JingwayColors.hint),
-                  ),
-                  trailing: const Icon(
-                    Icons.chevron_right,
-                    color: JingwayColors.section,
-                  ),
-                  onTap: () => context.push('/poetry/${u.id}'),
                 );
               },
             );

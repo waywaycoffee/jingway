@@ -7,9 +7,10 @@ import '../../daily_review/domain/daily_review.dart';
 import '../../daily_review/domain/memory_item.dart';
 import '../../jingway/data/xinhua_dictionary.dart';
 import '../../jingway/domain/grade_tags.dart';
-import '../../jingway/presentation/jingway_bamboo_slip_frame.dart';
+import '../../jingway/presentation/jingway_classical_text.dart';
 import '../../jingway/presentation/jingway_colors.dart';
 import '../../jingway/presentation/jingway_profile_provider.dart';
+import '../../jingway/presentation/jingway_rice_paper.dart';
 import '../../jingway/presentation/xinhua_lookup_sheet.dart';
 import '../../navigation/presentation/navigation_destination.dart';
 import '../../player/domain/cn_dictation_diff.dart';
@@ -80,71 +81,64 @@ class _PoetryReciteScreenState extends ConsumerState<PoetryReciteScreen> {
         return PadScaffold(
           currentDestination: AppNavDestination.reading,
           showContinueLearning: false,
-          backgroundColor: const Color(0xFFA8884A),
-          body: JingwayBambooSlipBackdrop(
+          backgroundColor: JingwayColors.cream,
+          body: JingwayRicePaperBackdrop(
             child: ListView(
               padding: const EdgeInsets.fromLTRB(16, 20, 16, 100),
               children: <Widget>[
-                DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: JingwayColors.surface.withValues(alpha: 0.88),
-                    borderRadius: BorderRadius.circular(14),
-                    border: Border.all(color: JingwayColors.chipBorder),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(10, 10, 10, 12),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        SegmentedButton<_ReciteMode>(
-                          segments: const <ButtonSegment<_ReciteMode>>[
-                            ButtonSegment(
-                              value: _ReciteMode.mask,
-                              label: Text('遮挡'),
-                            ),
-                            ButtonSegment(
-                              value: _ReciteMode.nextLine,
-                              label: Text('上下句'),
-                            ),
-                            ButtonSegment(
-                              value: _ReciteMode.dictation,
-                              label: Text('默写'),
-                            ),
-                          ],
-                          selected: <_ReciteMode>{_mode},
-                          onSelectionChanged: (Set<_ReciteMode> s) {
-                            setState(() {
-                              _mode = s.first;
-                              _lastDiff = null;
-                              _input.clear();
-                            });
-                          },
-                        ),
-                        const SizedBox(height: 10),
-                        SegmentedButton<JingwayWritingDirection>(
-                          segments:
-                              const <ButtonSegment<JingwayWritingDirection>>[
-                            ButtonSegment(
-                              value: JingwayWritingDirection.horizontalLtr,
-                              label: Text('横排 · 左→右'),
-                            ),
-                            ButtonSegment(
-                              value: JingwayWritingDirection.verticalRtl,
-                              label: Text('竖排 · 右→左'),
-                            ),
-                          ],
-                          selected: <JingwayWritingDirection>{_writing},
-                          onSelectionChanged:
-                              (Set<JingwayWritingDirection> s) {
-                            setState(() => _writing = s.first);
-                          },
-                        ),
-                      ],
-                    ),
+                JingwayRicePaperPanel(
+                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 12),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      SegmentedButton<_ReciteMode>(
+                        segments: const <ButtonSegment<_ReciteMode>>[
+                          ButtonSegment(
+                            value: _ReciteMode.mask,
+                            label: Text('遮挡'),
+                          ),
+                          ButtonSegment(
+                            value: _ReciteMode.nextLine,
+                            label: Text('上下句'),
+                          ),
+                          ButtonSegment(
+                            value: _ReciteMode.dictation,
+                            label: Text('默写'),
+                          ),
+                        ],
+                        selected: <_ReciteMode>{_mode},
+                        onSelectionChanged: (Set<_ReciteMode> s) {
+                          setState(() {
+                            _mode = s.first;
+                            _lastDiff = null;
+                            _input.clear();
+                          });
+                        },
+                      ),
+                      const SizedBox(height: 10),
+                      SegmentedButton<JingwayWritingDirection>(
+                        segments:
+                            const <ButtonSegment<JingwayWritingDirection>>[
+                          ButtonSegment(
+                            value: JingwayWritingDirection.horizontalLtr,
+                            label: Text('横排 · 左→右'),
+                          ),
+                          ButtonSegment(
+                            value: JingwayWritingDirection.verticalRtl,
+                            label: Text('竖排 · 右→左'),
+                          ),
+                        ],
+                        selected: <JingwayWritingDirection>{_writing},
+                        onSelectionChanged:
+                            (Set<JingwayWritingDirection> s) {
+                          setState(() => _writing = s.first);
+                        },
+                      ),
+                    ],
                   ),
                 ),
                 const SizedBox(height: 16),
-                JingwayBambooSlipFrame(
+                JingwayRicePaperPanel(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
