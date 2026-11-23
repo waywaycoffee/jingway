@@ -1475,7 +1475,7 @@ class _ReadingReaderScreenState extends ConsumerState<ReadingReaderScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: Material(
+      bottomBar: Material(
         color: bg,
         elevation: 6,
         child: SafeArea(

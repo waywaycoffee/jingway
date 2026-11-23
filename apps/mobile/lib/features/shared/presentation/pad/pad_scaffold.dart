@@ -12,6 +12,7 @@ class PadScaffold extends StatelessWidget {
     required this.body,
     super.key,
     this.topBar,
+    this.bottomBar,
     this.useBottomTabWhenPortrait = true,
     this.showNavigation = true,
     this.showContinueLearning = true,
@@ -21,6 +22,10 @@ class PadScaffold extends StatelessWidget {
   final AppNavDestination currentDestination;
   final Widget body;
   final Widget? topBar;
+
+  /// Optional fixed bar under [body] (e.g. reading progress). When navigation
+  /// tabs are shown, this replaces the floating tab bar.
+  final Widget? bottomBar;
   final bool useBottomTabWhenPortrait;
   final bool showNavigation;
   final bool showContinueLearning;
@@ -51,10 +56,11 @@ class PadScaffold extends StatelessWidget {
             ? const ContinueLearningButton()
             : null,
         body: SafeArea(top: false, bottom: false, child: content),
-        bottomNavigationBar: SafeArea(
-          top: false,
-          child: FloatingBottomNav(current: currentDestination),
-        ),
+        bottomNavigationBar: bottomBar ??
+            SafeArea(
+              top: false,
+              child: FloatingBottomNav(current: currentDestination),
+            ),
       );
     }
 
@@ -63,6 +69,7 @@ class PadScaffold extends StatelessWidget {
       floatingActionButton: showContinueLearning
           ? const ContinueLearningButton()
           : null,
+      bottomNavigationBar: bottomBar,
       body: SafeArea(
         top: false,
         child: Row(
