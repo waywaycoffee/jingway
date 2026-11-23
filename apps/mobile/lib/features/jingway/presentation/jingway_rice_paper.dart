@@ -1,11 +1,10 @@
 import 'dart:math' as math;
-import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 
 import 'jingway_colors.dart';
 
-/// Full-bleed 宣纸 backdrop with visible pulp / fiber texture.
+/// Full-bleed 宣纸 backdrop with rough pulp-fiber texture only.
 class JingwayRicePaperBackdrop extends StatelessWidget {
   const JingwayRicePaperBackdrop({
     required this.child,
@@ -43,7 +42,7 @@ class JingwayRicePaperPanel extends StatelessWidget {
       child: CustomPaint(
         painter: JingwayRicePaperPainter(
           baseColor: JingwayColors.surface,
-          intensity: 1.15,
+          intensity: 1.1,
         ),
         child: DecoratedBox(
           decoration: BoxDecoration(
@@ -59,7 +58,7 @@ class JingwayRicePaperPanel extends StatelessWidget {
   }
 }
 
-/// Procedural xuan-paper: warm wash + interlocking pulp fibers + flecks.
+/// Procedural xuan-paper: warm base + tangled rough fibers only.
 class JingwayRicePaperPainter extends CustomPainter {
   const JingwayRicePaperPainter({
     this.baseColor = JingwayColors.cream,
@@ -69,126 +68,95 @@ class JingwayRicePaperPainter extends CustomPainter {
   final Color baseColor;
   final double intensity;
 
+  static const Color _fiberDark = Color(0xFF8A7355);
+  static const Color _fiberMid = Color(0xFFA89070);
+  static const Color _fiberLight = Color(0xFFF7F0DC);
+
   @override
   void paint(Canvas canvas, Size size) {
-    final Rect bounds = Offset.zero & size;
-    canvas.drawRect(bounds, Paint()..color = baseColor);
+    canvas.drawRect(Offset.zero & size, Paint()..color = baseColor);
 
-    // Soft warm mottling (云状色斑).
     final _Rng rng = _Rng(
-      0x9E3779B9 ^
+      0xC0FFEE ^
           size.width.round() * 73856093 ^
           size.height.round() * 19349663,
     );
-    final int blotches =
-        (12 * intensity).round().clamp(8, 22);
-    for (int i = 0; i < blotches; i++) {
-      final double cx = rng.next() * size.width;
-      final double cy = rng.next() * size.height;
-      final double rx = 40 + rng.next() * size.width * 0.28;
-      final double ry = 28 + rng.next() * size.height * 0.18;
-      final bool warm = rng.next() > 0.45;
-      canvas.drawOval(
-        Rect.fromCenter(center: Offset(cx, cy), width: rx, height: ry),
-        Paint()
-          ..color = (warm ? const Color(0xFFE8D9B0) : const Color(0xFFDCC9A0))
-              .withValues(alpha: 0.10 * intensity)
-          ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 18),
+
+    final Paint stroke = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeCap = StrokeCap.round;
+
+    // Dense short pulp fibers — mostly near-horizontal, some vertical tangle.
+    final int shortCount =
+        (size.width * size.height / 220 * intensity).round().clamp(320, 1400);
+    for (int i = 0; i < shortCount; i++) {
+      final double x = rng.next() * size.width;
+      final double y = rng.next() * size.height;
+      final double len = 4 + rng.next() * 22;
+      final double angle = rng.next() < 0.7
+          ? (rng.next() - 0.5) * 0.55
+          : math.pi / 2 + (rng.next() - 0.5) * 0.7;
+      final int tone = (rng.next() * 3).floor();
+      final Color base = tone == 0
+          ? _fiberDark
+          : tone == 1
+              ? _fiberMid
+              : _fiberLight;
+      final double alpha = tone == 2
+          ? 0.22 * intensity
+          : (0.09 + rng.next() * 0.08) * intensity;
+      stroke
+        ..strokeWidth = 0.55 + rng.next() * 1.35
+        ..color = base.withValues(alpha: alpha);
+      canvas.drawLine(
+        Offset(x, y),
+        Offset(x + math.cos(angle) * len, y + math.sin(angle) * len),
+        stroke,
       );
     }
 
-    // Edge burn / aged rim.
-    final Paint edge = Paint()
-      ..shader = ui.Gradient.radial(
-        Offset(size.width * 0.5, size.height * 0.45),
-        math.max(size.width, size.height) * 0.72,
-        <Color>[
-          const Color(0x00C4A574),
-          const Color(0x14A67C52),
-        ],
-        <double>[0.55, 1],
-      );
-    canvas.drawRect(bounds, edge);
-
-    // Interlocking plant fibers (纤维) — short strokes in two dominant angles.
-    final int fiberCount =
-        (size.width * size.height / 380 * intensity).round().clamp(180, 900);
-    final Paint fiberPaint = Paint()
-      ..strokeCap = StrokeCap.round
-      ..style = PaintingStyle.stroke;
-    for (int i = 0; i < fiberCount; i++) {
+    // Longer wavy strands for coarse paper tooth.
+    final int longCount =
+        (size.width * size.height / 5200 * intensity).round().clamp(40, 120);
+    for (int i = 0; i < longCount; i++) {
       final double x = rng.next() * size.width;
       final double y = rng.next() * size.height;
-      final double len = 6 + rng.next() * 28;
-      // Mostly horizontal pulp with a secondary diagonal family.
-      final double angle = rng.next() < 0.62
-          ? (rng.next() - 0.5) * 0.35
-          : (math.pi / 2) + (rng.next() - 0.5) * 0.5;
-      final double dx = math.cos(angle) * len;
-      final double dy = math.sin(angle) * len;
-      final bool dark = rng.next() > 0.55;
-      fiberPaint
-        ..strokeWidth = 0.45 + rng.next() * 1.1
-        ..color = (dark ? const Color(0xFF8B7355) : const Color(0xFFFBF6E8))
-            .withValues(alpha: (dark ? 0.10 : 0.16) * intensity);
-      canvas.drawLine(Offset(x, y), Offset(x + dx, y + dy), fiberPaint);
-    }
-
-    // Longer sparse bark-like strands.
-    final int longFibers =
-        (28 * intensity).round().clamp(16, 48);
-    for (int i = 0; i < longFibers; i++) {
-      final double x = rng.next() * size.width;
-      final double y = rng.next() * size.height;
-      final double len = 36 + rng.next() * 70;
-      final double angle = (rng.next() - 0.5) * 0.55;
+      final double len = 28 + rng.next() * 64;
+      final double angle = (rng.next() - 0.5) * 0.65;
+      final double wobble = (rng.next() - 0.5) * 14;
       final Path path = Path()
         ..moveTo(x, y)
         ..quadraticBezierTo(
-          x + math.cos(angle) * len * 0.5 + (rng.next() - 0.5) * 10,
-          y + math.sin(angle) * len * 0.5 + (rng.next() - 0.5) * 8,
+          x + math.cos(angle) * len * 0.5 + wobble,
+          y + math.sin(angle) * len * 0.5 + (rng.next() - 0.5) * 10,
           x + math.cos(angle) * len,
           y + math.sin(angle) * len,
         );
-      canvas.drawPath(
-        path,
-        Paint()
-          ..color = const Color(0xFF7A6145).withValues(alpha: 0.07 * intensity)
-          ..strokeWidth = 0.7 + rng.next() * 0.9
-          ..style = PaintingStyle.stroke
-          ..strokeCap = StrokeCap.round,
-      );
+      stroke
+        ..strokeWidth = 0.7 + rng.next() * 1.2
+        ..color = _fiberDark.withValues(
+          alpha: (0.07 + rng.next() * 0.06) * intensity,
+        );
+      canvas.drawPath(path, stroke);
     }
 
-    // Cotton flecks / pulp dots.
-    final int flecks =
-        (size.width * size.height / 1400 * intensity).round().clamp(60, 260);
-    for (int i = 0; i < flecks; i++) {
+    // Sparse crossing fibers (斜向交织) for roughness.
+    final int crossCount =
+        (size.width * size.height / 900 * intensity).round().clamp(80, 320);
+    for (int i = 0; i < crossCount; i++) {
       final double x = rng.next() * size.width;
       final double y = rng.next() * size.height;
-      final double r = 0.4 + rng.next() * 1.8;
-      final bool dark = rng.next() > 0.4;
-      canvas.drawCircle(
-        Offset(x, y),
-        r,
-        Paint()
-          ..color = (dark ? const Color(0xFF6B5428) : const Color(0xFFFFFBF0))
-              .withValues(alpha: (dark ? 0.08 : 0.18) * intensity),
-      );
-    }
-
-    // Fine cross-hatch veil for paper tooth.
-    final Paint veil = Paint()
-      ..color = const Color(0xFF9A8160).withValues(alpha: 0.03 * intensity)
-      ..strokeWidth = 0.6;
-    for (double y = 0; y < size.height; y += 7 + rng.next() * 3) {
-      canvas.drawLine(Offset(0, y), Offset(size.width, y + 1.5), veil);
-    }
-    for (double x = 0; x < size.width; x += 9 + rng.next() * 4) {
+      final double len = 8 + rng.next() * 18;
+      final double angle = math.pi / 4 + (rng.next() - 0.5) * 0.9;
+      stroke
+        ..strokeWidth = 0.5 + rng.next() * 0.9
+        ..color = _fiberMid.withValues(
+          alpha: (0.08 + rng.next() * 0.05) * intensity,
+        );
       canvas.drawLine(
-        Offset(x, 0),
-        Offset(x + 1.2, size.height),
-        veil..color = const Color(0xFFBFA888).withValues(alpha: 0.025 * intensity),
+        Offset(x, y),
+        Offset(x + math.cos(angle) * len, y + math.sin(angle) * len),
+        stroke,
       );
     }
   }
