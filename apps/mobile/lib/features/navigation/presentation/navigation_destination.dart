@@ -47,7 +47,6 @@ enum AppNavDestination {
     icon: Icons.record_voice_over_outlined,
     activeIcon: Icons.record_voice_over_rounded,
     showInBottomNav: false,
-    availableInJingway: false,
   ),
   growth(
     route: '/growth',
@@ -57,7 +56,6 @@ enum AppNavDestination {
     icon: LucideIcons.sprout,
     activeIcon: LucideIcons.trophy,
     showInBottomNav: false,
-    availableInJingway: false,
   ),
   discover(
     route: '/discover',
@@ -67,7 +65,6 @@ enum AppNavDestination {
     icon: Icons.groups_outlined,
     activeIcon: Icons.groups_rounded,
     showInBottomNav: false,
-    availableInJingway: false,
   ),
   review(
     route: '/review',

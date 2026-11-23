@@ -159,6 +159,24 @@ class _JingwayExamHomeScreenState extends ConsumerState<JingwayExamHomeScreen> {
             onTap: () => context.go('/importCourse'),
           ),
           _HomeCard(
+            title: '成长',
+            subtitle: '学习轨迹与掌握度',
+            action: '打开成长',
+            onTap: () => context.go('/growth'),
+          ),
+          _HomeCard(
+            title: '社区真题',
+            subtitle: '真题资料共享与同桌协作',
+            action: '进入社区',
+            onTap: () => context.go('/discover'),
+          ),
+          _HomeCard(
+            title: 'AI老师',
+            subtitle: '数字人陪练与场景识词',
+            action: '开始陪练',
+            onTap: () => context.go('/digital-human'),
+          ),
+          _HomeCard(
             title: '考试专项',
             subtitle: '专项题包筹备中（阅读 / 文言 / 作文将按年级上线）',
             action: '查看说明',
