@@ -45,7 +45,16 @@ class AliyunSpeechService {
     final String trimmed = text.trim();
     if (trimmed.isEmpty || !isAvailable) return null;
     try {
-      return await api.readingSpeech(trimmed, resolvedVoice);
+      final bool chinese = RegExp(r'[\u4e00-\u9fff]').hasMatch(trimmed);
+      final String voice = chinese &&
+              !resolvedVoice.startsWith('long')
+          ? 'longanfengyue'
+          : resolvedVoice;
+      return await api.readingSpeech(
+        trimmed,
+        voice,
+        language: chinese ? 'zh' : 'en',
+      );
     } catch (_) {
       return null;
     }

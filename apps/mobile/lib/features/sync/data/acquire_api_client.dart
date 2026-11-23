@@ -2149,15 +2149,21 @@ class AcquireApiClient {
     };
   }
 
-  /// Synthesize [text] with an Aliyun English voice; returns absolute audio URL
+  /// Synthesize [text] with an Aliyun voice; returns absolute audio URL
   /// cached on ECS under `/media/reading/speech/…`.
-  Future<String> readingSpeech(String text, String voice) async {
+  ///
+  /// Pass [language] `zh` for 中文诗文/阅读; default `en` for English vocab.
+  Future<String> readingSpeech(
+    String text,
+    String voice, {
+    String language = 'en',
+  }) async {
     final Response<dynamic> response = await _dio.post(
       Endpoints.readingSpeech,
       data: <String, dynamic>{
         'text': text,
         'voice': voice,
-        'language': 'en',
+        'language': language,
       },
       options: Options(
         receiveTimeout: const Duration(seconds: 45),

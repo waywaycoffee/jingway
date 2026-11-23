@@ -73,6 +73,7 @@ flutter test --no-pub \
   test/features/jingway/xinhua_dictionary_test.dart \
   test/features/player/cn_dictation_diff_test.dart \
   test/features/reading/reading_gloss_test.dart \
-  test/features/reading/reading_novel_reader_test.dart
+  test/features/reading/reading_novel_reader_test.dart \
+  test/features/reading/reading_tts_test.dart
 
 echo "OSS integration smoke passed."

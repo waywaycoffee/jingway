@@ -21,4 +21,24 @@ void main() {
     expect(ReadingTtsGenderX.fromStorage('male'), ReadingTtsGender.male);
     expect(ReadingTtsGenderX.fromStorage(null), ReadingTtsGender.female);
   });
+
+  test('Chinese poetry uses bilingual Jingway voices and zh language', () {
+    expect(readingTextLooksChinese('床前明月光'), isTrue);
+    expect(readingTextLooksChinese('Hello world'), isFalse);
+    expect(readingSpeechLanguage('床前明月光'), 'zh');
+    expect(
+      readingSpeechVoiceId(ReadingTtsGender.female, '床前明月光'),
+      'longanfengyue',
+    );
+    expect(
+      readingSpeechVoiceId(ReadingTtsGender.male, '静夜思'),
+      'longchuanshu_v3.6',
+    );
+    // Jingway product always prefers Mandarin-capable voices.
+    expect(
+      readingSpeechVoiceId(ReadingTtsGender.female, 'Hello'),
+      'longanfengyue',
+    );
+    expect(readingSpeechLanguage('Hello'), 'zh');
+  });
 }

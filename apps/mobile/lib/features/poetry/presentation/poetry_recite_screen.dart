@@ -118,7 +118,9 @@ class _PoetryReciteScreenState extends ConsumerState<PoetryReciteScreen> {
     } catch (_) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('朗读暂不可用，请检查网络后重试')),
+          const SnackBar(
+            content: Text('朗读暂不可用：请确认已登录，或检查系统中文语音引擎'),
+          ),
         );
       }
     } finally {

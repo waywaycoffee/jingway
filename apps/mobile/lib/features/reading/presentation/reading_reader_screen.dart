@@ -257,9 +257,11 @@ class _ReadingReaderScreenState extends ConsumerState<ReadingReaderScreen> {
     try {
       for (final unit in units) {
         if (!mounted || generation != _continuousGeneration) return;
-        final url = await ref
-            .read(acquireApiClientProvider)
-            .readingSpeech(unit.text, _ttsGender.aliyunVoiceId);
+        final url = await ref.read(acquireApiClientProvider).readingSpeech(
+              unit.text,
+              readingSpeechVoiceId(_ttsGender, unit.text),
+              language: readingSpeechLanguage(unit.text),
+            );
         if (!mounted || generation != _continuousGeneration) return;
         final done = Completer<void>();
         _readingDone = done;
