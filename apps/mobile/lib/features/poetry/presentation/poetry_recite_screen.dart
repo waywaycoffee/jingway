@@ -29,6 +29,8 @@ class PoetryReciteScreen extends ConsumerStatefulWidget {
 
 class _PoetryReciteScreenState extends ConsumerState<PoetryReciteScreen> {
   _ReciteMode _mode = _ReciteMode.mask;
+  JingwayWritingDirection _writing =
+      JingwayWritingDirection.horizontalLtr;
   int _maskLevel = 1;
   int _lineIndex = 0;
   final TextEditingController _input = TextEditingController();
@@ -103,25 +105,28 @@ class _PoetryReciteScreenState extends ConsumerState<PoetryReciteScreen> {
                   });
                 },
               ),
+              const SizedBox(height: 10),
+              SegmentedButton<JingwayWritingDirection>(
+                segments: const <ButtonSegment<JingwayWritingDirection>>[
+                  ButtonSegment(
+                    value: JingwayWritingDirection.horizontalLtr,
+                    label: Text('横排 · 左→右'),
+                  ),
+                  ButtonSegment(
+                    value: JingwayWritingDirection.verticalRtl,
+                    label: Text('竖排 · 右→左'),
+                  ),
+                ],
+                selected: <JingwayWritingDirection>{_writing},
+                onSelectionChanged: (Set<JingwayWritingDirection> s) {
+                  setState(() => _writing = s.first);
+                },
+              ),
               const SizedBox(height: 16),
               JingwayBambooSlipFrame(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
-                    Text(
-                      unit.title,
-                      textAlign: TextAlign.center,
-                      style: jingwayClassicalTitleStyle(context),
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      '${unit.dynasty} · ${unit.author}',
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: JingwayColors.hint,
-                          ),
-                    ),
-                    const SizedBox(height: 16),
                     if (_mode == _ReciteMode.mask) ..._buildMask(unit),
                     if (_mode == _ReciteMode.nextLine) ..._buildNextLine(unit),
                     if (_mode == _ReciteMode.dictation) ..._buildDictation(unit),
@@ -136,53 +141,45 @@ class _PoetryReciteScreenState extends ConsumerState<PoetryReciteScreen> {
   }
 
   List<Widget> _buildMask(PoetryUnit unit) {
+    final List<String> displayLines = _maskLevel == 0
+        ? unit.lines
+        : unit.lines.map((String line) {
+            if (_maskLevel == 2) {
+              return List<String>.filled(line.runes.length, '＿').join();
+            }
+            if (line.isEmpty) return '';
+            return '${String.fromCharCode(line.runes.first)}'
+                '${List<String>.filled(line.runes.length - 1, '＿').join()}';
+          }).toList(growable: false);
+
     return <Widget>[
-      Row(
+      Wrap(
+        spacing: 8,
+        runSpacing: 8,
         children: <Widget>[
           ChoiceChip(
             label: const Text('首字提示'),
             selected: _maskLevel == 1,
             onSelected: (_) => setState(() => _maskLevel = 1),
           ),
-          const SizedBox(width: 8),
           ChoiceChip(
             label: const Text('完全遮挡'),
             selected: _maskLevel == 2,
             onSelected: (_) => setState(() => _maskLevel = 2),
           ),
+          ChoiceChip(
+            label: const Text('显示全文'),
+            selected: _maskLevel == 0,
+            onSelected: (_) => setState(() => _maskLevel = 0),
+          ),
         ],
       ),
-      const SizedBox(height: 12),
-      if (_maskLevel == 0)
-        ...unit.lines.map(
-          (String line) => Padding(
-            padding: const EdgeInsets.only(bottom: 8),
-            child: Text(
-              line,
-              textAlign: TextAlign.center,
-              style: jingwayClassicalBodyStyle(context),
-            ),
-          ),
-        )
-      else
-        ...unit.lines.map((String line) {
-          final String shown = _maskLevel == 2
-              ? List<String>.filled(line.runes.length, '＿').join()
-              : (line.isEmpty
-                  ? ''
-                  : '${String.fromCharCode(line.runes.first)}${List<String>.filled(line.runes.length - 1, '＿').join()}');
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 10),
-            child: Text(
-              shown,
-              textAlign: TextAlign.center,
-              style: jingwayClassicalBodyStyle(context),
-            ),
-          );
-        }),
-      TextButton(
-        onPressed: () => setState(() => _maskLevel = 0),
-        child: const Text('显示全文'),
+      const SizedBox(height: 14),
+      JingwayClassicalText(
+        lines: displayLines,
+        direction: _writing,
+        title: unit.title,
+        meta: '${unit.dynasty} · ${unit.author}',
       ),
     ];
   }
@@ -194,17 +191,11 @@ class _PoetryReciteScreenState extends ConsumerState<PoetryReciteScreen> {
     final String prompt = unit.lines[i];
     final String answer = unit.lines[i + 1];
     return <Widget>[
-      Text(
-        '上句',
-        textAlign: TextAlign.center,
-        style: Theme.of(context).textTheme.labelLarge?.copyWith(
-              color: JingwayColors.hint,
-            ),
-      ),
-      Text(
-        prompt,
-        textAlign: TextAlign.center,
-        style: jingwayClassicalBodyStyle(context),
+      JingwayClassicalText(
+        lines: <String>[prompt],
+        direction: _writing,
+        title: unit.title,
+        meta: '上句 · ${unit.dynasty} · ${unit.author}',
       ),
       const SizedBox(height: 12),
       TextField(
@@ -243,7 +234,12 @@ class _PoetryReciteScreenState extends ConsumerState<PoetryReciteScreen> {
   List<Widget> _buildDictation(PoetryUnit unit) {
     final String expected = unit.lines.join();
     return <Widget>[
-      const Text('默写全文（标点可省略）'),
+      JingwayClassicalText(
+        lines: const <String>[],
+        direction: _writing,
+        title: unit.title,
+        meta: '${unit.dynasty} · ${unit.author} · 默写全文（标点可省略）',
+      ),
       const SizedBox(height: 8),
       TextField(
         controller: _input,
