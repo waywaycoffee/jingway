@@ -144,6 +144,7 @@ class _PracticeCardState extends ConsumerState<_PracticeCard> {
   }
 
   Future<void> _update(VoidCallback update) async {
+    if (_saving) return;
     final answers = Map<String, String>.of(_answers);
     final lastAnswers = Map<String, String>.of(_lastAnswers);
     final wrongCounts = Map<String, int>.of(_wrongCounts);
@@ -284,9 +285,10 @@ class _PracticeCardState extends ConsumerState<_PracticeCard> {
                                     ifAbsent: () => 1,
                                   );
                                 } else if (_retry &&
-                                    jingwayVerificationItems.containsKey(
-                                      pack.id,
-                                    )) {
+                                    i <
+                                        (jingwayVerificationItems[pack.id]
+                                                ?.length ??
+                                            0)) {
                                   _verification['$i'] = 'pending';
                                 }
                               }
@@ -395,8 +397,8 @@ class _PracticeCardState extends ConsumerState<_PracticeCard> {
               child: Text(
                 skill,
                 style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
+                  color: Theme.of(context).colorScheme.primary,
+                ),
               ),
             ),
           Text('${index + 1}. ${question.prompt}'),
@@ -503,10 +505,7 @@ class _SessionReport extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(
-              '学习报告',
-              style: Theme.of(context).textTheme.titleSmall,
-            ),
+            Text('学习报告', style: Theme.of(context).textTheme.titleSmall),
             const SizedBox(height: 4),
             Text(
               '本组成绩：$right / $total 正确'

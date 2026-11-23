@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../words/data/offline_word_dictionary.dart';
 import '../domain/reading_study_mode.dart';
+import '../presentation/reading_text_spans.dart';
 
 const String kEnglishFreqTop20000Asset =
     'assets/dictionary/english_freq_top20000.txt';
@@ -112,6 +113,9 @@ Future<Map<String, String>> buildHardWordGlosses({
   return out;
 }
 
+bool _isCjkLexeme(String word) =>
+    RegExp(r'^[\u4e00-\u9fff]+$').hasMatch(word);
+
 bool _isHardWithLists({
   required String word,
   required ReadingFrequencyLexicon lexicon,
@@ -121,6 +125,8 @@ bool _isHardWithLists({
 }) {
   if (known.contains(word)) return false;
   if (focus.contains(word)) return true;
+  // Chinese has no English frequency rank; only focus list forces hard.
+  if (_isCjkLexeme(word)) return false;
   return lexicon.isHard(word, threshold: threshold);
 }
 
@@ -137,7 +143,7 @@ double unknownWordRate({
   int hard = 0;
   for (final String raw in words) {
     final String word = raw.trim().toLowerCase().replaceAll('’', "'");
-    if (word.length < 2) continue;
+    if (!_isCjkLexeme(word) && word.length < 2) continue;
     total += 1;
     if (_isHardWithLists(
       word: word,
@@ -154,22 +160,18 @@ double unknownWordRate({
 }
 
 Set<String> extractReadingWords(String text) {
-  final Set<String> out = <String>{};
-  for (final RegExpMatch m in RegExp(
-    r"[A-Za-z]+(?:['’-][A-Za-z]+)*",
-  ).allMatches(text)) {
-    final String w = m.group(0)!.toLowerCase().replaceAll('’', "'");
-    if (w.length >= 2) out.add(w);
-  }
-  return out;
+  return extractReadingWordTokens(text).toSet();
 }
 
 List<String> extractReadingWordTokens(String text) {
   final List<String> out = <String>[];
-  for (final RegExpMatch m in RegExp(
-    r"[A-Za-z]+(?:['’-][A-Za-z]+)*",
-  ).allMatches(text)) {
-    final String w = m.group(0)!.toLowerCase().replaceAll('’', "'");
+  for (final ReadingToken t in tokenizeReadingText(text)) {
+    if (!t.isWord) continue;
+    if (_isCjkLexeme(t.raw)) {
+      out.add(t.raw);
+      continue;
+    }
+    final String w = t.raw.toLowerCase().replaceAll('’', "'");
     if (w.length >= 2) out.add(w);
   }
   return out;

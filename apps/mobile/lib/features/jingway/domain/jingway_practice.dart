@@ -1,5 +1,17 @@
 const String jingwayReadingSampleId = 'jingway-g7-rain-v1';
 const String jingwayReadingPracticeId = 'g7-reading-v2';
+const String jingwayG3StoryDocId = 'jingway-g3-ant-v1';
+const String jingwayG3StoryPracticeId = 'g3-story-v1';
+
+/// 景行原创读物 → 篇后题包；非原创返回 null。
+String? jingwayPracticePackForDoc(String docId) {
+  if (docId == jingwayReadingSampleId) return jingwayReadingPracticeId;
+  if (docId == jingwayG3StoryDocId) return jingwayG3StoryPracticeId;
+  return null;
+}
+
+bool isJingwayOriginalDoc(String docId) =>
+    jingwayPracticePackForDoc(docId) != null;
 
 class JingwayPracticeQuestion {
   const JingwayPracticeQuestion({
@@ -61,8 +73,7 @@ const jingwayPracticePacks = [
   JingwayPracticePack(
     id: jingwayReadingPracticeId,
     title: '现代文阅读',
-    method:
-        '先圈出题干里的关键词，再回原文找能直接支持答案的句子。'
+    method: '先圈出题干里的关键词，再回原文找能直接支持答案的句子。'
         ' （能力层对齐 CMRC/叫叫过程技能：信息提取→直接推论→理解整合）',
     material:
         '① 放学时下起了雨。校门口，一位同学站在屋檐下，不时望着路口。\n\n'
@@ -182,16 +193,34 @@ const Map<String, List<JingwayPracticeQuestion>> jingwayVerificationItems = {
   ],
   jingwayReadingPracticeId: [
     JingwayPracticeQuestion(
+      skill: '信息提取',
+      prompt: '根据第①段，同学站在哪里？',
+      options: ['校门口的屋檐下', '路口', '教室里'],
+      answers: ['校门口的屋檐下'],
+      explanation: '第①段直接交代同学在校门口的屋檐下等候。',
+    ),
+    JingwayPracticeQuestion(
+      skill: '直接推论',
       prompt: '文中写小宁「半边袖子已经湿了」，最能说明什么？',
       options: ['她把伞更多地让给了同学', '她把伞忘在教室了', '她想在雨里玩'],
       answers: ['她把伞更多地让给了同学'],
       explanation: '结合她继续挪伞的动作，可以推知她把更多伞面让给了同学。',
     ),
     JingwayPracticeQuestion(
-      prompt: '根据第①段，同学站在哪里？',
-      options: ['校门口的屋檐下', '路口', '教室里'],
-      answers: ['校门口的屋檐下'],
-      explanation: '第①段直接交代同学在校门口的屋檐下等候。',
+      skill: '理解整合',
+      prompt: '下面哪个标题同时照应了下雨的背景和两人之间发生的事？',
+      options: ['雨天里共撑一把伞', '放学铃响了', '校门口的路'],
+      answers: ['雨天里共撑一把伞'],
+      explanation: '「雨天」照应第①段背景，「共撑一把伞」概括了第②段主要事件。',
+    ),
+  ],
+  jingwayG3StoryPracticeId: [
+    JingwayPracticeQuestion(
+      skill: '信息提取',
+      prompt: '小蚂蚁叫谁来帮忙？',
+      options: ['伙伴', '小鸟', '老师'],
+      answers: ['伙伴'],
+      explanation: '文中写它叫来伙伴一起推。',
     ),
   ],
 };

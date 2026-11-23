@@ -72,7 +72,8 @@ double unknownWordRateWithLists({
   int hard = 0;
   for (final String raw in words) {
     final String word = raw.trim().toLowerCase().replaceAll('’', "'");
-    if (word.length < 2) continue;
+    final bool cjk = RegExp(r'^[\u4e00-\u9fff]+$').hasMatch(word);
+    if (!cjk && word.length < 2) continue;
     total += 1;
     if (isReadingHardWord(
       word: word,

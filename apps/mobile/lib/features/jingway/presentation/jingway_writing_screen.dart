@@ -8,6 +8,7 @@ import 'package:go_router/go_router.dart';
 import '../../authentication/presentation/auth_session.dart';
 import '../../sync/data/acquire_api_client.dart';
 import '../../writing/domain/writing_models.dart';
+import '../domain/jingway_excerpt.dart';
 import 'jingway_profile_provider.dart';
 
 const String _title = '那一次，我学会了等待';
@@ -28,9 +29,10 @@ class JingwayWritingScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final int? grade = ref.watch(jingwayProfileProvider).grade;
     final AuthSessionState auth = ref.watch(authSessionProvider);
-    final String? scope = auth.isLoggedIn
-        ? (auth.email.isEmpty ? null : 'user:${auth.email}')
-        : 'guest';
+    final String? scope = jingwayWritingScope(
+      signedIn: auth.isLoggedIn,
+      account: auth.email,
+    );
     final bool argumentative = grade == 8 || grade == 9;
     final String rubric = argumentative ? _argumentRubric : _rubric;
     return Scaffold(
@@ -40,6 +42,7 @@ class JingwayWritingScreen extends ConsumerWidget {
               key: ValueKey((grade, scope)),
               storageKey: grade == 9 ? '$rubric:g9:$scope' : '$rubric:$scope',
               argumentative: argumentative,
+              scope: scope,
               grade: grade!,
             )
           : Center(child: Text(scope == null ? '请重新登录后开始训练' : '当前年级暂无作文训练')),
@@ -53,10 +56,12 @@ class _WritingForm extends ConsumerStatefulWidget {
     required this.storageKey,
     required this.argumentative,
     required this.grade,
+    required this.scope,
   });
   final String storageKey;
   final bool argumentative;
   final int grade;
+  final String scope;
 
   @override
   ConsumerState<_WritingForm> createState() => _WritingFormState();
@@ -69,6 +74,7 @@ class _WritingFormState extends ConsumerState<_WritingForm> {
   final TextEditingController _claim = TextEditingController();
   final TextEditingController _evidence = TextEditingController();
   bool _busy = false;
+  String _material = '';
 
   String get _taskTitle => widget.argumentative ? _argumentTitle : _title;
   String get _taskPrompt => widget.argumentative ? _argumentPrompt : _prompt;
@@ -83,6 +89,7 @@ class _WritingFormState extends ConsumerState<_WritingForm> {
     if (raw == null) return;
     final Map<String, dynamic> data = jsonDecode(raw) as Map<String, dynamic>;
     _text.text = data['draft'] as String? ?? '';
+    _material = data['material'] as String? ?? '';
     _claim.text = data['claim'] as String? ?? '';
     _evidence.text = data['evidence'] as String? ?? '';
     _exercise.text = data['exercise'] as String? ?? '';
@@ -103,6 +110,7 @@ class _WritingFormState extends ConsumerState<_WritingForm> {
       widget.storageKey,
       jsonEncode({
         'draft': _text.text,
+        'material': _material,
         'claim': _claim.text,
         'evidence': _evidence.text,
         'exercise': _exercise.text,
@@ -114,6 +122,72 @@ class _WritingFormState extends ConsumerState<_WritingForm> {
   void _notice(String text) {
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(text)));
+    }
+  }
+
+  Future<void> _pickMaterial() async {
+    final List<JingwayExcerpt> excerpts = JingwayExcerpt.read(widget.scope);
+    final Set<JingwayExcerpt> selected = <JingwayExcerpt>{};
+    final String? material = await showModalBottomSheet<String>(
+      context: context,
+      showDragHandle: true,
+      builder: (BuildContext context) => StatefulBuilder(
+        builder: (BuildContext context, StateSetter setSheetState) => SafeArea(
+          child: Column(
+            children: [
+              if (excerpts.isEmpty)
+                const Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Text('在原创短篇里长按句子，即可摘录到这里。'),
+                ),
+              Expanded(
+                child: ListView(
+                  children: [
+                    for (final JingwayExcerpt excerpt in excerpts)
+                      CheckboxListTile(
+                        title: Text(excerpt.text),
+                        subtitle: Text(
+                          '${excerpt.title} · 正文位置 ${excerpt.start + 1}',
+                        ),
+                        value: selected.contains(excerpt),
+                        onChanged: (bool? checked) => setSheetState(() {
+                          if (checked == true) {
+                            selected.add(excerpt);
+                          } else {
+                            selected.remove(excerpt);
+                          }
+                        }),
+                      ),
+                  ],
+                ),
+              ),
+              FilledButton(
+                onPressed: selected.isEmpty
+                    ? null
+                    : () => Navigator.pop(
+                        context,
+                        selected
+                            .map(
+                              (JingwayExcerpt item) =>
+                                  '《${item.title}》\n${item.text}',
+                            )
+                            .join('\n\n'),
+                      ),
+                child: const Text('带入写前素材'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+    if (!mounted || material == null) return;
+    final String previous = _material;
+    setState(() => _material = material);
+    try {
+      await _save();
+    } catch (_) {
+      if (mounted) setState(() => _material = previous);
+      _notice('素材保存失败');
     }
   }
 
@@ -263,6 +337,11 @@ class _WritingFormState extends ConsumerState<_WritingForm> {
       const SizedBox(height: 20),
       Text(_taskTitle, style: Theme.of(context).textTheme.titleLarge),
       Text(_taskPrompt),
+      TextButton(
+        onPressed: _busy ? null : _pickMaterial,
+        child: const Text('选择写前素材'),
+      ),
+      if (_material.isNotEmpty) SelectableText(_material),
       TextField(
         controller: _text,
         readOnly: _busy,

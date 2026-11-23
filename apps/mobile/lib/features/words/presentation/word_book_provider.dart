@@ -1546,11 +1546,17 @@ List<String> tokenizeWords(String sentence) =>
         .where(_isIndependentEnglishWord)
         .toList(growable: false);
 
-String normalizeWord(String value) => value
-    .trim()
-    .toLowerCase()
-    .replaceAll('’', "'")
-    .replaceAll(RegExp(r'^[^A-Za-z0-9_]+|[^A-Za-z0-9_]+$'), '');
+String normalizeWord(String value) {
+  final String trimmed = value
+      .trim()
+      .toLowerCase()
+      .replaceAll('’', "'");
+  // Keep CJK lexemes for Jingway 点词 / 词表；英文仍剥两端非词字符。
+  if (RegExp(r'[\u4e00-\u9fff]').hasMatch(trimmed)) {
+    return trimmed.replaceAll(RegExp(r'[^\u4e00-\u9fffa-z0-9_]'), '');
+  }
+  return trimmed.replaceAll(RegExp(r'^[^A-Za-z0-9_]+|[^A-Za-z0-9_]+$'), '');
+}
 
 /// Single word or short English phrase for vocabulary cards.
 String normalizeLexeme(String value) {

@@ -86,11 +86,14 @@ class JingwayReadingScreen extends ConsumerWidget {
               subtitle: const Text('三年级 · 分级故事 + 篇后题'),
               onTap: () {
                 final JingwayPracticePack pack = jingwayPracticePacks
-                    .firstWhere((JingwayPracticePack p) => p.id == 'g3-story-v1');
+                    .firstWhere(
+                      (JingwayPracticePack p) =>
+                          p.id == jingwayG3StoryPracticeId,
+                    );
                 _openStory(
                   context: context,
                   ref: ref,
-                  docId: 'jingway-g3-ant-v1',
+                  docId: jingwayG3StoryDocId,
                   title: pack.title,
                   packId: pack.id,
                   plainText: pack.material!,

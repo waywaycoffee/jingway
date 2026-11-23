@@ -49,6 +49,46 @@
       "author": "孟郊",
       "content": "孟郊《游子吟》中写母爱细腻的千古名句是「$0，$1」。",
       "answer": ["谁言寸草心", "报得三春晖"]
+    },
+    {
+      "id": "xiangsi_c1",
+      "poemId": "xiangsi",
+      "title": "相思",
+      "author": "王维",
+      "content": "王维《相思》以红豆寄托相思，末句是「$0」。",
+      "answer": ["此物最相思"]
+    },
+    {
+      "id": "min_nong_c1",
+      "poemId": "min_nong",
+      "title": "悯农（其一）",
+      "author": "李绅",
+      "content": "李绅《悯农》中感叹粮食来之不易的句子是「$0，$1」。",
+      "answer": ["谁知盘中餐", "粒粒皆辛苦"]
+    },
+    {
+      "id": "wang_lu_shan_pu_bu_c1",
+      "poemId": "wang_lu_shan_pu_bu",
+      "title": "望庐山瀑布",
+      "author": "李白",
+      "content": "李白《望庐山瀑布》中用夸张手法写瀑布的名句是「$0，$1」。",
+      "answer": ["飞流直下三千尺", "疑是银河落九天"]
+    },
+    {
+      "id": "ci_cheng_c1",
+      "poemId": "ci_cheng",
+      "title": "次北固山下",
+      "author": "王湾",
+      "content": "王湾《次北固山下》中描写时序交替、意境开阔的名句是「$0，$1」。",
+      "answer": ["海日生残夜", "江春入旧年"]
+    },
+    {
+      "id": "lunyu_xueer_c1",
+      "poemId": "lunyu_xueer",
+      "title": "论语·学而（节选）",
+      "author": "孔子",
+      "content": "《论语》中写有朋友从远方来的快乐的句子是「$0，$1」。",
+      "answer": ["有朋自远方来", "不亦乐乎"]
     }
   ]
 }

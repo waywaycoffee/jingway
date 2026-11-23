@@ -9,6 +9,9 @@ import '../../sync/data/acquire_api_client.dart';
 import '../../../flavors/app_flavor.dart';
 
 import '../../authentication/presentation/account_storage.dart';
+import '../../authentication/presentation/auth_session.dart';
+import '../../jingway/domain/jingway_excerpt.dart';
+import '../../jingway/presentation/xinhua_lookup_sheet.dart';
 import '../../daily_review/data/word_encounter_store.dart';
 import '../../navigation/presentation/navigation_destination.dart';
 import '../../player/presentation/widgets/subtitle_chunk_highlight.dart';
@@ -419,12 +422,18 @@ class _ReadingReaderScreenState extends ConsumerState<ReadingReaderScreen> {
     required String sentence,
   }) async {
     final String lexeme = rawLexeme.trim();
-    if (lexeme.length < 2) return;
+    final bool cjk = RegExp(r'[\u4e00-\u9fff]').hasMatch(lexeme);
+    if (!cjk && lexeme.length < 2) return;
+    if (cjk && lexeme.isEmpty) return;
     if (sentence.trim().isNotEmpty) {
       setState(() => _focusedSentence = sentence.trim());
     }
     unawaited(_recordLearnedContext(lexeme, sentence));
     if (!mounted) return;
+    if (FlavorConfig.isJingwayProduct && cjk) {
+      await showXinhuaLookupSheet(context, ref, term: lexeme);
+      return;
+    }
     final String fallback =
         _hardGlosses[normalizeWord(lexeme)] ??
         _hardGlosses[lexeme.toLowerCase()] ??
@@ -644,6 +653,40 @@ class _ReadingReaderScreenState extends ConsumerState<ReadingReaderScreen> {
                   backgroundColor: AppDesignTokens.brandGreenDark,
                 ),
               ),
+              if (FlavorConfig.isJingwayProduct &&
+                  isJingwayOriginalDoc(doc.id))
+                TextButton(
+                  onPressed: () async {
+                    final AuthSessionState auth =
+                        ref.read(authSessionProvider);
+                    final String? scope = jingwayWritingScope(
+                      signedIn: auth.isLoggedIn,
+                      account: auth.email,
+                    );
+                    if (scope == null) return;
+                    try {
+                      await JingwayExcerpt(
+                        docId: doc.id,
+                        title: doc.title,
+                        start: bounds.start,
+                        text: sentence,
+                      ).add(scope);
+                      if (ctx.mounted) Navigator.pop(ctx);
+                      if (mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('已保存到作文素材本')),
+                        );
+                      }
+                    } catch (_) {
+                      if (mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('素材保存失败，请重试')),
+                        );
+                      }
+                    }
+                  },
+                  child: const Text('摘录到作文素材本'),
+                ),
               if (FlavorConfig.enableMachineTranslation) ...<Widget>[
                 const SizedBox(height: 8),
                 OutlinedButton(
@@ -852,11 +895,14 @@ class _ReadingReaderScreenState extends ConsumerState<ReadingReaderScreen> {
             : '精读 · ${_ttsGender.labelCn} · 难词(>$_freqThreshold)${_slowMode ? ' · 慢读' : ''}$rateLabel',
         leading: PadBackButton(onPressed: () => context.pop()),
         actions: <Widget>[
-          if (FlavorConfig.isJingwayProduct && doc.id == jingwayReadingSampleId)
+          if (FlavorConfig.isJingwayProduct &&
+              jingwayPracticePackForDoc(doc.id) != null)
             IconButton(
               tooltip: '篇后练习',
               icon: const Icon(Icons.quiz_outlined),
-              onPressed: () => context.push('/exam?pack=$jingwayReadingPracticeId'),
+              onPressed: () => context.push(
+                '/exam?pack=${jingwayPracticePackForDoc(doc.id)}',
+              ),
             ),
           IconButton(
             tooltip:
@@ -989,7 +1035,8 @@ class _ReadingReaderScreenState extends ConsumerState<ReadingReaderScreen> {
         ],
       ),
       body: ReadingDigitalHumanBallHost(
-        enabled: !FlavorConfig.isJingwayProduct || doc.id == jingwayReadingSampleId,
+        enabled: !FlavorConfig.isJingwayProduct ||
+            isJingwayOriginalDoc(doc.id),
         doc: doc,
         focusedSentence: _focusedSentence,
         child: ColoredBox(

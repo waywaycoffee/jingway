@@ -109,9 +109,11 @@ bool isReadingHardWord({
   Set<String> focus = const <String>{},
 }) {
   final String key = _norm(word);
-  if (key.length < 2) return false;
+  final bool cjk = RegExp(r'^[\u4e00-\u9fff]+$').hasMatch(key);
+  if (!cjk && key.length < 2) return false;
   if (known.contains(key)) return false;
   if (focus.contains(key)) return true;
+  if (cjk) return false;
   return lexicon.isHard(key, threshold: threshold);
 }
 

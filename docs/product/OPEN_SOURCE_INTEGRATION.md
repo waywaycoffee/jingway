@@ -4,13 +4,15 @@
 
 | 来源 | 接入方式 | 景行落点 | 状态 |
 | --- | --- | --- | --- |
-| **congcong-school** | 学「课→读→练→错题→报告」 | `/jingway` 阅读入口读练弹窗；专项交卷「学习报告」（按能力层汇总）；三年级分级故事 `g3-story-v1` | 已接样本 |
-| **Binkic/Reciter** | 学挖空 / 理解性默写 **JSON 结构**；题干自建 | 诗文页「挖空」「理解默写」；`comprehensions_core.json`（景行原创题干 + MIT 诗句） | 已接样本；**不整包引入** Reciter 高考向题库 |
-| **wceng/SuFei** | 宣纸阅读 + **TTS 逐句高亮** | 诗文「朗读」模式 + `JingwayClassicalText.highlightLineIndex`；TTS 经 ECS `readingSpeech` | 已接交互 |
-| **CMRC2018 / PD&CFT Cloze** | 学过程技能标注 | 篇后题 `skill`：信息提取 / 直接推论 / 理解整合；报告按 skill 汇总 | 标注已用；**数据集不进 APK** |
+| **congcong-school** | 学「课→读→练→错题→报告」 | `/jingway/reading` 读练弹窗；篇后题入口（g3/g7）；交卷「学习报告」；订正验证带 skill | 已接样本 |
+| **Binkic/Reciter** | 学挖空 / 理解性默写 **JSON 结构**；题干自建 | 诗文「挖空」「理解默写」；`comprehensions_core.json` 覆盖核心篇目 | 已接；**不整包** Reciter 题库 |
+| **wceng/SuFei** | 宣纸阅读 + **TTS 逐句高亮** | 诗文「朗读」+ 行高亮；短篇连续朗读用 CJK 分词 | 已接交互 |
+| **CMRC2018 / PD&CFT Cloze** | 学过程技能标注 | 篇后题与验证题 `skill`；报告按层汇总 | 标注已用；**数据集不进 APK** |
 | **HF gaokao-dataset** | 仅命题格式参考 | 文档保留；真题版权敏感 | **禁止商用整包** |
-| **Mogao** | 点词、i+1、自托管进度 | `/reading` 书架 i+1、词表、阅读器点词新华；EPUB/TXT 导入 | 已有底座，入口已标明 |
+| **Mogao** | 点词、i+1、自托管进度 | CJK 分词 + 新华点词；摘录→作文素材本；书架 i+1 | 中文路径已打通 |
 | **zhread** | 早期点词 EPUB 思路 | 同 Mogao；不单独 vendoring | 参考 only |
+
+冒烟：`./tools/cn_content/verify_oss_integration.sh`
 
 ## 明确不做
 

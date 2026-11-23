@@ -40,12 +40,16 @@
 ```bash
 # 不依赖 native assets / 真机
 ./tools/cn_content/verify_p0_accept.sh
+# 开源对接冒烟（CJK 点词 / 挖空 / 报告 / 摘录）
+./tools/cn_content/verify_oss_integration.sh
 
 cd apps/mobile
 dart analyze lib/features/jingway/ lib/features/player/domain/cn_dictation_diff.dart
 flutter test test/features/player/cn_dictation_diff_test.dart \
   test/features/jingway/research_content_gate_test.dart \
-  test/features/jingway/research_content_repository_test.dart
+  test/features/jingway/research_content_repository_test.dart \
+  test/features/jingway/jingway_integration_smoke_test.dart \
+  test/features/poetry/poetry_cloze_test.dart
 ```
 
 说明：`flutter test` 若因 `livekit_ffi` 从 GitHub 拉原生库超时而失败，以 `verify_p0_accept.sh` + `dart analyze`（无 error）为准；修好网络后重跑单测。

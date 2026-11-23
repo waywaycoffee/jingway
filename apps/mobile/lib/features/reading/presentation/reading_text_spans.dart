@@ -26,9 +26,16 @@ class ReadingToken {
   final bool isWord;
 }
 
+bool _isLatinWord(String raw) => RegExp(r'^[A-Za-z]').hasMatch(raw);
+
+bool _isCjkChar(String raw) => RegExp(r'^[\u4e00-\u9fff]$').hasMatch(raw);
+
+/// Latin words + single Han characters (景行中文点词 / 连续朗读高亮).
 List<ReadingToken> tokenizeReadingText(String text) {
   final List<ReadingToken> out = <ReadingToken>[];
-  final RegExp re = RegExp(r"[A-Za-z]+(?:['’-][A-Za-z]+)*|[^A-Za-z]+");
+  final RegExp re = RegExp(
+    r"[A-Za-z]+(?:['’-][A-Za-z]+)*|[\u4e00-\u9fff]|[^\u4e00-\u9fffA-Za-z]+",
+  );
   for (final RegExpMatch m in re.allMatches(text)) {
     final String raw = m.group(0)!;
     out.add(
@@ -36,7 +43,7 @@ List<ReadingToken> tokenizeReadingText(String text) {
         raw: raw,
         start: m.start,
         end: m.end,
-        isWord: RegExp(r'^[A-Za-z]').hasMatch(raw),
+        isWord: _isLatinWord(raw) || _isCjkChar(raw),
       ),
     );
   }
