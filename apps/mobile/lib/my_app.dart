@@ -220,11 +220,13 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
     ref.watch(authSessionProvider);
     final ThemeUiModel currentTheme = ref.watch(themeLogicProvider);
     final GoRouter router = ref.watch(goRouterProvider);
-    final bool isDark =
-        currentTheme.themeMode == ThemeMode.dark ||
-        (currentTheme.themeMode == ThemeMode.system &&
-            WidgetsBinding.instance.platformDispatcher.platformBrightness ==
-                Brightness.dark);
+    final bool jingway = FlavorConfig.isJingwayProduct;
+    final bool isDark = jingway
+        ? false
+        : (currentTheme.themeMode == ThemeMode.dark ||
+            (currentTheme.themeMode == ThemeMode.system &&
+                WidgetsBinding.instance.platformDispatcher.platformBrightness ==
+                    Brightness.dark));
     AppDesignTokens.brightness = isDark ? Brightness.dark : Brightness.light;
     return WithForegroundTask(
       child: AnnotatedRegion<SystemUiOverlayStyle>(
@@ -232,15 +234,13 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
           statusBarColor: Colors.transparent,
           statusBarIconBrightness: isDark ? Brightness.light : Brightness.dark,
           statusBarBrightness: isDark ? Brightness.dark : Brightness.light,
-          systemNavigationBarColor: FlavorConfig.isJingwayProduct
+          systemNavigationBarColor: jingway
               ? const Color(0xFFF1E6C8)
               : (isDark
                   ? const Color(0xFF12141A)
                   : const Color(0xFFF3F4F7)),
           systemNavigationBarIconBrightness:
-              FlavorConfig.isJingwayProduct || !isDark
-                  ? Brightness.dark
-                  : Brightness.light,
+              jingway || !isDark ? Brightness.dark : Brightness.light,
           systemStatusBarContrastEnforced: false,
           systemNavigationBarContrastEnforced: false,
         ),
@@ -249,10 +249,13 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
 
           /// Localization is not available for the title.
           title: FlavorConfig.appName,
-          theme: _buildTheme(Brightness.light),
-          darkTheme: _buildTheme(Brightness.dark),
+          theme: _buildTheme(Brightness.light, jingway: jingway),
+          darkTheme: _buildTheme(
+            jingway ? Brightness.light : Brightness.dark,
+            jingway: jingway,
+          ),
 
-          themeMode: currentTheme.themeMode,
+          themeMode: jingway ? ThemeMode.light : currentTheme.themeMode,
           debugShowCheckedModeBanner: false,
           localizationsDelegates: context.localizationDelegates,
           supportedLocales: context.supportedLocales,
@@ -293,8 +296,65 @@ double _textScaleForWidth(double width) {
   return 0.95;
 }
 
-ThemeData _buildTheme(Brightness brightness) {
+ThemeData _buildTheme(Brightness brightness, {bool jingway = false}) {
   final bool isDark = brightness == Brightness.dark;
+  if (jingway) {
+    const Color cream = Color(0xFFF1E6C8);
+    const Color surface = Color(0xFFF8F0DA);
+    const Color ink = Color(0xFF1C1917);
+    const Color accent = Color(0xFF9A3412);
+    final ColorScheme colorScheme = ColorScheme.fromSeed(
+      brightness: Brightness.light,
+      seedColor: accent,
+      primary: accent,
+      surface: surface,
+    ).copyWith(
+      primary: accent,
+      onPrimary: Colors.white,
+      secondary: const Color(0xFF7C2D12),
+      onSecondary: Colors.white,
+      surface: surface,
+      onSurface: ink,
+    );
+    final TextTheme textTheme =
+        ThemeData(brightness: Brightness.light).textTheme.apply(
+      fontFamily: 'Noto Serif SC',
+      bodyColor: ink,
+      displayColor: ink,
+    );
+    return ThemeData(
+      useMaterial3: true,
+      brightness: Brightness.light,
+      colorScheme: colorScheme,
+      fontFamily: 'Noto Serif SC',
+      textTheme: textTheme,
+      visualDensity: const VisualDensity(horizontal: -0.5, vertical: -0.5),
+      scaffoldBackgroundColor: cream,
+      canvasColor: surface,
+      cardColor: surface,
+      dividerColor: const Color(0xFFD6D3D1),
+      bottomSheetTheme: const BottomSheetThemeData(
+        backgroundColor: surface,
+        surfaceTintColor: Colors.transparent,
+      ),
+      filledButtonTheme: FilledButtonThemeData(
+        style: FilledButton.styleFrom(
+          backgroundColor: accent,
+          foregroundColor: Colors.white,
+          textStyle: const TextStyle(fontWeight: FontWeight.w700),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(999)),
+        ),
+      ),
+      cardTheme: CardThemeData(
+        color: surface,
+        elevation: 0,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        margin: EdgeInsets.zero,
+      ),
+    );
+  }
+
   final ColorScheme colorScheme = ColorScheme.fromSeed(
     brightness: brightness,
     seedColor: const Color(0xFF0875D8),

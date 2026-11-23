@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../flavors/app_flavor.dart';
+import '../../../jingway/presentation/jingway_colors.dart';
 import '../../../shared/presentation/pad/app_design_tokens.dart';
 import '../../../shared/presentation/pad/pad_compact.dart';
 
@@ -18,23 +20,27 @@ class SettingsGroupCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool compact = context.isPadCompact;
+    final bool jingway = FlavorConfig.isJingwayProduct;
+    final Color accent =
+        jingway ? JingwayColors.accentStrong : AppDesignTokens.brandGreenDark;
+    final Color card =
+        jingway ? JingwayColors.surface : AppDesignTokens.appWhite;
+    final Color border =
+        jingway ? JingwayColors.chipBorder : AppDesignTokens.borderGray;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Row(
           children: <Widget>[
-            Icon(
-              icon,
-              size: compact ? 16 : 18,
-              color: AppDesignTokens.brandGreenDark,
-            ),
+            Icon(icon, size: compact ? 16 : 18, color: accent),
             SizedBox(width: compact ? 6 : 8),
             Text(
               title,
               style: TextStyle(
                 fontSize: compact ? 12 : 13,
                 fontWeight: FontWeight.w800,
-                color: AppDesignTokens.brandGreenDark,
+                color: accent,
               ),
             ),
           ],
@@ -42,10 +48,10 @@ class SettingsGroupCard extends StatelessWidget {
         SizedBox(height: compact ? 10 : 12),
         // Material (not DecoratedBox) so ListTile ink/background paint correctly.
         Material(
-          color: AppDesignTokens.appWhite,
+          color: card,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(compact ? 20 : 24),
-            side: BorderSide(color: AppDesignTokens.borderGray),
+            side: BorderSide(color: border),
           ),
           clipBehavior: Clip.antiAlias,
           child: Column(children: children),

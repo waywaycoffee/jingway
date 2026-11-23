@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_ce/hive.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../flavors/app_flavor.dart';
 import 'theme_ui_model.dart';
 
 part 'theme_logic.g.dart';
@@ -12,20 +13,30 @@ part 'theme_logic.g.dart';
 class ThemeLogic extends _$ThemeLogic {
   @override
   ThemeUiModel build() {
+    final bool jingway = FlavorConfig.isJingwayProduct;
     if (!Hive.isBoxOpen('prefs')) {
       // Widget tests and early boot can build before prefs are opened.
-      return const ThemeUiModel(themeMode: ThemeMode.dark);
+      return ThemeUiModel(
+        themeMode: jingway ? ThemeMode.light : ThemeMode.dark,
+      );
     }
     final Box<String> prefsBox = Hive.box<String>('prefs');
-    // Product default is dark canvas; re-assert once for the dark redesign.
-    if (prefsBox.get('themeDarkCanvasV4') != '1') {
+    if (jingway) {
+      // One-shot migrate off AE dark default onto 宣纸浅色.
+      if (prefsBox.get('themeJingwayXuanV1') != '1') {
+        prefsBox.put('themeJingwayXuanV1', '1');
+        prefsBox.put('themeMode', ThemeMode.light.toString());
+      }
+    } else if (prefsBox.get('themeDarkCanvasV4') != '1') {
+      // AE product default is dark canvas.
       prefsBox.put('themeDarkCanvasV4', '1');
       prefsBox.put('themeMode', ThemeMode.dark.toString());
     }
-    ThemeMode themeMode = ThemeMode.dark;
+    final ThemeMode fallback =
+        jingway ? ThemeMode.light : ThemeMode.dark;
+    ThemeMode themeMode = fallback;
     final String mode =
-        prefsBox.get('themeMode', defaultValue: ThemeMode.dark.toString())
-            as String;
+        prefsBox.get('themeMode', defaultValue: fallback.toString()) as String;
     switch (mode) {
       case 'ThemeMode.dark':
         themeMode = ThemeMode.dark;

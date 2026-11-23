@@ -23,6 +23,7 @@ import '../../debug/demo_seed_service.dart';
 import '../../idle_jobs/idle_job_queue.dart';
 import '../../idle_jobs/idle_job_scheduler.dart';
 import '../../sync/data/user_assets_service.dart';
+import '../../jingway/presentation/jingway_colors.dart';
 import '../../shared/presentation/pad/app_design_tokens.dart';
 import '../../shared/presentation/pad/pad_compact.dart';
 import '../../shared/presentation/pad/pad_scaffold.dart';
@@ -1240,6 +1241,7 @@ class SettingsScreen extends ConsumerWidget {
   }) {
     return PadScaffold(
       currentDestination: AppNavDestination.settings,
+      backgroundColor: JingwayColors.cream,
       topBar: const PadTopBar(title: '景行语文', subtitle: '我的'),
       body: ListView(
         padding: EdgeInsets.all(context.padPagePadding),
@@ -1249,7 +1251,7 @@ class SettingsScreen extends ConsumerWidget {
             style: TextStyle(
               fontSize: compact ? 30 : 34,
               fontWeight: FontWeight.w900,
-              color: AppDesignTokens.textPrimary,
+              color: JingwayColors.title,
             ),
           ),
           SizedBox(height: compact ? 6 : 8),
@@ -1257,7 +1259,7 @@ class SettingsScreen extends ConsumerWidget {
             '年级、账号与本地学习体验',
             style: TextStyle(
               fontSize: compact ? 14 : 15,
-              color: AppDesignTokens.textSecondary,
+              color: JingwayColors.hint,
             ),
           ),
           SizedBox(height: context.padSectionGap),
@@ -1324,11 +1326,28 @@ class SettingsScreen extends ConsumerWidget {
           ),
           SizedBox(height: context.padSectionGap),
           Card(
+            color: JingwayColors.surface,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+              side: const BorderSide(color: JingwayColors.chipBorder),
+            ),
             child: ListTile(
-              leading: const Icon(Icons.workspace_premium_rounded),
-              title: const Text('Pro 会员中心'),
-              subtitle: const Text('会员状态 · 权益套餐 · 微信支付 · 我的订单'),
-              trailing: const Icon(Icons.chevron_right),
+              leading: const Icon(
+                Icons.workspace_premium_rounded,
+                color: JingwayColors.accent,
+              ),
+              title: const Text(
+                'Pro 会员中心',
+                style: TextStyle(color: JingwayColors.title),
+              ),
+              subtitle: const Text(
+                '会员状态 · 权益套餐 · 微信支付 · 我的订单',
+                style: TextStyle(color: JingwayColors.hint),
+              ),
+              trailing: const Icon(
+                Icons.chevron_right,
+                color: JingwayColors.section,
+              ),
               onTap: () => context.push(SGRoute.membership.route),
             ),
           ),
@@ -1394,13 +1413,15 @@ class SettingsScreen extends ConsumerWidget {
             ],
           ),
           SizedBox(height: context.padSectionGap),
-          const SettingsGroupCard(
+          SettingsGroupCard(
             title: '外观',
             icon: Icons.palette_rounded,
             children: <Widget>[
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 4),
-                child: ThemeWidget(),
+              _ActionRow(
+                title: '宣纸浅色',
+                description: '景行语文固定使用宣纸浅色界面。',
+                icon: Icons.light_mode_rounded,
+                onTap: () {},
               ),
             ],
           ),
@@ -1445,9 +1466,9 @@ class SettingsScreen extends ConsumerWidget {
                 loading: () => '当前版本',
                 error: (_, _) => '当前版本未知',
               ),
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 12,
-                color: AppDesignTokens.textSecondary,
+                color: JingwayColors.hint,
               ),
             ),
           ),
@@ -2560,15 +2581,16 @@ class _ActionRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool jingway = FlavorConfig.isJingwayProduct;
     final Color titleColor = danger
         ? const Color(0xFFC62828)
-        : AppDesignTokens.textPrimary;
+        : (jingway ? JingwayColors.title : AppDesignTokens.textPrimary);
     final Color descColor = danger
         ? const Color(0xFFD86A6A)
-        : AppDesignTokens.textSecondary;
+        : (jingway ? JingwayColors.hint : AppDesignTokens.textSecondary);
     final Color iconColor = danger
         ? const Color(0xFFC62828)
-        : AppDesignTokens.textSecondary;
+        : (jingway ? JingwayColors.hint : AppDesignTokens.textSecondary);
 
     return InkWell(
       onTap: onTap,
@@ -2631,6 +2653,7 @@ class _TitleBlock extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool jingway = FlavorConfig.isJingwayProduct;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -2639,7 +2662,7 @@ class _TitleBlock extends StatelessWidget {
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w700,
-            color: AppDesignTokens.textPrimary,
+            color: jingway ? JingwayColors.title : AppDesignTokens.textPrimary,
           ),
         ),
         const SizedBox(height: 3),
@@ -2647,7 +2670,7 @@ class _TitleBlock extends StatelessWidget {
           description,
           style: TextStyle(
             fontSize: 12,
-            color: AppDesignTokens.textSecondary,
+            color: jingway ? JingwayColors.hint : AppDesignTokens.textSecondary,
           ),
         ),
       ],

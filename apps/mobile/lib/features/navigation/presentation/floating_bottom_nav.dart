@@ -254,10 +254,12 @@ class _MoreNavItem extends StatelessWidget {
   }
 
   Future<void> _showMoreMenu(BuildContext context) async {
+    final bool jingway = FlavorConfig.isJingwayProduct;
     await showModalBottomSheet<void>(
       context: context,
       showDragHandle: true,
       isScrollControlled: true,
+      backgroundColor: jingway ? JingwayColors.surface : null,
       builder: (BuildContext sheetContext) => SafeArea(
         top: false,
         child: SingleChildScrollView(
@@ -266,14 +268,20 @@ class _MoreNavItem extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              const Text(
+              Text(
                 '更多功能',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900),
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w900,
+                  color: jingway ? JingwayColors.title : null,
+                ),
               ),
               const SizedBox(height: 12),
               ...destinations.map(
                 (AppNavDestination destination) => ListTile(
                   contentPadding: EdgeInsets.zero,
+                  iconColor: jingway ? JingwayColors.accent : null,
+                  textColor: jingway ? JingwayColors.body : null,
                   leading: Icon(destination.icon),
                   title: Text(destination.label),
                   onTap: () {
