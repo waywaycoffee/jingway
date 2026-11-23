@@ -1285,6 +1285,12 @@ class SettingsScreen extends ConsumerWidget {
                 onTap: () => context.go(AppNavDestination.readingHub.route),
               ),
               _ActionRow(
+                title: '教材',
+                description: '电子课本目录、课文文本与智慧教育索引（按需打开）。',
+                icon: Icons.auto_stories_rounded,
+                onTap: () => context.push(AppNavDestination.textbooks.route),
+              ),
+              _ActionRow(
                 title: '视频库',
                 description: '查看已导入视频（播放已有字幕，不自动翻译 / 生成）。',
                 icon: Icons.video_library_rounded,

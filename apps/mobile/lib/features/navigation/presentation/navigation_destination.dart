@@ -39,6 +39,15 @@ enum AppNavDestination {
     activeIcon: Icons.menu_book_rounded,
     showInBottomNav: false,
   ),
+  textbooks(
+    route: '/textbooks',
+    label: '教材',
+    title: '教材',
+    subtitle: '语文电子课本目录与课文文本（按需打开，不内置正文）。',
+    icon: Icons.auto_stories_outlined,
+    activeIcon: Icons.auto_stories_rounded,
+    showInBottomNav: false,
+  ),
   oralCoach(
     route: '/digital-human',
     label: 'AI老师',

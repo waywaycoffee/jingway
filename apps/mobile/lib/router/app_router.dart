@@ -31,6 +31,7 @@ import '../features/jingway/presentation/jingway_exam_home_screen.dart';
 import '../features/jingway/presentation/jingway_exam_stub_screen.dart';
 import '../features/jingway/presentation/jingway_grade_onboarding_screen.dart';
 import '../features/jingway/presentation/jingway_grade_settings_screen.dart';
+import '../features/jingway/presentation/jingway_textbook_hub_screen.dart';
 import '../features/jingway/presentation/jingway_unavailable_screen.dart';
 import '../features/jingway/presentation/research_lab_screen.dart';
 import '../features/poetry/presentation/poetry_catalog_screen.dart';
@@ -484,6 +485,11 @@ GoRouter goRouter(Ref ref) => GoRouter(
         );
         return ReadingReaderScreen(docId: docId);
       },
+    ).fade(),
+    GoRoute(
+      path: AppNavDestination.textbooks.route,
+      builder: (BuildContext context, GoRouterState state) =>
+          const JingwayTextbookHubScreen(),
     ).fade(),
     GoRoute(
       path: AppNavDestination.oralCoach.route,

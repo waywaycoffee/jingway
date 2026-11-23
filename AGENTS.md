@@ -12,6 +12,7 @@
 - 独立考试向语文 App；按 K12 年级匹配内容与练习。
 - 商用内容：chinese-xinhua / chinese-poetry / chinese-dictionary（MIT）。
 - NCR / CKnowEdit 等研究数据禁止进入正式包。
+- 部编教材正文禁止打进 APK；ChinaTextbook / yuwen / dianzi-keben 仅目录 + 按需打开（见 `docs/ATTRIBUTION.md`）。
 
 ## 音视频只走 ECS
 

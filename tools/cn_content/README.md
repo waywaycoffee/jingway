@@ -25,7 +25,13 @@ python3 tools/cn_content/build_poetry_exam.py
 
 # 从 xinhua 生成示例词书骨架
 python3 tools/cn_content/build_xinhua_syllabus.py
+
+# 刷新 K12 教材薄目录（ChinaTextbook / yuwen / dianzi-keben，仅元数据）
+python3 tools/cn_content/build_textbook_manifests.py
 ```
+
+教材目录写入 `apps/mobile/assets/jingway/textbooks/*.json`（书名/年级/远程路径）。
+**勿**把 PDF 或 OCR 正文提交进仓库；App 按需下载到设备 `documents/textbooks/`。
 
 当前仓库已内置：
 

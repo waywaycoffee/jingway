@@ -1,0 +1,149 @@
+{
+  "source": "dianzi_keben",
+  "repo": "https://github.com/zhongyuanqi/dianzi-keben",
+  "platform": "https://basic.smartedu.cn/",
+  "licenseNote": "内容来自国家中小学智慧教育平台整理索引；版权归教育部/出版社。景行只提供外链，不托管 PDF。",
+  "generatedAt": "2026-11-23T06:19:14.180836+00:00",
+  "items": [
+    {
+      "id": "dianzi_小学电子课本_小学语文电子课本_md",
+      "title": "小学语文电子课本",
+      "subject": "语文",
+      "band": "小学",
+      "grade": 1,
+      "gradeLabel": "一年级",
+      "volume": "",
+      "path": "小学电子课本/小学语文电子课本.md",
+      "password": "s8xt",
+      "links": [
+        {
+          "label": "百度网盘",
+          "url": "https://pan.baidu.com/s/1C2e-XzuXD1OeH7UOjKPjDg?pwd=s8xt",
+          "kind": "netdisk"
+        },
+        {
+          "label": "夸克网盘",
+          "url": "https://pan.quark.cn/s/5fd3b88815be",
+          "kind": "netdisk"
+        },
+        {
+          "label": "国家中小学智慧教育平台",
+          "url": "https://basic.smartedu.cn/",
+          "kind": "platform"
+        },
+        {
+          "label": "GitHub 索引页",
+          "url": "https://github.com/zhongyuanqi/dianzi-keben/blob/main/%E5%B0%8F%E5%AD%A6%E7%94%B5%E5%AD%90%E8%AF%BE%E6%9C%AC/%E5%B0%8F%E5%AD%A6%E8%AF%AD%E6%96%87%E7%94%B5%E5%AD%90%E8%AF%BE%E6%9C%AC.md",
+          "kind": "github"
+        }
+      ],
+      "action": "external",
+      "note": "电子课本本体在智慧教育平台或网盘；景行仅收录索引链接。"
+    },
+    {
+      "id": "dianzi_初中电子课本_初中语文电子课本_md",
+      "title": "初中语文电子课本",
+      "subject": "语文",
+      "band": "初中",
+      "grade": 7,
+      "gradeLabel": "七年级",
+      "volume": "",
+      "path": "初中电子课本/初中语文电子课本.md",
+      "password": "jjki",
+      "links": [
+        {
+          "label": "百度网盘",
+          "url": "https://pan.baidu.com/s/1fyPk7vbAj1DSOP9bQOQNew?pwd=jjki",
+          "kind": "netdisk"
+        },
+        {
+          "label": "夸克网盘",
+          "url": "https://pan.quark.cn/s/2a903bbc1883",
+          "kind": "netdisk"
+        },
+        {
+          "label": "国家中小学智慧教育平台",
+          "url": "https://basic.smartedu.cn/",
+          "kind": "platform"
+        },
+        {
+          "label": "GitHub 索引页",
+          "url": "https://github.com/zhongyuanqi/dianzi-keben/blob/main/%E5%88%9D%E4%B8%AD%E7%94%B5%E5%AD%90%E8%AF%BE%E6%9C%AC/%E5%88%9D%E4%B8%AD%E8%AF%AD%E6%96%87%E7%94%B5%E5%AD%90%E8%AF%BE%E6%9C%AC.md",
+          "kind": "github"
+        }
+      ],
+      "action": "external",
+      "note": "电子课本本体在智慧教育平台或网盘；景行仅收录索引链接。"
+    },
+    {
+      "id": "dianzi_高中电子课本_高中语文电子课本",
+      "title": "高中语文电子课本",
+      "subject": "语文",
+      "band": "高中",
+      "grade": null,
+      "gradeLabel": "高中",
+      "volume": "",
+      "path": "高中电子课本/高中语文电子课本",
+      "password": "93t9",
+      "links": [
+        {
+          "label": "百度网盘",
+          "url": "https://pan.baidu.com/s/1r8N5l6f66d5LvXShJw2XaQ?pwd=93t9",
+          "kind": "netdisk"
+        },
+        {
+          "label": "夸克网盘",
+          "url": "https://pan.quark.cn/s/6b4bfea5a7df",
+          "kind": "netdisk"
+        },
+        {
+          "label": "国家中小学智慧教育平台",
+          "url": "https://basic.smartedu.cn/",
+          "kind": "platform"
+        },
+        {
+          "label": "GitHub 索引页",
+          "url": "https://github.com/zhongyuanqi/dianzi-keben/blob/main/%E9%AB%98%E4%B8%AD%E7%94%B5%E5%AD%90%E8%AF%BE%E6%9C%AC/%E9%AB%98%E4%B8%AD%E8%AF%AD%E6%96%87%E7%94%B5%E5%AD%90%E8%AF%BE%E6%9C%AC",
+          "kind": "github"
+        }
+      ],
+      "action": "external",
+      "note": "电子课本本体在智慧教育平台或网盘；景行仅收录索引链接。"
+    },
+    {
+      "id": "dianzi_小学电子课本_小学语文书法练习指导电子课本_md",
+      "title": "小学语文书法练习指导",
+      "subject": "语文",
+      "band": "小学",
+      "grade": 3,
+      "gradeLabel": "三年级",
+      "volume": "",
+      "path": "小学电子课本/小学语文书法练习指导电子课本.md",
+      "password": "dj5s",
+      "links": [
+        {
+          "label": "百度网盘",
+          "url": "https://pan.baidu.com/s/1ksmBdXppdefNfs27SW1xNg?pwd=dj5s",
+          "kind": "netdisk"
+        },
+        {
+          "label": "夸克网盘",
+          "url": "https://pan.quark.cn/s/a7af4f588cbe",
+          "kind": "netdisk"
+        },
+        {
+          "label": "国家中小学智慧教育平台",
+          "url": "https://basic.smartedu.cn/",
+          "kind": "platform"
+        },
+        {
+          "label": "GitHub 索引页",
+          "url": "https://github.com/zhongyuanqi/dianzi-keben/blob/main/%E5%B0%8F%E5%AD%A6%E7%94%B5%E5%AD%90%E8%AF%BE%E6%9C%AC/%E5%B0%8F%E5%AD%A6%E8%AF%AD%E6%96%87%E4%B9%A6%E6%B3%95%E7%BB%83%E4%B9%A0%E6%8C%87%E5%AF%BC%E7%94%B5%E5%AD%90%E8%AF%BE%E6%9C%AC.md",
+          "kind": "github"
+        }
+      ],
+      "action": "external",
+      "note": "电子课本本体在智慧教育平台或网盘；景行仅收录索引链接。"
+    }
+  ]
+}

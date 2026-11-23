@@ -255,6 +255,11 @@ class _ReadingHubScreenState extends ConsumerState<ReadingHubScreen> {
             ),
           ),
           IconButton(
+            tooltip: '教材',
+            onPressed: () => context.push('/textbooks'),
+            icon: const Icon(Icons.auto_stories_outlined),
+          ),
+          IconButton(
             tooltip: '在线书库',
             onPressed: () => context.push('/reading/catalog'),
             icon: const Icon(Icons.cloud_download_outlined),
