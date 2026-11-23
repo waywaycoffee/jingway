@@ -148,8 +148,8 @@ class _JingwayExamHomeScreenState extends ConsumerState<JingwayExamHomeScreen> {
           ),
           _HomeCard(
             title: '考试专项',
-            subtitle: '练习与错题本骨架（内容按年级过滤）',
-            action: '进入专项',
+            subtitle: '专项题包筹备中（阅读 / 文言 / 作文将按年级上线）',
+            action: '查看说明',
             onTap: () => context.go('/exam'),
           ),
           if (kDebugMode)

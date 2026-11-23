@@ -82,14 +82,14 @@ class JingwayReviewHubScreen extends ConsumerWidget {
             onTap: () => context.go('/words/syllabus'),
           ),
           _SecondaryCard(
-            title: '错题本',
-            subtitle: '考试与练习错题回流，优先重练薄弱项',
-            onTap: () => context.go('/exam/errorbook'),
-          ),
-          _SecondaryCard(
             title: '诗文默写',
             subtitle: '年级必背：遮挡背诵 · 上下句 · 逐字默写',
             onTap: () => context.go('/poetry'),
+          ),
+          _SecondaryCard(
+            title: '考试专项',
+            subtitle: '专项题包筹备中',
+            onTap: () => context.go('/exam'),
           ),
         ],
       ),

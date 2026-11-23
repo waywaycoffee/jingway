@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../constants/feature_flags.dart';
+import '../../../flavors/app_flavor.dart';
 import '../../../router/app_router.dart';
 import '../../../utils/url_utils.dart';
 import '../../authentication/presentation/account_hub_sheet.dart';
@@ -58,6 +59,7 @@ class SettingsScreen extends ConsumerWidget {
     final AppUpdateState updateState = ref.watch(appUpdateProvider);
     final AsyncValue<String> appVersion = ref.watch(appVersionProvider);
     final AuthSessionState authSession = ref.watch(authSessionProvider);
+    final bool jingway = FlavorConfig.isJingwayProduct;
     ref.listen<AppUpdateState>(appUpdateProvider, (
       AppUpdateState? previous,
       AppUpdateState next,
@@ -72,6 +74,18 @@ class SettingsScreen extends ConsumerWidget {
         _showMessage(context, next.message!);
       }
     });
+
+    if (jingway) {
+      return _buildJingwaySettings(
+        context: context,
+        ref: ref,
+        compact: compact,
+        settings: settings,
+        updateState: updateState,
+        appVersion: appVersion,
+        authSession: authSession,
+      );
+    }
 
     return PadScaffold(
       currentDestination: AppNavDestination.settings,
@@ -1193,6 +1207,184 @@ class SettingsScreen extends ConsumerWidget {
                 description: '自愿赞助，支持开源维护与改进。将在浏览器打开 Buy Me a Coffee。',
                 icon: Icons.open_in_new_rounded,
                 onTap: () => _openSupportPage(context),
+              ),
+            ],
+          ),
+          SizedBox(height: compact ? 20 : 24),
+          Center(
+            child: Text(
+              appVersion.when(
+                data: (String version) => '当前版本 v$version',
+                loading: () => '当前版本',
+                error: (_, _) => '当前版本未知',
+              ),
+              style: TextStyle(
+                fontSize: 12,
+                color: AppDesignTokens.textSecondary,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildJingwaySettings({
+    required BuildContext context,
+    required WidgetRef ref,
+    required bool compact,
+    required LearningSettingsState settings,
+    required AppUpdateState updateState,
+    required AsyncValue<String> appVersion,
+    required AuthSessionState authSession,
+  }) {
+    return PadScaffold(
+      currentDestination: AppNavDestination.settings,
+      topBar: const PadTopBar(title: '景行语文', subtitle: '我的'),
+      body: ListView(
+        padding: EdgeInsets.all(context.padPagePadding),
+        children: <Widget>[
+          Text(
+            '我的',
+            style: TextStyle(
+              fontSize: compact ? 30 : 34,
+              fontWeight: FontWeight.w900,
+              color: AppDesignTokens.textPrimary,
+            ),
+          ),
+          SizedBox(height: compact ? 6 : 8),
+          Text(
+            '年级、账号与本地学习体验',
+            style: TextStyle(
+              fontSize: compact ? 14 : 15,
+              color: AppDesignTokens.textSecondary,
+            ),
+          ),
+          SizedBox(height: context.padSectionGap),
+          SettingsGroupCard(
+            title: '学习档案',
+            icon: Icons.school_rounded,
+            children: <Widget>[
+              _ActionRow(
+                title: '年级设置',
+                description: '按 K12 年级匹配字词、古诗文与练习。',
+                icon: Icons.grade_rounded,
+                onTap: () => context.push('/settings/grade'),
+              ),
+            ],
+          ),
+          SizedBox(height: context.padSectionGap),
+          Card(
+            child: ListTile(
+              leading: const Icon(Icons.workspace_premium_rounded),
+              title: const Text('Pro 会员中心'),
+              subtitle: const Text('会员状态 · 权益套餐 · 微信支付 · 我的订单'),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () => context.push(SGRoute.membership.route),
+            ),
+          ),
+          SizedBox(height: context.padSectionGap),
+          SettingsGroupCard(
+            title: '账号',
+            icon: Icons.person_rounded,
+            children: <Widget>[
+              _InputRow(
+                title: '云端 API 地址',
+                description:
+                    '账号与学习进度同步。留空则用编译参数 API_BASE'
+                    '（当前 ${settings.resolvedCloudApiBaseUrl}）。',
+                value: settings.cloudApiBaseUrl,
+                hintText: settings.resolvedCloudApiBaseUrl,
+                onChanged: (String value) {
+                  ref
+                      .read(learningSettingsProvider.notifier)
+                      .setCloudApiBaseUrl(value);
+                },
+              ),
+              if (authSession.isLoggedIn) ...<Widget>[
+                _ActionRow(
+                  title: authSession.displayName.isEmpty
+                      ? authSession.email
+                      : authSession.displayName,
+                  description: authSession.displayName.isEmpty
+                      ? '已登录，可同步学习进度。'
+                      : '${authSession.email}\n已登录，可同步学习进度。',
+                  icon: Icons.verified_user_rounded,
+                  onTap: () {},
+                ),
+                _ActionRow(
+                  title: '退出登录',
+                  description: '退出后云端同步将暂停，本地学习数据仍保留。',
+                  danger: true,
+                  icon: Icons.logout_rounded,
+                  onTap: () async {
+                    await setSkipDefaultAccountLogin(skip: true);
+                    await ref.read(authSessionProvider.notifier).signOut();
+                    if (!context.mounted) {
+                      return;
+                    }
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('已退出账号')),
+                    );
+                  },
+                ),
+              ] else ...<Widget>[
+                _ActionRow(
+                  title: '登录账号',
+                  description: '登录后可同步进度与学习偏好。',
+                  icon: Icons.login_rounded,
+                  onTap: () => context.push(SGRoute.login.route),
+                ),
+                _ActionRow(
+                  title: '注册新账号',
+                  description: '使用邮箱创建景行语文账号。',
+                  icon: Icons.person_add_alt_1_rounded,
+                  onTap: () => context.push(SGRoute.register.route),
+                ),
+              ],
+            ],
+          ),
+          SizedBox(height: context.padSectionGap),
+          const SettingsGroupCard(
+            title: '外观',
+            icon: Icons.palette_rounded,
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 4),
+                child: ThemeWidget(),
+              ),
+            ],
+          ),
+          SizedBox(height: context.padSectionGap),
+          SettingsGroupCard(
+            title: '系统',
+            icon: Icons.settings_system_daydream_rounded,
+            children: <Widget>[
+              _ActionRow(
+                title: updateState.downloadedPath != null
+                    ? (updateState.isInstalling
+                          ? '正在打开安装包…'
+                          : '安装 v${updateState.update!.version}')
+                    : updateState.update == null
+                    ? (updateState.isChecking ? '正在检查更新…' : '检查更新')
+                    : (updateState.isDownloading
+                          ? _downloadTitle(updateState)
+                          : '更新到 v${updateState.update!.version}'),
+                description: updateState.isDownloading
+                    ? _downloadDescription(updateState)
+                    : updateState.downloadedPath != null
+                    ? '安装包已校验完成，点击开始安装。'
+                    : updateState.update == null
+                    ? '检查当前平台的最新安装包。'
+                    : '已找到适用于当前平台的安装包。',
+                icon: Icons.system_update_rounded,
+                onTap: () => _handleUpdateAction(ref, updateState),
+              ),
+              _ActionRow(
+                title: '清除应用缓存',
+                description: '清除本地缓存，重置到初始状态（年级档案会保留引导重选）。',
+                danger: true,
+                onTap: () => _confirmReset(context, ref),
               ),
             ],
           ),

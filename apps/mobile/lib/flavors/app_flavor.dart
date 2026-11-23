@@ -17,6 +17,10 @@ class FlavorConfig {
   static bool get isStaging => _flavor == AppFlavor.staging;
   static bool get isProd => _flavor == AppFlavor.prod;
 
+  /// Jingway Chinese product line (this repo). Flip false only for a future
+  /// AcquireEnglish flavor so English nav/settings/code can stay in-tree.
+  static bool get isJingwayProduct => true;
+
   static bool get isChineseLocale {
     final Locale locale = PlatformDispatcher.instance.locale;
     return locale.languageCode.toLowerCase() == 'zh';

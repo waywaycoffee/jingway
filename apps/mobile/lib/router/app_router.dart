@@ -28,8 +28,10 @@ import '../features/growth/presentation/growth_screen.dart';
 import '../features/guide/presentation/guide_screen.dart';
 import '../features/home/presentation/learning_home_screen.dart';
 import '../features/jingway/presentation/jingway_exam_home_screen.dart';
+import '../features/jingway/presentation/jingway_exam_stub_screen.dart';
 import '../features/jingway/presentation/jingway_grade_onboarding_screen.dart';
 import '../features/jingway/presentation/jingway_grade_settings_screen.dart';
+import '../features/jingway/presentation/jingway_unavailable_screen.dart';
 import '../features/jingway/presentation/research_lab_screen.dart';
 import '../features/poetry/presentation/poetry_catalog_screen.dart';
 import '../features/poetry/presentation/poetry_recite_screen.dart';
@@ -58,6 +60,7 @@ import '../features/onboarding/presentation/first_open_onboarding_screen.dart';
 import '../features/onboarding/presentation/onboarding_provider.dart';
 import '../features/navigation/presentation/navigation_destination.dart';
 import '../features/shared/presentation/pad/pad_scaffold.dart';
+import '../flavors/app_flavor.dart';
 
 part 'app_router.g.dart';
 
@@ -116,6 +119,49 @@ bool _isAuthOrLegalPath(String location) {
       location == SGRoute.userAgreement.route;
 }
 
+/// Soft-block AcquireEnglish-only paths on Jingway (modules stay in tree).
+const String _jingwayUnavailablePath = '/jingway/unavailable';
+
+String? _jingwayEnglishRouteRedirect(String location) {
+  if (!FlavorConfig.isJingwayProduct) {
+    return null;
+  }
+
+  // Chinese exam specialty stub replaces CEFR English exam hub.
+  if (location == '/exam' ||
+      location.startsWith('/exam/')) {
+    return location == '/exam' ? null : '/exam';
+  }
+
+  const Set<String> exactBlocked = <String>{
+    '/library',
+    '/growth',
+    '/discover',
+    '/digital-human',
+    '/peer-oral',
+    '/guide',
+    '/phrases',
+    '/words',
+    '/home/legacy',
+    '/importCourse',
+    '/vocabularyPlacement',
+    '/review/sm2',
+    '/review/learning',
+    '/writing',
+  };
+  if (exactBlocked.contains(location)) {
+    return _jingwayUnavailablePath;
+  }
+  if (location.startsWith('/learn/') ||
+      location.startsWith('/reading') ||
+      location.startsWith('/episodes/') ||
+      location.startsWith('/writing/') ||
+      location.startsWith('/shared/')) {
+    return _jingwayUnavailablePath;
+  }
+  return null;
+}
+
 @riverpod
 GoRouter goRouter(Ref ref) => GoRouter(
   initialLocation: readOnboardingCompletedSync()
@@ -127,6 +173,10 @@ GoRouter goRouter(Ref ref) => GoRouter(
     final bool onOnboarding = loc == '/onboarding';
     if (!done && !onOnboarding && !_isAuthOrLegalPath(loc)) {
       return '/onboarding';
+    }
+    final String? jingwayBlock = _jingwayEnglishRouteRedirect(loc);
+    if (jingwayBlock != null) {
+      return jingwayBlock;
     }
     return null;
   },
@@ -177,9 +227,18 @@ GoRouter goRouter(Ref ref) => GoRouter(
           PublicLearningCardScreen(token: state.pathParameters['token']!),
     ),
     GoRoute(
-      path: '/exam',
+      path: _jingwayUnavailablePath,
       builder: (BuildContext context, GoRouterState state) =>
-          const ExamHomeScreen(),
+          const JingwayUnavailableScreen(),
+    ),
+    GoRoute(
+      path: '/exam',
+      builder: (BuildContext context, GoRouterState state) {
+        if (FlavorConfig.isJingwayProduct) {
+          return const JingwayExamStubScreen();
+        }
+        return const ExamHomeScreen();
+      },
     ),
     GoRoute(
       path: '/exam/select',

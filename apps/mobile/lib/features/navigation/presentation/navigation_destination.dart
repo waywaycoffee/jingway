@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_flutter/lucide_flutter.dart';
 
+import '../../../flavors/app_flavor.dart';
+
 enum AppNavDestination {
   home(
     route: '/home',
@@ -18,6 +20,7 @@ enum AppNavDestination {
     icon: LucideIcons.clapperboard,
     activeIcon: LucideIcons.clapperboard,
     showInBottomNav: false,
+    availableInJingway: false,
   ),
   reading(
     route: '/poetry',
@@ -34,6 +37,7 @@ enum AppNavDestination {
     subtitle: '和数字人开口练习，也可以拍照识词。',
     icon: Icons.record_voice_over_outlined,
     activeIcon: Icons.record_voice_over_rounded,
+    availableInJingway: false,
   ),
   growth(
     route: '/growth',
@@ -42,6 +46,7 @@ enum AppNavDestination {
     subtitle: '记录你的每一次进步，查看学习轨迹与掌握度。',
     icon: LucideIcons.sprout,
     activeIcon: LucideIcons.trophy,
+    availableInJingway: false,
   ),
   discover(
     route: '/discover',
@@ -50,6 +55,7 @@ enum AppNavDestination {
     subtitle: '真题资料共享、素材协作、同桌与输出互评。',
     icon: Icons.groups_outlined,
     activeIcon: Icons.groups_rounded,
+    availableInJingway: false,
   ),
   review(
     route: '/review',
@@ -63,7 +69,7 @@ enum AppNavDestination {
     route: '/exam',
     label: '专项',
     title: '考试专项',
-    subtitle: '专项练习与错题本（内容按年级过滤）。',
+    subtitle: '语文专项题包筹备中。',
     icon: Icons.school_outlined,
     activeIcon: Icons.school_rounded,
   ),
@@ -76,6 +82,7 @@ enum AppNavDestination {
     activeIcon: Icons.auto_stories_rounded,
     showInNav: false,
     showInBottomNav: false,
+    availableInJingway: false,
   ),
   words(
     route: '/words',
@@ -86,6 +93,7 @@ enum AppNavDestination {
     activeIcon: Icons.menu_book_rounded,
     showInNav: false,
     showInBottomNav: false,
+    availableInJingway: false,
   ),
   guide(
     route: '/guide',
@@ -95,12 +103,13 @@ enum AppNavDestination {
     icon: Icons.tips_and_updates_outlined,
     activeIcon: Icons.tips_and_updates_rounded,
     showInBottomNav: false,
+    availableInJingway: false,
   ),
   settings(
     route: '/settings',
     label: '设置',
     title: '我的',
-    subtitle: '管理播放偏好、界面设置和本地学习体验。',
+    subtitle: '年级、账号与本地学习体验。',
     icon: Icons.tune_outlined,
     activeIcon: Icons.tune_rounded,
   ),
@@ -112,6 +121,7 @@ enum AppNavDestination {
     icon: Icons.file_upload_outlined,
     activeIcon: Icons.file_upload_rounded,
     showInNav: false,
+    availableInJingway: false,
   );
 
   const AppNavDestination({
@@ -123,6 +133,7 @@ enum AppNavDestination {
     required this.activeIcon,
     this.showInNav = true,
     this.showInBottomNav = true,
+    this.availableInJingway = true,
   });
 
   final String route;
@@ -133,4 +144,18 @@ enum AppNavDestination {
   final IconData activeIcon;
   final bool showInNav;
   final bool showInBottomNav;
+
+  /// AcquireEnglish-only destinations stay in the enum for other flavors,
+  /// but Jingway product builds hide them from nav / More / sidebar.
+  final bool availableInJingway;
+
+  bool get isVisibleForCurrentProduct {
+    if (!showInNav) {
+      return false;
+    }
+    if (FlavorConfig.isJingwayProduct && !availableInJingway) {
+      return false;
+    }
+    return true;
+  }
 }

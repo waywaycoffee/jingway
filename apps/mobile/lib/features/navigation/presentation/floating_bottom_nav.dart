@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../flavors/app_flavor.dart';
 import '../../shared/presentation/pad/app_design_tokens.dart';
 import 'navigation_destination.dart';
 
@@ -12,7 +13,7 @@ class FloatingBottomNav extends StatelessWidget {
   final AppNavDestination current;
 
   /// 景行语文考试向底栏：备考首页 / 诗文 / 复习 / 专项 / 我的
-  static const List<AppNavDestination> _primaryDestinations =
+  static const List<AppNavDestination> _jingwayPrimaryDestinations =
       <AppNavDestination>[
         AppNavDestination.home,
         AppNavDestination.reading,
@@ -21,26 +22,45 @@ class FloatingBottomNav extends StatelessWidget {
         AppNavDestination.settings,
       ];
 
+  /// AcquireEnglish 底栏（保留英语主路径）
+  static const List<AppNavDestination> _aePrimaryDestinations =
+      <AppNavDestination>[
+        AppNavDestination.home,
+        AppNavDestination.reading,
+        AppNavDestination.review,
+        AppNavDestination.exam,
+        AppNavDestination.settings,
+      ];
+
+  static List<AppNavDestination> get _primaryDestinations =>
+      FlavorConfig.isJingwayProduct
+      ? _jingwayPrimaryDestinations
+      : _aePrimaryDestinations;
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.sizeOf(context);
     final double width = size.width;
     final bool compact = width < 768;
-    final bool useMoreMenu = size.height > size.width;
+    final bool portrait = size.height > size.width;
     final List<AppNavDestination> allDestinations = AppNavDestination.values
-        .where((AppNavDestination destination) => destination.showInNav)
+        .where((AppNavDestination destination) => destination.isVisibleForCurrentProduct)
         .toList(growable: false);
     final List<AppNavDestination> destinations = allDestinations
         .where((AppNavDestination destination) => destination.showInBottomNav)
         .toList(growable: false);
+    final List<AppNavDestination> primary = _primaryDestinations
+        .where((AppNavDestination destination) => destination.isVisibleForCurrentProduct)
+        .toList(growable: false);
     final List<AppNavDestination> secondaryDestinations = allDestinations
         .where(
-          (AppNavDestination destination) =>
-              !_primaryDestinations.contains(destination),
+          (AppNavDestination destination) => !primary.contains(destination),
         )
         .toList(growable: false);
+    final bool useMoreMenu =
+        portrait && secondaryDestinations.isNotEmpty;
     final List<AppNavDestination> visibleDestinations = useMoreMenu
-        ? _primaryDestinations
+        ? primary
         : destinations;
 
     // Keep the floating pill compact. System inset is owned by Scaffold /

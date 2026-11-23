@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../flavors/app_flavor.dart';
 import '../../../growth/presentation/growth_provider.dart';
 import '../../../navigation/presentation/navigation_destination.dart';
 import '../../data/daily_english_service.dart';
@@ -121,7 +122,7 @@ class _PadSidebarState extends ConsumerState<PadSidebar> {
     final List<AppNavDestination> items = AppNavDestination.values
         .where(
           (AppNavDestination destination) =>
-              destination.showInNav &&
+              destination.isVisibleForCurrentProduct &&
               destination != AppNavDestination.settings,
         )
         .toList(growable: false);
@@ -277,79 +278,80 @@ class _PadSidebarState extends ConsumerState<PadSidebar> {
                   itemCount: items.length,
                 ),
               ),
-              InkWell(
-                key: const Key('pad-sidebar-growth-entry'),
-                borderRadius: BorderRadius.circular(24),
-                onTap: () => context.go(AppNavDestination.growth.route),
-                child: Stack(
-                  clipBehavior: Clip.none,
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(
-                        compact ? 62 : 70,
-                        12,
-                        compact ? 18 : 22,
-                        52,
-                      ),
-                      child: Row(
-                        children: <Widget>[
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  'Lv.${growth.level} ${growth.title}',
-                                  style: TextStyle(
-                                    fontSize: compact ? 13 : 14,
-                                    fontWeight: FontWeight.w800,
-                                    color: AppDesignTokens.textPrimary,
+              if (!FlavorConfig.isJingwayProduct)
+                InkWell(
+                  key: const Key('pad-sidebar-growth-entry'),
+                  borderRadius: BorderRadius.circular(24),
+                  onTap: () => context.go(AppNavDestination.growth.route),
+                  child: Stack(
+                    clipBehavior: Clip.none,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(
+                          compact ? 62 : 70,
+                          12,
+                          compact ? 18 : 22,
+                          52,
+                        ),
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    'Lv.${growth.level} ${growth.title}',
+                                    style: TextStyle(
+                                      fontSize: compact ? 13 : 14,
+                                      fontWeight: FontWeight.w800,
+                                      color: AppDesignTokens.textPrimary,
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(height: 3),
-                                Text(
-                                  '连续 ${growth.streakDays} 天 · ${growth.currentXP}/${growth.nextLevelXP} XP',
-                                  style: TextStyle(
-                                    fontSize: compact ? 11 : 12,
-                                    color: AppDesignTokens.textSecondary,
+                                  const SizedBox(height: 3),
+                                  Text(
+                                    '连续 ${growth.streakDays} 天 · ${growth.currentXP}/${growth.nextLevelXP} XP',
+                                    style: TextStyle(
+                                      fontSize: compact ? 11 : 12,
+                                      color: AppDesignTokens.textSecondary,
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const Icon(
-                            Icons.star_rounded,
-                            color: AppDesignTokens.yellow,
-                            size: 18,
-                          ),
-                        ],
-                      ),
-                    ),
-                    Positioned(
-                      left: compact ? -48 : -54,
-                      bottom: -18,
-                      child: CompositedTransformTarget(
-                        link: _dailyBubbleLink,
-                        child: GestureDetector(
-                          behavior: HitTestBehavior.translucent,
-                          onTap: _showNextDailyEnglish,
-                          child: SizedBox(
-                            key: const Key('pad-sidebar-daily-english-entry'),
-                            child: Image.asset(
-                              'assets/img/growth-level-${growth.level}.webp',
-                              key: Key(
-                                'pad-sidebar-growth-avatar-${growth.level}',
+                                ],
                               ),
-                              width: compact ? 140 : 160,
-                              height: compact ? 140 : 160,
-                              fit: BoxFit.contain,
+                            ),
+                            const Icon(
+                              Icons.star_rounded,
+                              color: AppDesignTokens.yellow,
+                              size: 18,
+                            ),
+                          ],
+                        ),
+                      ),
+                      Positioned(
+                        left: compact ? -48 : -54,
+                        bottom: -18,
+                        child: CompositedTransformTarget(
+                          link: _dailyBubbleLink,
+                          child: GestureDetector(
+                            behavior: HitTestBehavior.translucent,
+                            onTap: _showNextDailyEnglish,
+                            child: SizedBox(
+                              key: const Key('pad-sidebar-daily-english-entry'),
+                              child: Image.asset(
+                                'assets/img/growth-level-${growth.level}.webp',
+                                key: Key(
+                                  'pad-sidebar-growth-avatar-${growth.level}',
+                                ),
+                                width: compact ? 140 : 160,
+                                height: compact ? 140 : 160,
+                                fit: BoxFit.contain,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
             ],
           ),
           Positioned(
