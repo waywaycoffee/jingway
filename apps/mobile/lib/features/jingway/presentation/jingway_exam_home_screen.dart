@@ -6,9 +6,9 @@ import 'package:go_router/go_router.dart';
 import '../../../constants/assets.dart';
 import '../../daily_review/data/memory_item_store.dart';
 import '../../navigation/presentation/navigation_destination.dart';
-import '../../shared/presentation/pad/app_design_tokens.dart';
 import '../../shared/presentation/pad/pad_scaffold.dart';
 import '../domain/cn_grade_registry.dart';
+import 'jingway_colors.dart';
 import 'jingway_profile_provider.dart';
 import 'xinhua_lookup_sheet.dart';
 
@@ -52,6 +52,7 @@ class _JingwayExamHomeScreenState extends ConsumerState<JingwayExamHomeScreen> {
     return PadScaffold(
       currentDestination: AppNavDestination.home,
       showContinueLearning: false,
+      backgroundColor: JingwayColors.cream,
       body: ListView(
         padding: const EdgeInsets.fromLTRB(20, 24, 20, 100),
         children: <Widget>[
@@ -69,6 +70,7 @@ class _JingwayExamHomeScreenState extends ConsumerState<JingwayExamHomeScreen> {
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                       fontWeight: FontWeight.w800,
+                      color: JingwayColors.title,
                     ),
               ),
               const SizedBox(height: 4),
@@ -76,7 +78,7 @@ class _JingwayExamHomeScreenState extends ConsumerState<JingwayExamHomeScreen> {
                 '高山仰止，景行行止',
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: const Color(0xFF9A3412),
+                      color: JingwayColors.slogan,
                       fontWeight: FontWeight.w600,
                     ),
               ),
@@ -88,7 +90,7 @@ class _JingwayExamHomeScreenState extends ConsumerState<JingwayExamHomeScreen> {
                 ? '尚未选择年级'
                 : '当前：${grade.label}${grade.examTrackHint.isEmpty ? '' : ' · ${grade.examTrackHint}'}',
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: const Color(0xFF57534E),
+                  color: JingwayColors.hint,
                 ),
           ),
           const SizedBox(height: 8),
@@ -96,6 +98,9 @@ class _JingwayExamHomeScreenState extends ConsumerState<JingwayExamHomeScreen> {
             alignment: Alignment.centerLeft,
             child: TextButton(
               onPressed: () => context.push('/settings/grade'),
+              style: TextButton.styleFrom(
+                foregroundColor: JingwayColors.accent,
+              ),
               child: const Text('更换年级'),
             ),
           ),
@@ -104,16 +109,18 @@ class _JingwayExamHomeScreenState extends ConsumerState<JingwayExamHomeScreen> {
             controller: _lookup,
             textInputAction: TextInputAction.search,
             onSubmitted: (_) => _openLookup(),
+            style: const TextStyle(color: JingwayColors.body),
             decoration: InputDecoration(
               hintText: '查字 / 成语（离线新华）',
+              hintStyle: const TextStyle(color: JingwayColors.muted),
               filled: true,
-              fillColor: Colors.white,
+              fillColor: JingwayColors.surface,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(14),
                 borderSide: BorderSide.none,
               ),
               suffixIcon: IconButton(
-                icon: const Icon(Icons.search),
+                icon: const Icon(Icons.search, color: JingwayColors.section),
                 onPressed: _openLookup,
               ),
             ),
@@ -176,7 +183,7 @@ class _HomeCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Material(
-        color: AppDesignTokens.appWhite,
+        color: JingwayColors.surface,
         borderRadius: BorderRadius.circular(16),
         child: InkWell(
           borderRadius: BorderRadius.circular(16),
@@ -190,20 +197,21 @@ class _HomeCard extends StatelessWidget {
                   title,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w700,
+                        color: JingwayColors.title,
                       ),
                 ),
                 const SizedBox(height: 6),
                 Text(
                   subtitle,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: const Color(0xFF78716C),
+                        color: JingwayColors.hint,
                       ),
                 ),
                 const SizedBox(height: 12),
                 Text(
                   action,
                   style: const TextStyle(
-                    color: Color(0xFF9A3412),
+                    color: JingwayColors.accent,
                     fontWeight: FontWeight.w700,
                   ),
                 ),

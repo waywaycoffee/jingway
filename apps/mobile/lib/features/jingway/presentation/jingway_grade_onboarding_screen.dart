@@ -5,8 +5,8 @@ import 'package:hive_ce/hive.dart';
 
 import '../../../constants/assets.dart';
 import '../../onboarding/presentation/onboarding_provider.dart';
-import '../../shared/presentation/pad/app_design_tokens.dart';
 import '../domain/cn_grade_registry.dart';
+import 'jingway_colors.dart';
 import 'jingway_profile_provider.dart';
 
 /// First-open: pick K12 grade before any training surface.
@@ -44,7 +44,7 @@ class _JingwayGradeOnboardingScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF7F4EF),
+      backgroundColor: JingwayColors.cream,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(24, 28, 24, 20),
@@ -65,7 +65,7 @@ class _JingwayGradeOnboardingScreenState
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                           fontWeight: FontWeight.w800,
-                          color: const Color(0xFF1C1917),
+                          color: JingwayColors.title,
                         ),
                   ),
                   const SizedBox(height: 6),
@@ -73,7 +73,7 @@ class _JingwayGradeOnboardingScreenState
                     '高山仰止，景行行止',
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          color: const Color(0xFF9A3412),
+                          color: JingwayColors.slogan,
                           fontWeight: FontWeight.w600,
                         ),
                   ),
@@ -84,7 +84,7 @@ class _JingwayGradeOnboardingScreenState
                 '先选年级，我们会匹配对应的字词、古诗文与练习。',
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: const Color(0xFF57534E),
+                      color: JingwayColors.hint,
                       height: 1.45,
                     ),
               ),
@@ -119,11 +119,11 @@ class _JingwayGradeOnboardingScreenState
               FilledButton(
                 onPressed: _grade == null || _saving ? null : _finish,
                 style: FilledButton.styleFrom(
-                  backgroundColor: const Color(0xFF9A3412),
+                  backgroundColor: JingwayColors.accent,
                   foregroundColor: Colors.white,
-                  // Visible on cream #F7F4EF but clearly inactive.
-                  disabledBackgroundColor: const Color(0xFFD6C4B8),
-                  disabledForegroundColor: const Color(0xFF7C2D12),
+                  // Visible on cream but clearly inactive.
+                  disabledBackgroundColor: JingwayColors.ctaDisabledBg,
+                  disabledForegroundColor: JingwayColors.ctaDisabledFg,
                   minimumSize: const Size.fromHeight(52),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(14),
@@ -161,6 +161,7 @@ class _BandSection extends StatelessWidget {
           title,
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.w700,
+                color: JingwayColors.section,
               ),
         ),
         const SizedBox(height: 10),
@@ -176,20 +177,26 @@ class _BandSection extends StatelessWidget {
                     : '${g.label} · ${g.examTrackHint}',
               ),
               selected: active,
+              showCheckmark: false,
               onSelected: (_) => onSelect(g.grade),
-              selectedColor: const Color(0xFFFDBA74),
-              backgroundColor: AppDesignTokens.appWhite,
+              // Force cream-safe surfaces; ignore dark-mode ColorScheme.
+              color: WidgetStateProperty.resolveWith((Set<WidgetState> states) {
+                if (states.contains(WidgetState.selected)) {
+                  return JingwayColors.chipSelectedFill;
+                }
+                return JingwayColors.surface;
+              }),
               labelStyle: TextStyle(
-                color: active ? const Color(0xFF7C2D12) : const Color(0xFF44403C),
-                fontWeight: active ? FontWeight.w700 : FontWeight.w500,
+                color: active ? Colors.white : JingwayColors.body,
+                fontWeight: active ? FontWeight.w700 : FontWeight.w600,
+              ),
+              side: BorderSide(
+                color: active
+                    ? JingwayColors.chipSelectedBorder
+                    : JingwayColors.chipBorder,
               ),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
-                side: BorderSide(
-                  color: active
-                      ? const Color(0xFFEA580C)
-                      : const Color(0xFFE7E5E4),
-                ),
               ),
             );
           }).toList(growable: false),

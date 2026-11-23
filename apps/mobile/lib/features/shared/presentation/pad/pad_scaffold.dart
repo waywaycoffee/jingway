@@ -15,6 +15,7 @@ class PadScaffold extends StatelessWidget {
     this.useBottomTabWhenPortrait = true,
     this.showNavigation = true,
     this.showContinueLearning = true,
+    this.backgroundColor,
   });
 
   final AppNavDestination currentDestination;
@@ -24,12 +25,17 @@ class PadScaffold extends StatelessWidget {
   final bool showNavigation;
   final bool showContinueLearning;
 
+  /// When set, replaces the default soft-white / dark canvas (e.g. Jingway cream).
+  final Color? backgroundColor;
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.sizeOf(context);
     final bool isPortrait = size.height > size.width;
     final bool useBottomNavigation = size.width < 840 || isPortrait;
+    final Color canvas = backgroundColor ?? AppDesignTokens.softWhite;
     final Widget content = _PadBackdrop(
+      backgroundColor: backgroundColor,
       child: Column(
         children: <Widget>[
           if (topBar != null) topBar!,
@@ -40,7 +46,7 @@ class PadScaffold extends StatelessWidget {
 
     if (showNavigation && useBottomNavigation && useBottomTabWhenPortrait) {
       return Scaffold(
-        backgroundColor: AppDesignTokens.softWhite,
+        backgroundColor: canvas,
         floatingActionButton: showContinueLearning
             ? const ContinueLearningButton()
             : null,
@@ -53,7 +59,7 @@ class PadScaffold extends StatelessWidget {
     }
 
     return Scaffold(
-      backgroundColor: AppDesignTokens.softWhite,
+      backgroundColor: canvas,
       floatingActionButton: showContinueLearning
           ? const ContinueLearningButton()
           : null,
@@ -71,32 +77,37 @@ class PadScaffold extends StatelessWidget {
 }
 
 class _PadBackdrop extends StatelessWidget {
-  const _PadBackdrop({required this.child});
+  const _PadBackdrop({required this.child, this.backgroundColor});
 
   final Widget child;
+  final Color? backgroundColor;
 
   @override
   Widget build(BuildContext context) {
     final bool compact = MediaQuery.sizeOf(context).width < 840;
+    final bool solidCanvas = backgroundColor != null;
     return DecoratedBox(
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: <Color>[
-            AppDesignTokens.isDark
-                ? const Color(0xFF16181E)
-                : const Color(0xFFF7F8FB),
-            AppDesignTokens.isDark
-                ? const Color(0xFF12141A)
-                : const Color(0xFFF0F2F6),
-            AppDesignTokens.softWhite,
-          ],
-        ),
+        color: solidCanvas ? backgroundColor : null,
+        gradient: solidCanvas
+            ? null
+            : LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: <Color>[
+                  AppDesignTokens.isDark
+                      ? const Color(0xFF16181E)
+                      : const Color(0xFFF7F8FB),
+                  AppDesignTokens.isDark
+                      ? const Color(0xFF12141A)
+                      : const Color(0xFFF0F2F6),
+                  AppDesignTokens.softWhite,
+                ],
+              ),
       ),
       child: Stack(
         children: <Widget>[
-          if (!compact) ...<Widget>[
+          if (!compact && !solidCanvas) ...<Widget>[
             Positioned(
               left: -36,
               top: 88,
