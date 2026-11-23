@@ -1,6 +1,6 @@
 # 景行语文（Jingway）
 
-K12 **考试向**语文学习 App：按年级匹配字词听写、古诗文默写、错题 FSRS 回流。
+景行语文是面向 K12 的考试向学习 App，按年级组织语文刷题、课内阅读、课外阅读、错题整理、知识记背、数字人伴读及作文学习（技巧教学、训练和批改）。功能范围、发布阶段及 AcquireEnglish 复用边界见[产品需求说明书](docs/product/JINGWAY_PRD.md)。
 
 技术底座 fork 自 [AcquireEnglish](https://github.com/waywaycoffee/AcquireEnglish)（Flutter + FastAPI），产品面为独立应用。
 
