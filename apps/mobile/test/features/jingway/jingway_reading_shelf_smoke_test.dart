@@ -22,15 +22,21 @@ void main() {
     expect(FloatingBottomNav, isNotNull);
   });
 
-  test('Jingway ships only two Chinese test builtins with chapters', () async {
+  test('Jingway ships one Chinese test builtin with chapters', () async {
     expect(kBuiltinReadingAssetPaths, kBuiltinReadingAssetPathsZh);
-    expect(kBuiltinReadingAssetPathsZh, hasLength(2));
+    expect(kBuiltinReadingAssetPathsZh, hasLength(1));
+    expect(
+      kBuiltinReadingAssetPathsZh.single,
+      'assets/reading/cn_test_train_window.json',
+    );
 
     for (final String path in kBuiltinReadingAssetPathsZh) {
       final String raw = await rootBundle.loadString(path);
       final Map<String, dynamic> json =
           Map<String, dynamic>.from(jsonDecode(raw) as Map);
       final ReadingDoc doc = ReadingDoc.fromJson(json, builtin: true);
+      expect(doc.id, isNot(contains('moon_well')));
+      expect(doc.title, isNot(contains('井边的月亮')));
       expect(doc.title, isNotEmpty);
       expect(RegExp(r'[\u4e00-\u9fff]').hasMatch(doc.plainText), isTrue);
       expect(isEnglishDefaultReadingDoc(doc), isFalse);

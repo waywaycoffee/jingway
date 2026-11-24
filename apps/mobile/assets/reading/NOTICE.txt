@@ -4,6 +4,6 @@
 English A1–B2 JSON files are original graded samples for the AcquireEnglish
 flavor only (not loaded by Jingway builds).
 
-Jingway ships only two Chinese test samples (`cn_test_*.json`) for QA.
+Jingway ships one Chinese test sample (`cn_test_train_window.json`) for QA.
 Production reading content should be user-imported TXT/EPUB/PDF — do not
 bundle 部编版教材正文.

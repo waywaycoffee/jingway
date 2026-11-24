@@ -23,9 +23,8 @@ const List<String> kBuiltinReadingAssetPathsEn = <String>[
   'assets/reading/b2_small_business.json',
 ];
 
-/// 景行仅保留 2 本中文测试书；正式内容靠用户导入。
+/// 景行仅保留 1 本中文测试书；正式内容靠用户导入。
 const List<String> kBuiltinReadingAssetPathsZh = <String>[
-  'assets/reading/cn_test_moon_well.json',
   'assets/reading/cn_test_train_window.json',
 ];
 
