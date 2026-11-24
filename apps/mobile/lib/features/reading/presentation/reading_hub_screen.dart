@@ -28,6 +28,7 @@ import 'reading_library_provider.dart';
 import 'reading_stats_row.dart';
 import 'reading_cold_start.dart';
 import 'reading_book_cover.dart';
+import 'reading_oak_shelf.dart';
 import 'reading_vocab_lists_sheet.dart';
 
 class ReadingHubScreen extends ConsumerStatefulWidget {
@@ -239,6 +240,7 @@ class _ReadingHubScreenState extends ConsumerState<ReadingHubScreen> {
     return PadScaffold(
       currentDestination: AppNavDestination.readingHub,
       showContinueLearning: false,
+      backgroundColor: kReadingShelfCanvas,
       topBar: PadTopBar(
         title: '我的书架',
         trailing: const SizedBox.shrink(),
@@ -410,84 +412,78 @@ class _ReadingHubScreenState extends ConsumerState<ReadingHubScreen> {
                     }
                     return LayoutBuilder(
                       builder: (BuildContext context, BoxConstraints size) {
-                        final int columns = (size.maxWidth / 145).floor().clamp(
-                          2,
-                          6,
-                        );
-                        final double width =
-                            (size.maxWidth - (columns - 1) * 18) / columns;
-                        return Wrap(
-                          spacing: 18,
-                          runSpacing: 24,
+                        final int columns =
+                            (size.maxWidth / 128).floor().clamp(3, 5);
+                        final List<List<ReadingDoc>> rows =
+                            <List<ReadingDoc>>[];
+                        for (int i = 0; i < books.length; i += columns) {
+                          rows.add(
+                            books.sublist(
+                              i,
+                              i + columns > books.length
+                                  ? books.length
+                                  : i + columns,
+                            ),
+                          );
+                        }
+                        return Column(
                           children: <Widget>[
-                            for (final ReadingDoc doc in books)
-                              SizedBox(
-                                width: width,
-                                child: InkWell(
-                                  onTap: () => context.push(
-                                    '/reading/${Uri.encodeComponent(doc.id)}',
-                                  ),
-                                  onLongPress: doc.builtin
-                                      ? null
-                                      : () async {
-                                          final bool?
-                                          remove = await showDialog<bool>(
-                                            context: context,
-                                            builder: (BuildContext dialog) =>
-                                                AlertDialog(
+                            for (final List<ReadingDoc> row in rows)
+                              ReadingOakShelfBay(
+                                children: <Widget>[
+                                  for (final ReadingDoc doc in row)
+                                    _ShelfBook(
+                                      doc: doc,
+                                      progress: state.progressFor(doc.id),
+                                      onOpen: () => context.push(
+                                        '/reading/${Uri.encodeComponent(doc.id)}',
+                                      ),
+                                      onDelete: doc.builtin
+                                          ? null
+                                          : () async {
+                                              final bool? remove =
+                                                  await showDialog<bool>(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext dialog) =>
+                                                        AlertDialog(
                                                   title: Text(
                                                     '删除「${doc.title}」？',
                                                   ),
                                                   actions: <Widget>[
                                                     TextButton(
                                                       onPressed: () =>
-                                                          Navigator.pop(dialog),
+                                                          Navigator.pop(
+                                                              dialog),
                                                       child: const Text('取消'),
                                                     ),
                                                     TextButton(
                                                       onPressed: () =>
                                                           Navigator.pop(
-                                                            dialog,
-                                                            true,
-                                                          ),
+                                                        dialog,
+                                                        true,
+                                                      ),
                                                       child: const Text('删除'),
                                                     ),
                                                   ],
                                                 ),
-                                          );
-                                          if (remove == true) {
-                                            await ref
-                                                .read(
-                                                  readingLibraryProvider
-                                                      .notifier,
-                                                )
-                                                .removeDoc(doc.id);
-                                          }
-                                        },
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      ReadingBookCover(
-                                        title: doc.title,
-                                        level: doc.level,
-                                      ),
-                                      const SizedBox(height: 10),
-                                      Text(
-                                        doc.title,
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                      const SizedBox(height: 4),
-                                      Text(
-                                        '${doc.level} · 已读 ${((state.progressFor(doc.id)?.percent ?? 0) * 100).round()}%',
-                                        style: Theme.of(
-                                          context,
-                                        ).textTheme.bodySmall,
-                                      ),
-                                    ],
-                                  ),
-                                ),
+                                              );
+                                              if (remove == true) {
+                                                await ref
+                                                    .read(
+                                                      readingLibraryProvider
+                                                          .notifier,
+                                                    )
+                                                    .removeDoc(doc.id);
+                                              }
+                                            },
+                                    ),
+                                  // Keep bay balanced when last row is short.
+                                  for (int pad = row.length;
+                                      pad < columns;
+                                      pad++)
+                                    const SizedBox.shrink(),
+                                ],
                               ),
                           ],
                         );
@@ -514,6 +510,57 @@ int _charsReadEstimate(ReadingLibraryState state) {
   return chars;
 }
 
+class _ShelfBook extends StatelessWidget {
+  const _ShelfBook({
+    required this.doc,
+    required this.onOpen,
+    this.progress,
+    this.onDelete,
+  });
+
+  final ReadingDoc doc;
+  final ReadingProgress? progress;
+  final VoidCallback onOpen;
+  final VoidCallback? onDelete;
+
+  @override
+  Widget build(BuildContext context) {
+    final int pct = ((progress?.percent ?? 0) * 100).round();
+    return GestureDetector(
+      onTap: onOpen,
+      onLongPress: onDelete,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          ReadingBookCover(title: doc.title, level: doc.level),
+          const SizedBox(height: 8),
+          Text(
+            doc.title,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              color: Color(0xFFF3E6D0),
+              fontSize: 12,
+              fontWeight: FontWeight.w700,
+              height: 1.25,
+            ),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            '${doc.level.isEmpty ? '读物' : doc.level} · $pct%',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: const Color(0xFFF3E6D0).withValues(alpha: 0.7),
+              fontSize: 10,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class _SectionTitle extends StatelessWidget {
   const _SectionTitle(this.text);
   final String text;
@@ -524,10 +571,10 @@ class _SectionTitle extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 8),
       child: Text(
         text,
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.w900,
-          color: AppDesignTokens.textPrimary,
+          color: kReadingShelfInk,
         ),
       ),
     );
