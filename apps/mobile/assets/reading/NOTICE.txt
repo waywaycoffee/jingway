@@ -1,12 +1,9 @@
 景行 / AcquireEnglish reading samples
 =====================================
 
-English A1–B2 JSON files under this folder are original graded samples for the
-AcquireEnglish flavor. They are NOT third-party novels or exam reprints.
+English A1–B2 JSON files are original graded samples for the AcquireEnglish
+flavor only (not loaded by Jingway builds).
 
-Chinese `cn_*.json` files are original short prose written for 景行语文
-(Jingway). They are NOT 部编版教材正文 and must not be replaced with
-copyrighted textbook passages.
-
-User-imported TXT/EPUB/PDF and personal materials remain the user's content.
-Do not redistribute commercial books inside the APK.
+Jingway ships only two Chinese test samples (`cn_test_*.json`) for QA.
+Production reading content should be user-imported TXT/EPUB/PDF — do not
+bundle 部编版教材正文.

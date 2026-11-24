@@ -23,18 +23,35 @@ const List<String> kBuiltinReadingAssetPathsEn = <String>[
   'assets/reading/b2_small_business.json',
 ];
 
-/// 景行中文原创短篇（非教材正文）。
+/// 景行仅保留 2 本中文测试书；正式内容靠用户导入。
 const List<String> kBuiltinReadingAssetPathsZh = <String>[
-  'assets/reading/cn_spring_campus.json',
-  'assets/reading/cn_grandma_kitchen.json',
-  'assets/reading/cn_rain_lotus.json',
-  'assets/reading/cn_letter_home.json',
-  'assets/reading/cn_bookstore.json',
+  'assets/reading/cn_test_moon_well.json',
+  'assets/reading/cn_test_train_window.json',
 ];
 
 List<String> get kBuiltinReadingAssetPaths => FlavorConfig.isJingwayProduct
     ? kBuiltinReadingAssetPathsZh
     : kBuiltinReadingAssetPathsEn;
+
+final RegExp _cjkInDocRe = RegExp(r'[\u4e00-\u9fff]');
+final RegExp _latinWordRe = RegExp(r'[A-Za-z]{3,}');
+
+/// English graded / starter samples that should not stay on Jingway shelves.
+bool isEnglishDefaultReadingDoc(ReadingDoc doc) {
+  final String id = doc.id.toLowerCase();
+  if (id.startsWith('builtin_a') ||
+      id.startsWith('builtin_b') ||
+      id.startsWith('starter') ||
+      id.contains('cefr') ||
+      id.startsWith('onestop') ||
+      id.startsWith('magic_')) {
+    return true;
+  }
+  final String text = doc.plainText;
+  if (text.trim().isEmpty) return false;
+  if (_cjkInDocRe.hasMatch(text)) return false;
+  return _latinWordRe.hasMatch(text);
+}
 
 class ReadingLibraryState {
   const ReadingLibraryState({
@@ -126,8 +143,38 @@ class ReadingLibraryNotifier extends Notifier<ReadingLibraryState> {
         // Missing in tests.
       }
     }
-    final List<ReadingDoc> userDocs = _loadUserDocs();
-    final Map<String, ReadingProgress> progress = _loadProgress();
+    List<ReadingDoc> userDocs = _loadUserDocs();
+    Map<String, ReadingProgress> progress = _loadProgress();
+    if (FlavorConfig.isJingwayProduct) {
+      final List<ReadingDoc> kept = userDocs
+          .where((ReadingDoc d) => !isEnglishDefaultReadingDoc(d))
+          .toList(growable: false);
+      if (kept.length != userDocs.length) {
+        final Set<String> removedIds = userDocs
+            .where(isEnglishDefaultReadingDoc)
+            .map((ReadingDoc d) => d.id)
+            .toSet();
+        userDocs = kept;
+        progress = <String, ReadingProgress>{
+          for (final MapEntry<String, ReadingProgress> e in progress.entries)
+            if (!removedIds.contains(e.key)) e.key: e.value,
+        };
+        if (Hive.isBoxOpen('prefs')) {
+          await Hive.box<String>('prefs').put(
+            _libraryKey,
+            jsonEncode(userDocs.map((ReadingDoc d) => d.toJson()).toList()),
+          );
+          await Hive.box<String>('prefs').put(
+            _progressKey,
+            jsonEncode(<String, Object?>{
+              for (final MapEntry<String, ReadingProgress> e
+                  in progress.entries)
+                e.key: e.value.toJson(),
+            }),
+          );
+        }
+      }
+    }
     if (!ref.mounted) return;
     state = ReadingLibraryState(
       builtin: List<ReadingDoc>.unmodifiable(builtin),
