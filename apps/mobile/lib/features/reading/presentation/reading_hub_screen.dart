@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../flavors/app_flavor.dart';
 import '../../authentication/presentation/auth_session.dart';
 import '../../library/presentation/library_catalog_provider.dart';
 import '../../library/presentation/library_mock_data.dart';
@@ -228,42 +229,49 @@ class _ReadingHubScreenState extends ConsumerState<ReadingHubScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final coldStart = ref.watch(readingColdStartProvider);
+    ref.watch(readingColdStartProvider);
     final ReadingLibraryState state = ref.watch(readingLibraryProvider);
     final ReadingDoc? cont = state.continueDoc;
     final ReadingVocabLists lists = ref.watch(readingVocabListsProvider);
     final AsyncValue<List<ReadingIPlus1Match>> iPlus1 = ref.watch(
       readingIPlus1MatchesProvider,
     );
+    final bool jingway = FlavorConfig.isJingwayProduct;
     return PadScaffold(
       currentDestination: AppNavDestination.readingHub,
       showContinueLearning: false,
       topBar: PadTopBar(
-        title: '我的书架',
+        title: jingway ? '阅读' : '我的书架',
         trailing: const SizedBox.shrink(),
-        description: '继续你喜欢的故事',
-        leading: PadBackButton(onPressed: () => context.pop()),
+        description: jingway ? '中文短篇与自导电子书' : '继续你喜欢的故事',
         actions: <Widget>[
-          IconButton(
-            tooltip: '黑白名单',
-            onPressed: () =>
-                unawaited(showReadingVocabListsSheet(context, ref)),
-            icon: Badge(
-              isLabelVisible: lists.knownCount + lists.focusCount > 0,
-              label: Text('${lists.knownCount + lists.focusCount}'),
-              child: const Icon(Icons.playlist_add_check_rounded),
+          if (!jingway)
+            IconButton(
+              tooltip: '黑白名单',
+              onPressed: () =>
+                  unawaited(showReadingVocabListsSheet(context, ref)),
+              icon: Badge(
+                isLabelVisible: lists.knownCount + lists.focusCount > 0,
+                label: Text('${lists.knownCount + lists.focusCount}'),
+                child: const Icon(Icons.playlist_add_check_rounded),
+              ),
             ),
-          ),
           IconButton(
-            tooltip: '教材',
+            tooltip: '教材目录',
             onPressed: () => context.push('/textbooks'),
             icon: const Icon(Icons.auto_stories_outlined),
           ),
           IconButton(
-            tooltip: '在线书库',
-            onPressed: () => context.push('/reading/catalog'),
-            icon: const Icon(Icons.cloud_download_outlined),
+            tooltip: '古诗文',
+            onPressed: () => context.push('/poetry'),
+            icon: const Icon(Icons.chrome_reader_mode_outlined),
           ),
+          if (!jingway)
+            IconButton(
+              tooltip: '在线书库',
+              onPressed: () => context.push('/reading/catalog'),
+              icon: const Icon(Icons.cloud_download_outlined),
+            ),
           IconButton(
             tooltip: '导入',
             onPressed: () => unawaited(_importFile(context, ref)),
@@ -305,74 +313,94 @@ class _ReadingHubScreenState extends ConsumerState<ReadingHubScreen> {
                   ),
                   const SizedBox(height: 16),
                 ],
-                iPlus1.when(
-                  data: (List<ReadingIPlus1Match> matches) {
-                    if (matches.isEmpty) return const SizedBox.shrink();
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        const _SectionTitle('适合你（i+1）'),
-                        Text(
-                          '按生词率约 2%–8% 排序；白名单与已复习词视为已会',
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: AppDesignTokens.textPrimary.withValues(
-                              alpha: 0.55,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        for (final ReadingIPlus1Match m in matches) ...<Widget>[
-                          _DocTile(
-                            doc: m.doc,
-                            progress: state.progressFor(m.doc.id),
-                            badge: '${m.band.labelCn} · ${m.rateLabel}',
-                            onOpen: () => context.push(
-                              '/reading/${Uri.encodeComponent(m.doc.id)}',
+                if (!jingway)
+                  iPlus1.when(
+                    data: (List<ReadingIPlus1Match> matches) {
+                      if (matches.isEmpty) return const SizedBox.shrink();
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: <Widget>[
+                          const _SectionTitle('适合你（i+1）'),
+                          Text(
+                            '按生词率约 2%–8% 排序；白名单与已复习词视为已会',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: AppDesignTokens.textPrimary.withValues(
+                                alpha: 0.55,
+                              ),
                             ),
                           ),
                           const SizedBox(height: 8),
+                          for (final ReadingIPlus1Match m in matches) ...<Widget>[
+                            _DocTile(
+                              doc: m.doc,
+                              progress: state.progressFor(m.doc.id),
+                              badge: '${m.band.labelCn} · ${m.rateLabel}',
+                              onOpen: () => context.push(
+                                '/reading/${Uri.encodeComponent(m.doc.id)}',
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                          ],
+                          const SizedBox(height: 8),
                         ],
-                        const SizedBox(height: 8),
-                      ],
-                    );
-                  },
-                  loading: () => const Padding(
-                    padding: EdgeInsets.only(bottom: 16),
-                    child: LinearProgressIndicator(minHeight: 2),
+                      );
+                    },
+                    loading: () => const Padding(
+                      padding: EdgeInsets.only(bottom: 16),
+                      child: LinearProgressIndicator(minHeight: 2),
+                    ),
+                    error: (_, __) => const SizedBox.shrink(),
                   ),
-                  error: (_, __) => const SizedBox.shrink(),
-                ),
                 Wrap(
                   spacing: 8,
                   runSpacing: 8,
                   children: <Widget>[
-                    FilledButton.tonalIcon(
-                      onPressed: () => context.push('/reading/catalog'),
-                      icon: const Icon(Icons.cloud_download_outlined),
-                      label: const Text('在线书库'),
-                    ),
+                    if (!jingway)
+                      FilledButton.tonalIcon(
+                        onPressed: () => context.push('/reading/catalog'),
+                        icon: const Icon(Icons.cloud_download_outlined),
+                        label: const Text('在线书库'),
+                      ),
                     FilledButton.tonalIcon(
                       onPressed: () => unawaited(_importFile(context, ref)),
                       icon: const Icon(Icons.upload_file_rounded),
-                      label: const Text('导入 TXT / EPUB / PDF / MOBI'),
+                      label: Text(
+                        jingway
+                            ? '导入中文 TXT / EPUB / PDF'
+                            : '导入 TXT / EPUB / PDF / MOBI',
+                      ),
                     ),
-                    FilledButton.tonalIcon(
-                      onPressed: () =>
-                          unawaited(_generateFromVideo(context, ref)),
-                      icon: const Icon(Icons.movie_filter_outlined),
-                      label: const Text('从视频生成短文'),
-                    ),
-                    FilledButton.tonalIcon(
-                      onPressed: () =>
-                          unawaited(showReadingVocabListsSheet(context, ref)),
-                      icon: const Icon(Icons.rule_folder_outlined),
-                      label: const Text('黑白名单'),
-                    ),
+                    if (!jingway)
+                      FilledButton.tonalIcon(
+                        onPressed: () =>
+                            unawaited(_generateFromVideo(context, ref)),
+                        icon: const Icon(Icons.movie_filter_outlined),
+                        label: const Text('从视频生成短文'),
+                      ),
+                    if (!jingway)
+                      FilledButton.tonalIcon(
+                        onPressed: () =>
+                            unawaited(showReadingVocabListsSheet(context, ref)),
+                        icon: const Icon(Icons.rule_folder_outlined),
+                        label: const Text('黑白名单'),
+                      ),
+                    if (jingway)
+                      FilledButton.tonalIcon(
+                        onPressed: () => context.push('/poetry'),
+                        icon: const Icon(Icons.chrome_reader_mode_outlined),
+                        label: const Text('古诗文默写'),
+                      ),
+                    if (jingway)
+                      FilledButton.tonalIcon(
+                        onPressed: () => context.push('/textbooks'),
+                        icon: const Icon(Icons.auto_stories_outlined),
+                        label: const Text('教材目录'),
+                      ),
                   ],
                 ),
                 const SizedBox(height: 20),
-                const _SectionTitle('我的读物'),
+                _SectionTitle(jingway ? '中文书架' : '我的读物'),
                 Wrap(
                   spacing: 8,
                   children: <Widget>[

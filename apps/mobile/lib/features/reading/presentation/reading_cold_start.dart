@@ -1,12 +1,15 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../constants/endpoints.dart';
+import '../../../flavors/app_flavor.dart';
 import '../../authentication/presentation/account_storage.dart';
 import '../../settings/presentation/settings_provider.dart';
 import '../domain/reading_doc.dart';
 import 'reading_library_provider.dart';
 
 final readingColdStartProvider = FutureProvider<void>((ref) async {
+  // 景行使用本地中文短篇 builtin，不拉取英语 starter 包。
+  if (FlavorConfig.isJingwayProduct) return;
   final account = ref.watch(studyAccountProvider);
   final base = ref.watch(learningSettingsProvider).resolvedCloudApiBaseUrl;
   ref.read(readingLibraryProvider);

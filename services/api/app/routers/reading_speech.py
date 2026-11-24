@@ -20,9 +20,21 @@ from app.services.reading_aliyun import BILINGUAL_VOICES, VOICES, QwenAudioTts
 router = APIRouter(prefix="/reading/speech", tags=["reading-speech"])
 voices_router = APIRouter(prefix="/reading", tags=["reading-speech"])
 
-# Published voice catalog for settings + vocab pronunciation.
+# Published voice catalog for settings + 景行诗文 / 阅读朗读.
 VOICE_LABELS: dict[str, str] = {
-    "qwen-audio-3.0-tts-flash-loongolivialin": "Olivia Lin · 英音女声（推荐）",
+    "longanfengyue": "龙安风悦 · 温暖有感染力（推荐女声）",
+    "longanhuan_v3.6": "龙安欢 · 元气感染力",
+    "longanxiaoxin": "龙安小昕 · 亲切活泼",
+    "longanlingxi": "龙安灵希 · 甜美轻快",
+    "longze_v3.1": "龙泽 · 磁性有感情（推荐男声）",
+    "longxiaocheng_v3.1": "龙小诚 · 沉稳男声",
+    "longshu_v3.1": "龙书 · 朗读书卷感",
+    "libai_v3.1": "李白 · 文气旁白",
+    "longanyang_v3.1": "龙安洋 · 中英双语",
+    "longsanshu_v3.1": "龙三叔 · 中英双语",
+    "longanlufeng": "龙安鲁风 · 中英双语",
+    "longchuanshu_v3.6": "龙川叔 · 沉稳大叔",
+    "qwen-audio-3.0-tts-flash-loongolivialin": "Olivia Lin · 英音女声",
     "qwen-audio-3.0-tts-flash-loonglunawang": "Luna Wang · 英音女声",
     "qwen-audio-3.0-tts-flash-loongnorahu": "Nora Hu · 英音女声",
     "qwen-audio-3.0-tts-flash-loongivyhu": "Ivy Hu · 英音女声",
@@ -30,14 +42,34 @@ VOICE_LABELS: dict[str, str] = {
     "qwen-audio-3.0-tts-flash-loongalexanderhu": "Alexander Hu · 英音男声",
     "qwen-audio-3.0-tts-flash-loongjameszhao": "James Zhao · 英音男声",
     "qwen-audio-3.0-tts-flash-loongryanma": "Ryan Ma · 英音男声",
-    "longanfengyue": "龙安风悦 · 中英双语",
-    "longanxiaoxin": "龙安小昕 · 中英双语",
-    "longanlingxi": "龙安灵希 · 中英双语",
-    "longanhuan_v3.6": "龙安欢 · 中英双语",
+}
+VOICE_GENDER: dict[str, str] = {
+    "longanfengyue": "female",
+    "longanhuan_v3.6": "female",
+    "longanxiaoxin": "female",
+    "longanlingxi": "female",
+    "longanlufeng": "male",
+    "longanyang_v3.1": "male",
+    "longsanshu_v3.1": "male",
+    "longze_v3.1": "male",
+    "longxiaocheng_v3.1": "male",
+    "longshu_v3.1": "male",
+    "libai_v3.1": "male",
+    "longchuanshu_v3.6": "male",
+    "qwen-audio-3.0-tts-flash-loongolivialin": "female",
+    "qwen-audio-3.0-tts-flash-loonglunawang": "female",
+    "qwen-audio-3.0-tts-flash-loongnorahu": "female",
+    "qwen-audio-3.0-tts-flash-loongivyhu": "female",
+    "qwen-audio-3.0-tts-flash-loongadriangao": "male",
+    "qwen-audio-3.0-tts-flash-loongalexanderhu": "male",
+    "qwen-audio-3.0-tts-flash-loongjameszhao": "male",
+    "qwen-audio-3.0-tts-flash-loongryanma": "male",
 }
 NAMES = frozenset(VOICE_LABELS)
-# English-first default for vocab / reading cards; bilingual voices stay selectable.
-DEFAULT_VOICE = "qwen-audio-3.0-tts-flash-loongolivialin"
+# Jingway / Chinese-first default; English Olivia remains selectable.
+DEFAULT_VOICE = "longanfengyue"
+DEFAULT_FEMALE = "longanfengyue"
+DEFAULT_MALE = "longze_v3.1"
 
 
 class SpeechLookupOut(BaseModel):
@@ -77,7 +109,11 @@ async def list_voices() -> dict:
     return {
         "voices": list(VOICE_LABELS.keys()),
         "labels": VOICE_LABELS,
+        "gender": VOICE_GENDER,
         "default": DEFAULT_VOICE,
+        "default_female": DEFAULT_FEMALE,
+        "default_male": DEFAULT_MALE,
+        "book_pair": [DEFAULT_FEMALE, DEFAULT_MALE],
         "configured": _configured(),
     }
 

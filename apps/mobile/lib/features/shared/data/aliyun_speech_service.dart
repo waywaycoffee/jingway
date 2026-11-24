@@ -1,13 +1,18 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../flavors/app_flavor.dart';
 import '../../authentication/presentation/auth_session.dart';
+import '../../reading/data/reading_tts.dart';
 import '../../settings/presentation/settings_provider.dart';
 import '../../sync/data/acquire_api_client.dart';
 
-/// Default Aliyun Qwen voice for vocab / English sentences (native English).
-/// Bilingual 龙安风悦 remains available in settings for mixed CN/EN text.
-const String kDefaultAliyunTtsVoice =
+/// Default Aliyun Qwen voice. Jingway prefers Mandarin-capable 龙安风悦.
+const String kDefaultAliyunTtsVoiceEn =
     'qwen-audio-3.0-tts-flash-loongolivialin';
+
+String get kDefaultAliyunTtsVoice => FlavorConfig.isJingwayProduct
+    ? kDefaultJingwaySpeechVoiceId
+    : kDefaultAliyunTtsVoiceEn;
 
 final Provider<AliyunSpeechService> aliyunSpeechServiceProvider =
     Provider<AliyunSpeechService>((Ref ref) {
@@ -46,9 +51,8 @@ class AliyunSpeechService {
     if (trimmed.isEmpty || !isAvailable) return null;
     try {
       final bool chinese = RegExp(r'[\u4e00-\u9fff]').hasMatch(trimmed);
-      final String voice = chinese &&
-              !resolvedVoice.startsWith('long')
-          ? 'longanfengyue'
+      final String voice = chinese && !isJingwaySpeechVoiceId(resolvedVoice)
+          ? kDefaultJingwaySpeechVoiceId
           : resolvedVoice;
       return await api.readingSpeech(
         trimmed,

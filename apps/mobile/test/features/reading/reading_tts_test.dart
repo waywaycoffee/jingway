@@ -32,13 +32,17 @@ void main() {
     );
     expect(
       readingSpeechVoiceId(ReadingTtsGender.male, '静夜思'),
-      'longchuanshu_v3.6',
+      'longze_v3.1',
     );
-    // Jingway product always prefers Mandarin-capable voices.
     expect(
-      readingSpeechVoiceId(ReadingTtsGender.female, 'Hello'),
-      'longanfengyue',
+      readingSpeechVoiceId(
+        ReadingTtsGender.female,
+        '床前明月光',
+        voiceId: 'libai_v3.1',
+      ),
+      'libai_v3.1',
     );
-    expect(readingSpeechLanguage('Hello'), 'zh');
+    expect(isJingwaySpeechVoiceId('libai_v3.1'), isTrue);
+    expect(kJingwaySpeechVoiceCatalog, isNotEmpty);
   });
 }

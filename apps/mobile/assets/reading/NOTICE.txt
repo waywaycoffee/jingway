@@ -1,8 +1,12 @@
-AcquireEnglish reading samples (爱快阅读内置样例)
-=============================================
+景行 / AcquireEnglish reading samples
+=====================================
 
-These short passages are original graded-reading samples written for the app.
-They are NOT third-party novels or exam paper reprints.
+English A1–B2 JSON files under this folder are original graded samples for the
+AcquireEnglish flavor. They are NOT third-party novels or exam reprints.
 
-User-imported TXT/EPUB and articles generated from the user's own video
-subtitles remain the user's materials. Do not redistribute commercial books.
+Chinese `cn_*.json` files are original short prose written for 景行语文
+(Jingway). They are NOT 部编版教材正文 and must not be replaced with
+copyrighted textbook passages.
+
+User-imported TXT/EPUB/PDF and personal materials remain the user's content.
+Do not redistribute commercial books inside the APK.

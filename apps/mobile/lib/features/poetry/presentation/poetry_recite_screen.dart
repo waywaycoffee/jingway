@@ -17,6 +17,7 @@ import '../../jingway/presentation/xinhua_lookup_sheet.dart';
 import '../../navigation/presentation/navigation_destination.dart';
 import '../../player/domain/cn_dictation_diff.dart';
 import '../../reading/data/reading_tts.dart';
+import '../../reading/presentation/reading_voice_picker.dart';
 import '../../shared/presentation/pad/pad_scaffold.dart';
 import '../domain/poetry_cloze.dart';
 import '../domain/poetry_comprehension.dart';
@@ -54,6 +55,16 @@ class _PoetryReciteScreenState extends ConsumerState<PoetryReciteScreen> {
   bool? _compOk;
   int? _speakLine;
   bool _speaking = false;
+  String _voiceId = kDefaultJingwaySpeechVoiceId;
+
+  @override
+  void initState() {
+    super.initState();
+    final String? stored = loadReadingTtsVoiceId();
+    if (stored != null && stored.isNotEmpty) {
+      _voiceId = stored;
+    }
+  }
 
   @override
   void dispose() {
@@ -110,7 +121,7 @@ class _PoetryReciteScreenState extends ConsumerState<PoetryReciteScreen> {
         setState(() => _speakLine = i);
         final String line = unit.lines[i].trim();
         if (line.isEmpty) continue;
-        await speakReadingText(ref, line);
+        await speakReadingText(ref, line, voiceId: _voiceId);
         // Estimate dwell so highlight stays readable between network TTS calls.
         final int ms = (line.runes.length * 280).clamp(600, 3200);
         await Future<void>.delayed(Duration(milliseconds: ms ~/ 4));
@@ -254,15 +265,45 @@ class _PoetryReciteScreenState extends ConsumerState<PoetryReciteScreen> {
     );
   }
 
+  Future<void> _pickVoice() async {
+    final String? picked = await showReadingVoicePicker(
+      context,
+      ref,
+      currentVoiceId: _voiceId,
+    );
+    if (picked == null || !mounted) return;
+    setState(() => _voiceId = picked);
+  }
+
   List<Widget> _buildListen(PoetryUnit unit) {
     final List<String> display = <String>[
       for (int i = 0; i < unit.lines.length; i++) unit.lines[i],
     ];
     return <Widget>[
-      FilledButton.icon(
-        onPressed: _speaking ? null : () => unawaited(_speakLines(unit)),
-        icon: Icon(_speaking ? Icons.volume_up : Icons.play_arrow),
-        label: Text(_speaking ? '朗读中…' : '逐句朗读（ECS）'),
+      Row(
+        children: <Widget>[
+          Expanded(
+            child: FilledButton.icon(
+              onPressed: _speaking ? null : () => unawaited(_speakLines(unit)),
+              icon: Icon(_speaking ? Icons.volume_up : Icons.play_arrow),
+              label: Text(_speaking ? '朗读中…' : '逐句朗读'),
+            ),
+          ),
+          const SizedBox(width: 8),
+          OutlinedButton.icon(
+            onPressed: _speaking ? null : () => unawaited(_pickVoice()),
+            icon: const Icon(Icons.record_voice_over_outlined),
+            label: Text(
+              jingwaySpeechVoiceLabel(_voiceId).split(' · ').first,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
+      ),
+      const SizedBox(height: 8),
+      Text(
+        '当前音色：${jingwaySpeechVoiceLabel(_voiceId)}',
+        style: const TextStyle(color: JingwayColors.hint, fontSize: 12),
       ),
       const SizedBox(height: 12),
       JingwayClassicalText(
@@ -274,7 +315,7 @@ class _PoetryReciteScreenState extends ConsumerState<PoetryReciteScreen> {
       ),
       const SizedBox(height: 8),
       const Text(
-        '点句可查新华释义。音频走 ECS，不打进安装包。',
+        '点句可查新华释义。点右侧按钮可选龙安风悦、李白等音色。音频走 ECS。',
         style: TextStyle(color: JingwayColors.hint, fontSize: 12),
       ),
     ];

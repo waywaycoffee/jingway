@@ -15,6 +15,7 @@ import '../../exam/presentation/exam_profile_provider.dart';
 import '../../exam/presentation/study_mode_switch_sheet.dart';
 import '../../navigation/presentation/navigation_destination.dart';
 import '../../player/presentation/local_whisper_asr.dart';
+import '../../reading/data/reading_tts.dart';
 import '../../shared/data/aliyun_speech_service.dart';
 import '../../shared/data/word_pronunciation_service.dart';
 import '../../sync/data/acquire_api_client.dart';
@@ -1872,7 +1873,9 @@ class _AliyunCloudVoiceRowState extends ConsumerState<_AliyunCloudVoiceRow> {
                   : _error ??
                         (!_configured
                             ? '服务器尚未配置 DASHSCOPE_API_KEY'
-                            : '默认 Olivia Lin 英音，缓存到 ECS；中英混读可选龙安系列'),
+                            : FlavorConfig.isJingwayProduct
+                                ? '默认龙安风悦等中文音色，缓存到 ECS；诗文/阅读页也可切换'
+                                : '默认 Olivia Lin 英音，缓存到 ECS；中英混读可选龙安系列'),
             ),
           ),
           const SizedBox(width: 16),
@@ -1905,6 +1908,7 @@ class _AliyunCloudVoiceRowState extends ConsumerState<_AliyunCloudVoiceRow> {
                         ref
                             .read(learningSettingsProvider.notifier)
                             .setCloudTtsVoice(next);
+                        unawaited(saveReadingTtsVoiceId(next));
                       },
               ),
             ),

@@ -66,11 +66,11 @@ class FloatingBottomNav extends StatelessWidget {
 
   final AppNavDestination current;
 
-  /// 景行语文考试向底栏：备考首页 / 诗文 / 复习 / 专项 / 我的
+  /// 景行语文底栏：备考 / 阅读 / 复习 / 专项 / 我的
   static const List<AppNavDestination> _jingwayPrimaryDestinations =
       <AppNavDestination>[
         AppNavDestination.home,
-        AppNavDestination.reading,
+        AppNavDestination.readingHub,
         AppNavDestination.review,
         AppNavDestination.exam,
         AppNavDestination.settings,

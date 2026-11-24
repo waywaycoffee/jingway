@@ -43,6 +43,7 @@ import 'reading_chunk_provider.dart';
 import 'reading_digital_human_ball.dart';
 import 'reading_library_provider.dart';
 import 'reading_text_spans.dart';
+import 'reading_voice_picker.dart';
 import 'reading_vocab_lists_sheet.dart';
 
 const String kReadingSlowModeKey = 'reading_slow_mode_v1';
@@ -74,6 +75,7 @@ class _ReadingReaderScreenState extends ConsumerState<ReadingReaderScreen> {
   bool _slowMode = false;
   bool _soeEnabled = false;
   ReadingTtsGender _ttsGender = ReadingTtsGender.female;
+  String _ttsVoiceId = kDefaultJingwaySpeechVoiceId;
   int? _highlightWordIndex;
   int _continuousGeneration = 0;
   Player? _readingAudio;
@@ -156,6 +158,12 @@ class _ReadingReaderScreenState extends ConsumerState<ReadingReaderScreen> {
     _slowMode = prefs.get(kReadingSlowModeKey) == '1';
     _soeEnabled = prefs.get(kReadingSoeEnabledKey) == '1';
     _ttsGender = ReadingTtsGenderX.fromStorage(prefs.get(kReadingTtsGenderKey));
+    final String? voiceId = prefs.get(kReadingTtsVoiceIdKey)?.trim();
+    if (voiceId != null && voiceId.isNotEmpty) {
+      _ttsVoiceId = voiceId;
+    } else if (FlavorConfig.isJingwayProduct) {
+      _ttsVoiceId = _ttsGender.jingwayVoiceId;
+    }
     final int? thr = int.tryParse(prefs.get(kReadingFreqThresholdKey) ?? '');
     if (thr != null && kReadingFreqThresholdBands.contains(thr)) {
       _freqThreshold = thr;
@@ -184,6 +192,7 @@ class _ReadingReaderScreenState extends ConsumerState<ReadingReaderScreen> {
     await prefs.put(kReadingSlowModeKey, _slowMode ? '1' : '0');
     await prefs.put(kReadingSoeEnabledKey, _soeEnabled ? '1' : '0');
     await prefs.put(kReadingTtsGenderKey, _ttsGender.storageValue);
+    await prefs.put(kReadingTtsVoiceIdKey, _ttsVoiceId);
   }
 
   Future<void> _speakReading(String text, {double? rate}) {
@@ -192,35 +201,24 @@ class _ReadingReaderScreenState extends ConsumerState<ReadingReaderScreen> {
       text,
       rate: rate ?? _effectiveRate,
       gender: _ttsGender,
+      voiceId: _ttsVoiceId,
     );
   }
 
-  Future<void> _toggleTtsGender() async {
-    final selected = await showModalBottomSheet<ReadingTtsGender>(
-      context: context,
-      builder: (context) => SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              for (final voice in ReadingTtsGender.values)
-                ListTile(
-                  title: Text(voice.labelCn),
-                  trailing: voice == _ttsGender
-                      ? const Icon(Icons.check)
-                      : null,
-                  onTap: () => Navigator.pop(context, voice),
-                ),
-            ],
-          ),
-        ),
-      ),
+  Future<void> _pickTtsVoice() async {
+    final String? selected = await showReadingVoicePicker(
+      context,
+      ref,
+      currentVoiceId: _ttsVoiceId,
     );
     if (selected == null || !mounted) return;
     await _stopContinuous();
     if (!mounted) return;
-    setState(() => _ttsGender = selected);
-    await saveReadingTtsGender(selected);
+    setState(() {
+      _ttsVoiceId = selected;
+      _ttsGender = loadReadingTtsGender();
+    });
+    await _persistPrefs();
   }
 
   double get _effectiveRate {
@@ -259,7 +257,11 @@ class _ReadingReaderScreenState extends ConsumerState<ReadingReaderScreen> {
         if (!mounted || generation != _continuousGeneration) return;
         final url = await ref.read(acquireApiClientProvider).readingSpeech(
               unit.text,
-              readingSpeechVoiceId(_ttsGender, unit.text),
+              readingSpeechVoiceId(
+                _ttsGender,
+                unit.text,
+                voiceId: _ttsVoiceId,
+              ),
               language: readingSpeechLanguage(unit.text),
             );
         if (!mounted || generation != _continuousGeneration) return;
@@ -1199,12 +1201,8 @@ class _ReadingReaderScreenState extends ConsumerState<ReadingReaderScreen> {
             tooltip: '更多',
             onSelected: (String value) {
               switch (value) {
-                case 'voice_female':
-                  setState(() => _ttsGender = ReadingTtsGender.female);
-                  unawaited(saveReadingTtsGender(_ttsGender));
-                case 'voice_male':
-                  setState(() => _ttsGender = ReadingTtsGender.male);
-                  unawaited(saveReadingTtsGender(_ttsGender));
+                case 'voice':
+                  unawaited(_pickTtsVoice());
                 case 'slow':
                   setState(() => _slowMode = !_slowMode);
                   unawaited(_persistPrefs());
@@ -1234,19 +1232,9 @@ class _ReadingReaderScreenState extends ConsumerState<ReadingReaderScreen> {
             },
             itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
               PopupMenuItem<String>(
-                value: 'voice_female',
+                value: 'voice',
                 child: Text(
-                  _ttsGender == ReadingTtsGender.female
-                      ? '女声（当前 · 阿里云）'
-                      : '女声（阿里云）',
-                ),
-              ),
-              PopupMenuItem<String>(
-                value: 'voice_male',
-                child: Text(
-                  _ttsGender == ReadingTtsGender.male
-                      ? '男声（当前 · 阿里云）'
-                      : '男声（阿里云）',
+                  '音色：${jingwaySpeechVoiceLabel(_ttsVoiceId).split(' · ').first}',
                 ),
               ),
               const PopupMenuDivider(),

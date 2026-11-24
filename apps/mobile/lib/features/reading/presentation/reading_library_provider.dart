@@ -4,13 +4,16 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_ce/hive.dart';
 
+import '../../../flavors/app_flavor.dart';
 import '../../authentication/presentation/account_storage.dart';
 import '../../sync/data/schedule_device_cloud_sync.dart';
 import '../domain/reading_doc.dart';
 
 const String kReadingLibraryKey = 'reading_library_v1';
 const String kReadingProgressKey = 'reading_progress_v1';
-const List<String> kBuiltinReadingAssetPaths = <String>[
+
+/// English graded samples (AcquireEnglish flavor).
+const List<String> kBuiltinReadingAssetPathsEn = <String>[
   'assets/reading/a1_morning_walk.json',
   'assets/reading/a1_tech_robot.json',
   'assets/reading/a2_tech_robot.json',
@@ -19,6 +22,19 @@ const List<String> kBuiltinReadingAssetPaths = <String>[
   'assets/reading/b1_library_afternoon.json',
   'assets/reading/b2_small_business.json',
 ];
+
+/// 景行中文原创短篇（非教材正文）。
+const List<String> kBuiltinReadingAssetPathsZh = <String>[
+  'assets/reading/cn_spring_campus.json',
+  'assets/reading/cn_grandma_kitchen.json',
+  'assets/reading/cn_rain_lotus.json',
+  'assets/reading/cn_letter_home.json',
+  'assets/reading/cn_bookstore.json',
+];
+
+List<String> get kBuiltinReadingAssetPaths => FlavorConfig.isJingwayProduct
+    ? kBuiltinReadingAssetPathsZh
+    : kBuiltinReadingAssetPathsEn;
 
 class ReadingLibraryState {
   const ReadingLibraryState({

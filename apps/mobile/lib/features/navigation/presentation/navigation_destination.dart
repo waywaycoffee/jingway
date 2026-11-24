@@ -21,7 +21,7 @@ enum AppNavDestination {
     activeIcon: LucideIcons.clapperboard,
     showInBottomNav: false,
   ),
-  /// 古诗文默写（底栏「诗文」）。阅读书架见 [readingHub]。
+  /// 古诗文默写（「更多」/首页入口）。底栏第二项见 [readingHub]。
   reading(
     route: '/poetry',
     label: '诗文',
@@ -29,15 +29,15 @@ enum AppNavDestination {
     subtitle: '年级必背：遮挡背诵、上下句、逐字默写。',
     icon: Icons.chrome_reader_mode_outlined,
     activeIcon: Icons.chrome_reader_mode_rounded,
+    showInBottomNav: false,
   ),
   readingHub(
     route: '/reading',
     label: '阅读',
     title: '阅读',
-    subtitle: '导入读物与书架，按篇精读。',
+    subtitle: '中文书架：导入与精读短篇、电子书。',
     icon: Icons.menu_book_outlined,
     activeIcon: Icons.menu_book_rounded,
-    showInBottomNav: false,
   ),
   textbooks(
     route: '/textbooks',

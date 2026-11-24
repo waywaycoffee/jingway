@@ -31,6 +31,14 @@ BILINGUAL_VOICES = frozenset({
     'longjielidou_v3.6',
     'longhuohuo_v3.6',
     'longchuanshu_v3.6',
+    # Mandarin book / poetry voices published on /api/reading/voices
+    'longze_v3.1',
+    'longxiaocheng_v3.1',
+    'longshu_v3.1',
+    'libai_v3.1',
+    'longanyang_v3.1',
+    'longsanshu_v3.1',
+    'longanlufeng',
 })
 PERSONA_VOICES = {
     'mia': 'longanfengyue',
